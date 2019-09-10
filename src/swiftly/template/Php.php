@@ -18,7 +18,7 @@ Class Php Implements TemplateInterface
   /**
    * @inheritdoc
    */
-  public function render( string $template, array $data ) : string
+  public function render( string $template, array $data = [] ) : string
   {
     $result = '';
 
@@ -27,7 +27,8 @@ Class Php Implements TemplateInterface
     if ( is_file($template . '.html.php') && is_readable($template . '.html.php') ) {
       ob_start();
       include $template . '.html.php';
-      $result = ob_get_flush();
+      $result = ob_get_contents();
+      ob_end_clean();
     }
 
     return $result;
@@ -38,7 +39,7 @@ Class Php Implements TemplateInterface
    *
    * @param string $name
    */
-  private function __get( string $name )
+  public function __get( string $name )
   {
     return ( isset($this->data[$name]) ? $this->data[$name] : '' );
   }

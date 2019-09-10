@@ -70,7 +70,7 @@ if ( $config->hasValue('warnings') && (bool)$config->getValue('warnings') ) {
 
 
 // Set error level
-error_reporting( $error_level );
+// error_reporting( $error_level );
 
 
 // Start!

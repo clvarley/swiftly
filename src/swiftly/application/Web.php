@@ -5,6 +5,7 @@ namespace Swiftly\Application;
 use \Swiftly\Config\Config;
 use \Swiftly\Services\Manager;
 use \Swiftly\Http\{ Request, Response };
+use \Swiftly\Template\Php;
 
 /**
  * The front controller for our web app
@@ -34,10 +35,8 @@ Class Web Implements ApplicationInterface
     $this->config = $config;
 
     $this->services = Manager::getInstance();
-
     $this->services->registerService( 'request', Request::fromGlobals() );
     $this->services->registerService( 'response', new Response() );
-
   }
 
   /**
@@ -45,6 +44,8 @@ Class Web Implements ApplicationInterface
    */
   public function start() : void
   {
+
+
 
   }
 
