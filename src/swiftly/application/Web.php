@@ -45,8 +45,16 @@ Class Web Implements ApplicationInterface
   public function start() : void
   {
 
+    $response = $this->services->response->setBody();
 
+    if ( !empty($body = $controller->getOutput() ) ) {
+      $response->setBody( $body );
+    }
 
+    // Send the response and end!
+    $response->send();
+
+    return;
   }
 
 }

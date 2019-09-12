@@ -21,7 +21,7 @@ Final Class Manager
   private $services = [];
 
   /**
-   * Service manager is created using @see Manager::getInstance()
+   * Service manager is created using {@see Manager::getInstance()}
    */
   protected function __construct()
   {

@@ -77,7 +77,29 @@ Class Response
    */
   public function redirect( string $location, int $status = 307 ) : void
   {
+    // TODO:
+  }
 
+  /**
+   * Sends this response back to the client
+   */
+  public function send() : void
+  {
+    if ( $this->status_code !== 200 ) {
+      http_response_code( $this->status_code );
+    }
+
+    foreach ( $this->headers->getAll() as $header_name => $values ) {
+      foreach ( $values as $key => $value ) {
+        header( $header_name . ': ' . $value, $key < 1 );
+      }
+    }
+
+    if ( !empty($this->body) ) {
+      echo $this->body;
+    }
+
+    return;
   }
 
 }
