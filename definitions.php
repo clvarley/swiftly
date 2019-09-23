@@ -28,4 +28,4 @@ define('APP_SRC', APP_BASE . 'src/');
 define('APP_SWIFTLY', APP_SRC . 'swiftly/');
 
 // App folder
-define('APP_APP', APP_BASE . 'app/');
+define('APP_APP', APP_BASE . 'app/controller/');

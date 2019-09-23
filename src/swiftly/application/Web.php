@@ -6,6 +6,7 @@ use \Swiftly\Config\Config;
 use \Swiftly\Services\Manager;
 use \Swiftly\Http\{ Request, Response };
 use \Swiftly\Template\Php;
+use \Swiftly\Routing\Router;
 
 /**
  * The front controller for our web app
@@ -45,7 +46,27 @@ Class Web Implements ApplicationInterface
   public function start() : void
   {
 
+    // Get the router
+    if ( is_file(APP_CONFIG . 'routes.json') ) {
+      $router = Router::fromJson( APP_CONFIG . 'routes.json' );
+    } else {
+      $router = new Router();
+    }
 
+    $request = $this->services->getService('request');
+
+    if ( empty($route = $request->query->asString('_route_')) ) {
+      $route = $request->getUrl();
+    }
+
+    $action = $router->get( $route );
+
+    // No callable route returned?
+    if ( is_null($action) ) exit;
+
+    list( $controller, $method ) = $action;
+
+    // TODO: Controller initialization and method call
 
     // Wrap up and send response (if necessary)
     $response = $this->services->getService('response');

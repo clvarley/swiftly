@@ -145,6 +145,16 @@ Class Request
   }
 
   /**
+   * Get the url for this request
+   *
+   *@return string Requested url
+   */
+  public function getUrl() : string
+  {
+    return $this->url;
+  }
+
+  /**
    * Create a new request object from PHP/Server globals
    *
    * @static
@@ -161,7 +171,7 @@ Class Request
       $_POST,
       ''
     );
-    
+
     foreach ( $_SERVER as $name => $value ) {
       if ( mb_strpos($name, 'HTTP_') === 0 ) {
         $request->headers->addHeader( mb_substr($name, 5), $value );
