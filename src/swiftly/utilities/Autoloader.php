@@ -79,6 +79,8 @@ Final Class Autoloader
         }
       }
     }
+
+    return false;
   }
 
 }
