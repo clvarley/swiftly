@@ -75,7 +75,7 @@ Class Response
    * @param string $location  Redirect location
    * @param int $status       HTTP status code
    */
-  public function redirect( string $location, int $status = 307 ) : void
+  public function redirect( string $location, int $status = 303 ) : void
   {
     // TODO:
   }
