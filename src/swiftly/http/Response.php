@@ -72,12 +72,15 @@ Class Response
   /**
    * Redirect the client to the given URL
    *
+   * @todo Additional checks to be performed here 
+   *
    * @param string $location  Redirect location
    * @param int $status       HTTP status code
    */
   public function redirect( string $location, int $status = 303 ) : void
   {
-    // TODO:
+    header('Location:' . $location, true, $status);
+    exit;
   }
 
   /**
