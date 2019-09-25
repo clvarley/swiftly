@@ -1,5 +1,4 @@
-﻿{
-  "/": "ControllerHome::default",
-  "/get": "ControllerHome::get",
-  "/post": "ControllerHome::post"
+{
+    "\/": "ControllerHome::default",
+    "\/get": "ControllerHome::get"
 }

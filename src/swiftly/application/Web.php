@@ -66,7 +66,10 @@ Class Web Implements ApplicationInterface
 
     list( $controller, $method ) = $action;
 
-    // TODO: Controller initialization and method call
+    // DEBUG
+    $controller = new $controller();
+
+    $controller->{$action}();
 
     // Wrap up and send response (if necessary)
     $response = $this->services->getService('response');
