@@ -29,3 +29,6 @@ define('APP_SWIFTLY', APP_SRC . 'swiftly/');
 
 // App folder
 define('APP_APP', APP_BASE . 'app/controller/');
+
+// Template folder
+define('APP_VIEW', APP_BASE . 'app/view/');
