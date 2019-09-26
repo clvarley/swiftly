@@ -26,7 +26,7 @@ Class Php Implements TemplateInterface
 
     if ( is_file(APP_VIEW . $template . '.html.php') && is_readable(APP_VIEW . $template . '.html.php') ) {
       ob_start();
-      include $template . '.html.php';
+      include APP_VIEW . $template . '.html.php';
       $result = ob_get_contents();
       ob_end_clean();
     }
