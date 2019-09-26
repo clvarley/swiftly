@@ -3,6 +3,7 @@
 namespace Swiftly\Base;
 
 use \Swiftly\Services\Manager;
+use \Swiftly\Template\TemplateInterface As Renderer;
 
 /**
  * The abstract class all controllers should inherit
@@ -16,6 +17,11 @@ Abstract Class Controller
    * @var Manager $services Service manager
    */
   private $services = null;
+
+  /**
+   * @var Renderer $renderer Internal renderer
+   */
+  private $renderer = null;
 
   /**
    * @var string $output Controller output
@@ -62,4 +68,25 @@ Abstract Class Controller
     return $this->output;
   }
 
+  /**
+   * Sets the object that will be used for rendering
+   *
+   * @param
+   */
+  public function setRenderer( Renderer $renderer ) : void
+  {
+      $this->renderer = $renderer;
+  }
+
+  /**
+   * Renders the given template with the data provided
+   *
+   * @param  string $template Template to render
+   * @param  array  $data     Template data
+   * @return string           The result
+   */
+  public function render( string $template, array $data = [] ) : string
+  {
+      return $this->renderer->render( $template, $data );
+  }
 }

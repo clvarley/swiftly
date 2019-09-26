@@ -23,6 +23,9 @@ Class Router
   public function __construct( array $routes = [] )
   {
     $this->routes = $routes;
+
+    // DEBUG: Need to get json file working
+    $this->routes = ['/' => 'ControllerDefault::index'];
   }
 
   /**
@@ -57,6 +60,8 @@ Class Router
   {
     $route = mb_strtolower(trim($route));
 
+    $route = rtrim($route, "/\\");
+
     $controller = '';
 
     // Get the controller name
@@ -78,7 +83,7 @@ Class Router
             $parts[1] = 'index';
         }
 
-        if ( is_file(APP_APP . $parts[0]) . '.php' ) {
+        if ( is_file(APP_APP . $parts[0] . '.php') ) {
 
             include( APP_APP ) . $parts[0] . '.php';
 

@@ -66,10 +66,13 @@ Class Web Implements ApplicationInterface
 
     list( $controller, $method ) = $action;
 
-    // DEBUG
-    $controller = new $controller();
+    $controller = new $controller( $this->services );
 
-    $controller->{$action}();
+    // Set the render used
+    $controller->setRenderer( new Php() );
+
+    // Call the method!
+    $controller->{$method}();
 
     // Wrap up and send response (if necessary)
     $response = $this->services->getService('response');
