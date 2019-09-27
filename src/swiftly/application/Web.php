@@ -61,24 +61,29 @@ Class Web Implements ApplicationInterface
 
     $action = $router->get( $route );
 
-    // No callable route returned?
-    if ( is_null($action) ) exit;
-
-    list( $controller, $method ) = $action;
-
-    $controller = new $controller( $this->services );
-
-    // Set the render used
-    $controller->setRenderer( new Php() );
-
-    // Call the method!
-    $controller->{$method}();
-
-    // Wrap up and send response (if necessary)
+    // Get the response object
     $response = $this->services->getService('response');
 
-    if ( !empty($body = $controller->getOutput() ) ) {
-      $response->setBody( $body );
+    // Did we return a callable route?
+    if ( is_null($action) ) {
+
+      $response->setStatus( 404 );
+
+    } else {
+
+      list( $controller, $method ) = $action;
+
+      $controller = new $controller( $this->services );
+
+      // Set the render used
+      $controller->setRenderer( new Php() );
+
+      // Call the method!
+      $controller->{$method}();
+
+      if ( !empty($body = $controller->getOutput() ) ) {
+        $response->setBody( $body );
+      }
     }
 
     // Send the response and end!

@@ -67,7 +67,7 @@ Class Router
     // Get the controller name
     if ( isset($this->routes[$route]) ) {
         $controller = $this->routes[$route];
-    } elseif ( isset($this->routes['/']) ) {
+    } elseif ( empty($route) && isset($this->routes['/']) ) {
         $controller = $this->routes['/'];
     }
 
