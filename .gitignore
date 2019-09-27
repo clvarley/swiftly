@@ -1,7 +1,4 @@
-# Stop upload of test files
-app/view/*
-app/model/*
-app/controller/*
-
-# Stop upload of test routes
-config/routes.json
+# Stop secrets from leaking
+*.sql
+*.log
+*.env
