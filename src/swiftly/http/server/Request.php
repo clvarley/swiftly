@@ -1,6 +1,8 @@
 <?php
 
-namespace Swiftly\Http;
+namespace Swiftly\Http\Server;
+
+use Swiftly\Http\{ Headers, Parameters};
 
 /**
  * Represents a HTTP request

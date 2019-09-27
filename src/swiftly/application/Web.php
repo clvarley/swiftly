@@ -4,7 +4,7 @@ namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
 use \Swiftly\Services\Manager;
-use \Swiftly\Http\{ Request, Response };
+use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\Php;
 use \Swiftly\Routing\Router;
 

@@ -1,6 +1,8 @@
 <?php
 
-namespace Swiftly\Http;
+namespace Swiftly\Http\Server;
+
+use Swiftly\Http\Headers;
 
 /**
  * Represents a HTTP response
@@ -72,7 +74,7 @@ Class Response
   /**
    * Redirect the client to the given URL
    *
-   * @todo Additional checks to be performed here 
+   * @todo Additional checks to be performed here
    *
    * @param string $location  Redirect location
    * @param int $status       HTTP status code
