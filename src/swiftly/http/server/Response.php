@@ -5,7 +5,7 @@ namespace Swiftly\Http\Server;
 use Swiftly\Http\Headers;
 
 /**
- * Represents a HTTP response
+ * Represents a HTTP server (outgoing) response
  *
  * @author C Varley <cvarley@highorbit.co.uk>
  */

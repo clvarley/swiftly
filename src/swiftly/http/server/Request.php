@@ -5,7 +5,7 @@ namespace Swiftly\Http\Server;
 use Swiftly\Http\{ Headers, Parameters};
 
 /**
- * Represents a HTTP request
+ * Represents a HTTP server (incoming) request
  *
  * @author C Varley <cvarley@highorbit.co.uk>
  */
