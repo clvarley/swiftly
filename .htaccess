@@ -2,7 +2,7 @@
 Options -Indexes
 
 # Prevent Direct Access to Swiftly system files
-<FilesMatch "\.(log|env|php)$">
+<FilesMatch "\.(log|env)$">
   Require all denied
 </FilesMatch>
 
