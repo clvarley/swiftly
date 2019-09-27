@@ -1,7 +1,5 @@
 <?php
 
-$start = microtime( true );
-
 /**
  * Swiftly | A Simple PHP Framework
  *
@@ -70,17 +68,8 @@ if ( $config->hasValue('warnings') && (bool)$config->getValue('warnings') ) {
 
 
 // Set error level
-// error_reporting( $error_level );
+error_reporting( $error_level );
 
 
 // Start!
 ( new Swiftly\Application\Web( $config ) )->start();
-
-$end = microtime( true );
-
-echo '<!--';
-echo 'Time Started: ' . $start . PHP_EOL;
-echo 'Time Ended: ' . $end . PHP_EOL;
-echo 'Time Taken: ' . ( $end - $start ) . 's' . PHP_EOL;
-echo 'Memory Used: ' . memory_get_peak_usage();
-echo '-->';
