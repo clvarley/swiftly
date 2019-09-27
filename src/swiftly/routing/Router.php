@@ -37,7 +37,7 @@ Class Router
 
     if ( is_file($filepath) && ( $values = file_get_contents($filepath) ) !== false ) {
 
-      $values = json_decode($filepath, true);
+      $values = json_decode($values, true);
 
       if ( json_last_error() !== JSON_ERROR_NONE ) {
         $values = [];
