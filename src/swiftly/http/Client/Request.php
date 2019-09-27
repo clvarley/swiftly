@@ -3,7 +3,7 @@
 namespace Swiftly\Http\Client;
 
 /**
- * Represents a HTTP client (outgoing) request
+ * Represents a HTTP request sent by this client (outgoing)
  *
  * @author C Varley <cvarley@highorbit.co.uk>
  */
