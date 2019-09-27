@@ -1,4 +1,3 @@
 {
-    "\/": "ControllerHome::default",
-    "\/get": "ControllerHome::get"
+    "\/": "ControllerHome::default"
 }
