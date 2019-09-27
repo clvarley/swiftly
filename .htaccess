@@ -1,0 +1,16 @@
+# Lock down folder visibility
+Options -Indexes
+
+# Prevent Direct Access to Swiftly system files
+<FilesMatch "\.(log|env)$">
+  Require all denied
+</FilesMatch>
+
+# Prep rewrite
+RewriteEngine On
+
+# All requests are relative to /public
+# If the user hasn't requested an existing file, send request to index.php
+RewriteBase /public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) index.php?_route_=$1 [L,QSA]
