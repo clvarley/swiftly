@@ -55,11 +55,7 @@ Class Web Implements ApplicationInterface
 
     $request = $this->services->getService('request');
 
-    if ( empty($route = $request->query->asString('_route_')) ) {
-      $route = $request->getUrl();
-    }
-
-    $action = $router->get( $route );
+    $action = $router->get( $route = $request->query->asString('_route_') );
 
     // Get the response object
     $response = $this->services->getService('response');

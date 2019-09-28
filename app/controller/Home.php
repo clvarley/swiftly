@@ -15,10 +15,12 @@ Class Home Extends Controller
    */
   public function index()
   {
+
     $this->setOutput($this->render('home', [
       'title'   => 'Swiftly | A Simple Framework',
       'message' => 'Thanks for installing Swiftly!'
     ]));
+    
   }
 
 }
