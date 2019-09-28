@@ -26,7 +26,7 @@ Abstract Class Controller
   /**
    * @var string $output Controller output
    */
-  protected $output = '';
+  private $output = '';
 
   /**
    * Load the services into the base controller
@@ -44,6 +44,16 @@ Abstract Class Controller
    * @param string $name Service name
    */
   public function __get( string $name )
+  {
+    return ( $this->services !== null ? $this->services->getService( $name ) : null );
+  }
+
+  /**
+   * Provide access to services
+   *
+   * @param string $name Service name
+   */
+  public function getService( string $name )
   {
     return ( $this->services !== null ? $this->services->getService( $name ) : null );
   }
