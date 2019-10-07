@@ -30,12 +30,12 @@ Class Request
   /**
    * @var Parameters $post The POST data send with this request
    */
-  public $post = [];
+  public $post = null;
 
   /**
    * @var Parameters $query The query (GET) params sent with this request
    */
-  public $query = [];
+  public $query = null;
 
   /**
    * @var string $body The request body/payload
