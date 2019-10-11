@@ -35,13 +35,25 @@ Class Php Implements TemplateInterface
   }
 
   /**
-   * Provide magic method support
+   * Provide support for direct access to `$this->data`
    *
-   * @param string $name
+   * @param string $name    Variable name
+   * @return mixed          The value
    */
   public function __get( string $name )
   {
     return ( isset($this->data[$name]) ? $this->data[$name] : '' );
+  }
+
+  /**
+   * Provide support for isset() & empty()
+   *
+   * @param string $name    Variable name
+   * @return boolean        Isset?
+   */
+  public function __isset( string $name )
+  {
+      return ( isset($this->data[$name]) );
   }
 
 }

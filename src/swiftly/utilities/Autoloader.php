@@ -74,7 +74,7 @@ Final Class Autoloader
 
       foreach ( $files as $file ) {
         if ( mb_strtolower(basename($file, '.php')) === $class_name ) {
-          include $file;
+          include_once $file;
           return true;
         }
       }
