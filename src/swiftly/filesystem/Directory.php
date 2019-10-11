@@ -114,13 +114,13 @@ Class Directory Extends AbstractPathable
 
         if ( is_string($directory) ) {
             $directory = new Directory( $directory );
-        } elseif ( !is_a( $directory, 'Directory' ) ) {
+        } elseif ( !is_a( $directory, 'Swiftly\Filesystem\Directory' ) ) {
             throw new \InvalidArgumentException("getFilesRecursive() only accepts a string or Filesystem\Directory object", 1);
         }
 
         foreach( $directory->getContents() as $file_or_dir ) {
             if ( $file_or_dir->isDir() ) {
-                $files = array_merge( $files, self::getRecursive( $file_or_dir ) );
+                $files = array_merge( $files, self::getFilesRecursive( $file_or_dir ) );
             } else {
                 $files[] = $file_or_dir;
             }
