@@ -30,5 +30,24 @@
     <h1><?= $this->title; ?></h1>
     <p><?= $this->message; ?></p>
 
+    <?php if ( !empty($this->files) ): ?>
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Size</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach( $this->files as $file ): ?>
+                    <tr>
+                        <td><?= $file->getPath(); ?></td>
+                        <td><?= $file->getSize(); ?>bytes</td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
   </body>
 </html>

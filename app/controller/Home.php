@@ -1,6 +1,7 @@
 <?php
 
 use Swiftly\Base\Controller;
+use Swiftly\Filesystem\Directory;
 
 /**
  * The default controller that handles the homepage
@@ -16,11 +17,14 @@ Class Home Extends Controller
   public function index()
   {
 
-    $this->setOutput($this->render('home', [
-      'title'   => 'Swiftly | A Simple Framework',
-      'message' => 'Thanks for installing Swiftly!'
-    ]));
-    
+      $dir = new Directory( '/var/www/html' );
+
+      $this->setOutput($this->render('home', [
+          'title'   => 'Swiftly | A Simple Framework',
+          'message' => 'Thanks for installing Swiftly!',
+          'files'   => Directory::getFilesRecursive( $dir )
+      ]));
+
   }
 
 }
