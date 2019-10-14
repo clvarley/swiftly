@@ -72,4 +72,9 @@ error_reporting( $error_level );
 
 
 // Start!
-( new Swiftly\Application\Web( $config ) )->start();
+if ( defined('PHP_SAPI') && PHP_SAPI === 'cli' ) {
+    ( new Swiftly\Application\Console( $config ) )->start();
+} else {
+    ( new Swiftly\Application\Web( $config ) )->start();
+}
+

@@ -71,7 +71,7 @@ Class Web Implements ApplicationInterface
 
       $controller = new $controller( $this->services );
 
-      // Set the render used
+      // Set the renderer to use
       $controller->setRenderer( new Php() );
 
       // Call the method!
