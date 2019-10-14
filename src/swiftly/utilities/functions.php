@@ -52,11 +52,11 @@ function format_bytes( int $bytes ) : string
     }
 
     switch ( $iterations ) {
-        case 4:
+        case 0:
             $formatted = sprintf('%.2f %s', $bytes, 'tb');
         break;
 
-        case 3:
+        case 1:
             $formatted = sprintf('%.2f %s', $bytes, 'gb');
         break;
 
@@ -64,11 +64,11 @@ function format_bytes( int $bytes ) : string
             $formatted = sprintf('%.2f %s', $bytes, 'mb');
         break;
 
-        case 1:
+        case 3:
             $formatted = sprintf('%.2f %s', $bytes, 'kb');
         break;
 
-        default:
+        case 4:
             $formatted = sprintf('%d %s', $bytes, 'bytes');
         break;
     }

@@ -66,7 +66,7 @@ Class Directory Extends AbstractPathable
      */
     public function getContents() : array
     {
-        // REFACTOR: into private function so can be called from `getChild`
+        // REFACTOR: into private function so can be called from `getChild` too
 
         if ( empty($this->contents) || ( count($this->contents) !== count($this->rawcontents))) {
             foreach( $this->rawcontents as $item ) {
@@ -78,14 +78,30 @@ Class Directory Extends AbstractPathable
     }
 
     /**
+     * Gets a file or child directory by name
      *
-     *
-     * @param  string $name [description]
-     * @return [type]       [description]
+     * @param  string $name         Directory or file name
+     * @return Directory|File|null  File, directory or null
      */
-    public function getChild( string $name ) : ?Path
+    public function getChild( string $name ) : ?AbstractPathable
     {
-        // TODO
+        if ( isset($this->rawcontents[$name]) && is_dir($this->rawcontents[$name]) ) {
+            return ( new Directory($this->rawcontents[$name]) );
+        } elseif ( isset($this->rawcontents[$name]) ) {
+            return ( new File($this->rawcontents[$name]) );
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the parent directory
+     *
+     * @return Directory|null   Parent directory or null
+     */
+    public function getParent() : ?Directory
+    {
+        return ( is_dir($parent = dirname($this->path)) ? new Directory( $parent ) : null );
     }
 
     /**

@@ -23,6 +23,13 @@
       p:last-child {
         margin: 0;
       }
+      thead td {
+          font-weight: 700;
+      }
+      tbody td {
+          padding: 5px 2px 5px;
+          border-top: 1px solid #000000;
+      }
     </style>
   </head>
   <body>
@@ -34,7 +41,7 @@
         <table>
             <thead>
                 <tr>
-                    <td>Name</td>
+                    <td>File</td>
                     <td>Size</td>
                 </tr>
             </thead>
@@ -42,7 +49,7 @@
                 <?php foreach( $this->files as $file ): ?>
                     <tr>
                         <td><?= $file->getPath(); ?></td>
-                        <td><?= $file->getSize(); ?>bytes</td>
+                        <td><?= format_bytes($file->getSize()); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
