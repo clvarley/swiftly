@@ -11,9 +11,9 @@ Class Connection
 {
 
     /**
-     * @var Resource|null $handle Stream handle
+     * @var Resource|null $socket Socket handle
      */
-    private $handle = null;
+    private $socket = null;
 
     /**
      * @var bool $connected Connection status
@@ -23,9 +23,12 @@ Class Connection
     /**
      * Construct
      */
-    public function __construct()
+    public function __construct(  )
     {
         // TODO
+
+        socket_create(AF_INET);
+
     }
 
 }

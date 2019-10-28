@@ -39,6 +39,11 @@ function mb_lcfirst( string $subject ) : string
 /**
  * Formats a human readable string for this number of bytes
  *
+ * Because of floating point precision issues, this function can sometimes
+ * return results that are not 100% accurate. Please only use it to display
+ * user friendly values, not to calculate storage or any other non-output
+ * related task.
+ *
  * @param int $bytes Number of bytes
  * @return string    Formatted bytes
  */
