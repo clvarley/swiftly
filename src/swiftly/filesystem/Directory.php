@@ -13,11 +13,6 @@ Class Directory Extends AbstractPathable
 {
 
     /**
-     * @var array $rawcontents Raw directory contents
-     */
-    private $rawcontents = [];
-
-    /**
      * @var array $contents Abstracted directory contents
      */
     private $contents = [];
@@ -34,7 +29,7 @@ Class Directory Extends AbstractPathable
         if ( is_dir( $dirpath ) ) {
 
             $this->path = $dirpath;
-            $this->rawcontents = array_diff(scandir($this->path, null) ?: [], ['.', '..']);
+            $this->contents = array_flip(array_diff(scandir($this->path, null) ?: [], ['.', '..']));
 
         }
     }
@@ -53,9 +48,9 @@ Class Directory Extends AbstractPathable
         if ( $full_path ) {
             return array_map( function( $path ) {
                 return $this->path . '/' . $path;
-            }, $this->rawcontents );
+            }, array_keys($this->contents) );
         } else {
-            return $this->rawcontents;
+            return array_keys($this->contents);
         }
     }
 
@@ -66,15 +61,24 @@ Class Directory Extends AbstractPathable
      */
     public function getContents() : array
     {
-        // REFACTOR: into private function so can be called from `getChild` too
-
-        if ( empty($this->contents) || ( count($this->contents) !== count($this->rawcontents))) {
-            foreach( $this->rawcontents as $item ) {
-                $this->contents[$item] = ( is_dir($this->path . '/' . $item) ? new Directory($this->path . '/' . $item) : new File($this->path . '/' . $item) );
+        foreach ( $this->contents as $index => $value ) {
+            if ( !is_object($value) ) {
+                $this->contents[$index] = $this->getType( $index );
             }
         }
 
         return $this->contents;
+    }
+
+    /**
+     * Does this directory contain the named child
+     *
+     * @param string $name Child name
+     * @return boolean     Child exists?
+     */
+    public function hasChild( string $name )
+    {
+        return array_key_exists($name, $this->contents) ;
     }
 
     /**
@@ -85,10 +89,8 @@ Class Directory Extends AbstractPathable
      */
     public function getChild( string $name ) : ?AbstractPathable
     {
-        if ( isset($this->rawcontents[$name]) && is_dir($this->rawcontents[$name]) ) {
-            return ( new Directory($this->rawcontents[$name]) );
-        } elseif ( isset($this->rawcontents[$name]) ) {
-            return ( new File($this->rawcontents[$name]) );
+        if ( array_key_exists($name, $this->contents) ) {
+            return ( is_object($this->contents[$name]) ? $this->contents[$name] : $this->getType($name) );
         } else {
             return null;
         }
@@ -111,8 +113,7 @@ Class Directory Extends AbstractPathable
      */
     public function update() : void
     {
-        $this->rawcontents = array_diff(scandir($this->path, null) ?: [], ['.', '..']);
-        $this->contents = [];
+        $this->rawcontents = array_flip(array_diff(scandir($this->path, null) ?: [], ['.', '..']));
 
         return;
     }
@@ -143,5 +144,20 @@ Class Directory Extends AbstractPathable
         }
 
         return $files;
+    }
+
+    /**
+     * Works out if the given path is a file or directory
+     *
+     * @param string $relative_path     Path to file or dir
+     * @return AbstractPathable         File or directory object
+     */
+    private function getType( string $relative_path ) : AbstractPathable
+    {
+        if ( is_dir($real_path = ($this->path . '/' . $relative_path)) ) {
+            return ( new Directory($real_path) );
+        } else {
+            return ( new File($real_path) );
+        }
     }
 }

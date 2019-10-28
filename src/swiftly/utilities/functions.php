@@ -69,7 +69,7 @@ function format_bytes( int $bytes ) : string
         break;
 
         case 4:
-            $formatted = sprintf('%d %s', $bytes, 'bytes');
+            $formatted = sprintf('%d %s', $bytes, 'b');
         break;
     }
 

@@ -20,7 +20,7 @@ require_once '../definitions.php';
 
 
 // Make sure we are running a compatable PHP version
-if ( !defined('SWIFTLY_MIN_PHP') || version_compare( PHP_VERSION, SWIFTLY_MIN_PHP ) < 0 ) {
+if ( defined('SWIFTLY_MIN_PHP') && version_compare( PHP_VERSION, SWIFTLY_MIN_PHP ) < 0 ) {
   exit( 'Swiftly requires PHP version ' . SWIFTLY_MIN_PHP . ' or above to run!' );
 }
 
@@ -48,11 +48,11 @@ if ( $config->hasValue('encoding') ) {
 
 
 // Are we in development mode?
-switch ( (string)$config->getValue('environemt') )
+switch ( (string)$config->getValue('environment') )
 {
   case 'development':
   case 'dev':
-    $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE;
+    $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_STRICT | E_DEPRECATED;
   break;
 
   default:
@@ -61,9 +61,9 @@ switch ( (string)$config->getValue('environemt') )
 }
 
 
-// Warning levels
+// Display developer defined errors & warnings?
 if ( $config->hasValue('warnings') && (bool)$config->getValue('warnings') ) {
-  $error_level = $error_level | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE;
+  $error_level = $error_level | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
 }
 
 

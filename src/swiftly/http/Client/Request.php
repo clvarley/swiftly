@@ -119,17 +119,33 @@ Class Request
      *
      * @return Response|null Response object [Or null]
      */
-    public function post() : ?Response
+    public function post( string $body = '' ) : ?Response
     {
         if ( !$this->prepare() ) {
             return null;
         }
 
+        if ( $body ) {
+            $this->body = $body;
+        }
+
         curl_setopt( $this->handle, CURLOPT_POST, true );
+        curl_setopt( $this->handle, CURLOPT_POSTFIELDS, $this->body );
+        curl_setopt( $this->handle, CURLOPT_HTTPHEADER, array_merge( $this->headers, [
+            'Content-Length: ' . strlen($this->body)
+        ]));
 
-        // TODO:
+        $response = curl_exec( $this->handle );
 
-        return null;
+        if ( $response === false ) {
+            return null;
+        }
+
+        $status_code = +(int)curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
+
+        // TODO: Check this is robust enough, dev will have to content type 
+
+        return ( new Response( $status_code, $this->response_headers, $response ) );
     }
 
     /**
