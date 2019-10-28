@@ -71,6 +71,30 @@ Class Directory Extends AbstractPathable
     }
 
     /**
+     * Returns an array containing the files of this directory
+     *
+     * @return File[] Array of files
+     */
+    public function getFiles() : array
+    {
+        return array_filter( $this->getContents(), function( $pathable ) {
+            return $pathable->isFile();
+        });
+    }
+
+    /**
+     * Returns an array containing the sub-directories of this directory
+     *
+     * @return Directory[] Array of directories
+     */
+    public function getDirectories() : array
+    {
+        return array_filter( $this->getContents(), function( $pathable ) {
+            return $pathable->isDir();
+        });
+    }
+
+    /**
      * Does this directory contain the named child
      *
      * @param string $name Child name

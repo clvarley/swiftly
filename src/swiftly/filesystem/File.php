@@ -42,12 +42,41 @@ Class File Extends AbstractPathable
     /**
      * Creates a new copy of the file at the given location
      *
-     * @param  string $path Desintation path
+     * @param string $path  Desintation path
      * @return bool         Successful?
      */
     public function copy( string $path ) : bool
     {
         return ( !empty($this->path) && is_file($this->path) && copy($this->path, $path) );
+    }
+
+    /**
+     * Rename the file within it's current folder
+     *
+     * If you're looking for similar functionality to PHP's inbuilt `rename`
+     * function, use the `File->move()` method instead.
+     *
+     * @param string $name  New file name
+     * @return bool         Successful?
+     */
+    public function rename( string $name ) : bool
+    {
+        return ( !empty($this->path) && is_file($this->path) && rename($this->path, dirname($this->path) . '/' . $name ) );
+    }
+
+    /**
+     * Moves the file to new location
+     *
+     * This method is functionally equivalent to PHP's standard `rename`. If
+     * you just need to change the name of this file within a directory, use
+     * the `File->rename()` method instead.
+     *
+     * @param string $path  New file path
+     * @return bool         Successful?
+     */
+    public function move( string $path ) : bool
+    {
+        return ( !empty($this->path) && is_file($this->path) && rename($this->path, $path) );
     }
 
 }
