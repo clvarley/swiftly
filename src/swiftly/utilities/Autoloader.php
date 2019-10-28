@@ -67,7 +67,7 @@ Final Class Autoloader
 
       foreach ( $namespace_parts as $part ) {
         $route_dir .= $part . DIRECTORY_SEPARATOR;
-        if ( !is_dir($route_dir) ) return false;
+        if ( !is_dir($route_dir) ) return false; // Missing directory!
       }
 
       $files = glob( $route_dir . '*.php' );
@@ -75,12 +75,12 @@ Final Class Autoloader
       foreach ( $files as $file ) {
         if ( mb_strtolower(basename($file, '.php')) === $class_name ) {
           include_once $file;
-          return true;
+          return true; // Class file found!
         }
       }
     }
 
-    return false;
+    return false; // Not found!
   }
 
 }
