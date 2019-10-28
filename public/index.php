@@ -52,12 +52,18 @@ switch ( (string)$config->getValue('environment') )
 {
   case 'development':
   case 'dev':
-    $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_STRICT | E_DEPRECATED;
+    $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE /* | E_DEPRECATED */;
   break;
 
   default:
     $error_level = 0;
   break;
+}
+
+
+// Does the developer want to see E_STRICT errors?
+if ( $config->hasValue('strict') && (bool)$config->getValue('strict') ) {
+  $error_level = $error_level | E_STRICT;
 }
 
 

@@ -1,5 +1,7 @@
 {
-  "encoding": "UTF-8",
-  "environment": "dev",
-  "warnings": true
+  "encoding":     "UTF-8",
+  "environment":  "dev",
+  "strict" :      true,
+  "warnings":     true,
+  "database":     {}
 }

@@ -72,6 +72,7 @@ Class Web Implements ApplicationInterface
       $controller = new $controller( $this->services );
 
       // Set the renderer to use
+      // TODO: Make this a config value so template engine can be customisable
       $controller->setRenderer( new Php() );
 
       // Call the method!
