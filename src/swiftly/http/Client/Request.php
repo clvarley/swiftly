@@ -2,7 +2,7 @@
 
 namespace Swiftly\Http\Client;
 
-use Swiftly\Http\Client\Response;
+use \Swiftly\Http\Client\Response;
 
 /**
  * Represents a HTTP request sent by this client (outgoing)
@@ -143,7 +143,7 @@ Class Request
 
         $status_code = +(int)curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
 
-        // TODO: Check this is robust enough, dev will have to content type 
+        // TODO: Check this is robust enough, dev will have to content type
 
         return ( new Response( $status_code, $this->response_headers, $response ) );
     }

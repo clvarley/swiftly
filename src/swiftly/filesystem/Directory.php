@@ -2,7 +2,7 @@
 
 namespace Swiftly\Filesystem;
 
-use Swiftly\Filesystem\AbstractPathable;
+use \Swiftly\Filesystem\AbstractPathable;
 
 /**
  * Abstraction used to represent a filesystem directory

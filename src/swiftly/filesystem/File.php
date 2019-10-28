@@ -2,7 +2,7 @@
 
 namespace Swiftly\Filesystem;
 
-use Swiftly\Filesystem\AbstractPathable;
+use \Swiftly\Filesystem\AbstractPathable;
 
 /**
  * Usefull class used to represent a generic file
