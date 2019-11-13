@@ -15,7 +15,34 @@ might just be the no-nonsense framework you're after!
 
 ## Structure
 
-// TODO: How should my code be structures
+The structure of code in Swiftly is very similar to most of the MVC frameworks
+currently available. Your code will mostly be separated out into controllers,
+models and views.
+
+### Controllers
+
+Controllers are the main drivers of the framework. Here, the incoming request
+is processed, business logic performed and user input handled. For typical web
+applications, the job of almost every controller will be to organise
+communication with the database through Models and to return a rendered View
+file.
+
+All Controllers live in the *App/Controller* directory.
+
+### Models
+
+Models, as in most frameworks, handle communicating with the database and making
+sure the responses are represented in useful formats.
+
+TODO:
+
+All Models live in the *App/Model* directory.
+
+### Views
+
+TODO:
+
+All Views live in the *App/View* directory.
 
 ## Usage
 
