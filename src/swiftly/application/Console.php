@@ -12,27 +12,29 @@ use \Swiftly\Config\Config;
 Class Console Implements ApplicationInterface
 {
 
-  /**
-   * @var Config $config Configuration values
-   */
-  private $config = null;
+    /**
+     * @var Config $config Configuration values
+     */
+    private $config = null;
 
-  /**
-   * Create our application
-   *
-   * @param Config $config Configuration values
-   */
-  public function __construct( Config $config )
-  {
-    $this->config = $config;
-  }
+    /**
+     * Create our application
+     *
+     * @param Config $config Configuration values
+     */
+    public function __construct( Config $config )
+    {
+        $this->config = $config;
+    }
 
-  /**
-   * Start our app
-   */
-  public function start() : void
-  {
-
-  }
+    /**
+     * Start our app
+     *
+     * TODO: Implement console bootstrap
+     */
+    public function start() : void
+    {
+        return;
+    }
 
 }

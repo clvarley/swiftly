@@ -16,77 +16,76 @@ use \Swiftly\Routing\Router;
 Class Web Implements ApplicationInterface
 {
 
-  /**
-   * @var Config $config Configuration values
-   */
-  private $config = null;
+    /**
+     * @var Config $config Configuration values
+     */
+    private $config = null;
 
-  /**
-   * @var Manager $services Service manager
-   */
-  private $services = null;
+    /**
+     * @var Manager $services Service manager
+     */
+    private $services = null;
 
-  /**
-   * Create our application
-   *
-   * @param Config $config Configuration values
-   */
-  public function __construct( Config $config )
-  {
-    $this->config = $config;
+    /**
+     * Create our application
+     *
+     * @param Config $config Configuration values
+     */
+    public function __construct( Config $config )
+    {
+        $this->config = $config;
 
-    $this->services = Manager::getInstance();
-    $this->services->registerService( 'request', Request::fromGlobals() );
-    $this->services->registerService( 'response', new Response() );
-  }
-
-  /**
-   * Start our app
-   */
-  public function start() : void
-  {
-
-    // Get the router
-    if ( is_file(APP_CONFIG . 'routes.json') ) {
-      $router = Router::fromJson( APP_CONFIG . 'routes.json' );
-    } else {
-      $router = new Router();
+        $this->services = Manager::getInstance();
+        $this->services->registerService( 'request', Request::fromGlobals() );
+        $this->services->registerService( 'response', new Response() );
     }
 
-    $request = $this->services->getService('request');
+    /**
+     * Start our app
+     */
+    public function start() : void
+    {
 
-    $action = $router->get( $route = $request->query->asString('_route_') );
+        // Get the router
+        if ( is_file(APP_CONFIG . 'routes.json') ) {
+            $router = Router::fromJson( APP_CONFIG . 'routes.json' );
+        } else {
+            $router = new Router();
+        }
 
-    // Get the response object
-    $response = $this->services->getService('response');
+        $request = $this->services->getService('request');
 
-    // Did we return a callable route?
-    if ( is_null($action) ) {
+        $action = $router->get( $route = $request->query->asString('_route_') );
 
-      $response->setStatus( 404 );
+        // Get the response object
+        $response = $this->services->getService('response');
 
-    } else {
+        // Did we return a callable route?
+        if ( is_null($action) ) {
 
-      list( $controller, $method ) = $action;
+            $response->setStatus( 404 );
 
-      $controller = new $controller( $this->services );
+        } else {
 
-      // Set the renderer to use
-      // TODO: Make this a config value so template engine can be customisable
-      $controller->setRenderer( new Php() );
+            list( $controller, $method ) = $action;
 
-      // Call the method!
-      $controller->{$method}();
+            $controller = new $controller( $this->services );
 
-      if ( !empty($body = $controller->getOutput() ) ) {
-        $response->setBody( $body );
-      }
+            // Set the renderer to use
+            // TODO: Make this a config value so template engine can be customisable
+            $controller->setRenderer( new Php() );
+
+            // Call the method!
+            $controller->{$method}();
+
+            if ( !empty($body = $controller->getOutput() ) ) {
+                $response->setBody( $body );
+            }
+        }
+
+        // Send the response and end!
+        $response->send();
+
+        return;
     }
-
-    // Send the response and end!
-    $response->send();
-
-    return;
-  }
-
 }

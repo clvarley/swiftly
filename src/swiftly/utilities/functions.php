@@ -14,11 +14,11 @@
  */
 function mb_ucfirst( string $subject ) : string
 {
-  if ( mb_strlen($subject) ) {
-    $subject = ( mb_strtoupper(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
-  }
+    if ( mb_strlen($subject) ) {
+        $subject = ( mb_strtoupper(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
+    }
 
-  return $subject;
+    return $subject;
 }
 
 /**
@@ -29,11 +29,11 @@ function mb_ucfirst( string $subject ) : string
  */
 function mb_lcfirst( string $subject ) : string
 {
-  if ( mb_strlen($subject) ) {
-    $subject = ( mb_strtolower(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
-  }
+    if ( mb_strlen($subject) ) {
+        $subject = ( mb_strtolower(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
+    }
 
-  return $subject;
+    return $subject;
 }
 
 /**

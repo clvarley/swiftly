@@ -12,16 +12,16 @@ use \Swiftly\Config\Config;
 Interface ApplicationInterface
 {
 
-  /**
-   * Setup our app using the configuration provided
-   *
-   * @param Config $config Configuration object
-   */
-  public function __construct( Config $config );
+    /**
+     * Setup our app using the configuration provided
+     *
+     * @param Config $config Configuration object
+     */
+    public function __construct( Config $config );
 
-  /**
-   * Start the application
-   */
-  public function start() : void;
+    /**
+     * Start the application
+     */
+    public function start() : void;
 
 }

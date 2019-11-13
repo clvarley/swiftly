@@ -10,68 +10,67 @@ namespace Swiftly\Services;
 Final Class Manager
 {
 
-  /**
-   * @var Manager $instance Service manager (this)
-   */
-  private static $instance = null;
+    /**
+     * @var Manager $instance Service manager (this)
+     */
+    private static $instance = null;
 
-  /**
-   * @var object[] $services Array of service
-   */
-  private $services = [];
+    /**
+     * @var object[] $services Array of service
+     */
+    private $services = [];
 
-  /**
-   * Service manager is created using {@see Manager::getInstance()}
-   */
-  protected function __construct()
-  {
-    // Singleton
-  }
-
-  /**
-   * Get instance of service manager
-   *
-   * @return Manager Service manager
-   */
-  public static function getInstance() : Manager
-  {
-    if ( is_null(self::$instance) ) {
-      self::$instance = new Manager();
+    /**
+     * Service manager is created using {@see Manager::getInstance()}
+     */
+    protected function __construct()
+    {
+        // Singleton
     }
 
-    return self::$instance;
-  }
+    /**
+     * Get instance of service manager
+     *
+     * @return Manager Service manager
+     */
+    public static function getInstance() : Manager
+    {
+        if ( is_null(self::$instance) ) {
+            self::$instance = new Manager();
+        }
 
-  /**
-   * Register a service with the manager
-   *
-   * @param string $name    Service name
-   * @param object $service Service object
-   */
-  public function registerService( string $name, /* object */ $service ) : void
-  {
-    $this->services[mb_strtolower($name)] = $service;
-  }
+        return self::$instance;
+    }
 
-  /**
-   * Unregister a service with the manager
-   *
-   * @param string $name Service name
-   */
-  public function removeService( string $name ) : void
-  {
-    unset( $this->services[mb_strtolower($name)] );
-  }
+    /**
+     * Register a service with the manager
+     *
+     * @param string $name    Service name
+     * @param object $service Service object
+     */
+    public function registerService( string $name, /* object */ $service ) : void
+    {
+        $this->services[mb_strtolower($name)] = $service;
+    }
 
-  /**
-   * Get a service from the manager
-   *
-   * @param string $name Service name
-   * @return object|null Service [Or null]
-   */
-  public function getService( string $name ) // : ?object
-  {
-    return ( $this->services[mb_strtolower($name)] ?? null );
-  }
+    /**
+     * Unregister a service with the manager
+     *
+     * @param string $name Service name
+     */
+    public function removeService( string $name ) : void
+    {
+        unset( $this->services[mb_strtolower($name)] );
+    }
 
+    /**
+     * Get a service from the manager
+     *
+     * @param string $name Service name
+     * @return object|null Service [Or null]
+     */
+    public function getService( string $name ) // : ?object
+    {
+        return ( $this->services[mb_strtolower($name)] ?? null );
+    }
 }
