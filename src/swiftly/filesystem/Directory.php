@@ -29,7 +29,7 @@ Class Directory Extends AbstractPathable
         if ( is_dir( $dirpath ) ) {
 
             $this->path = $dirpath;
-            $this->contents = array_flip(array_diff(scandir($this->path, null) ?: [], ['.', '..']));
+            $this->contents = array_flip( array_diff( scandir( $this->path, null ) ?: [], ['.', '..'] ) );
 
         }
     }
@@ -48,9 +48,9 @@ Class Directory Extends AbstractPathable
         if ( $full_path ) {
             return array_map( function( $path ) {
                 return $this->path . '/' . $path;
-            }, array_keys($this->contents) );
+            }, array_keys( $this->contents ) );
         } else {
-            return array_keys($this->contents);
+            return array_keys( $this->contents );
         }
     }
 
@@ -62,7 +62,7 @@ Class Directory Extends AbstractPathable
     public function getContents() : array
     {
         foreach ( $this->contents as $index => $value ) {
-            if ( !is_object($value) ) {
+            if ( !is_object( $value ) ) {
                 $this->contents[$index] = $this->getType( $index );
             }
         }
@@ -113,8 +113,8 @@ Class Directory Extends AbstractPathable
      */
     public function getChild( string $name ) : ?AbstractPathable
     {
-        if ( array_key_exists($name, $this->contents) ) {
-            return ( is_object($this->contents[$name]) ? $this->contents[$name] : $this->getType($name) );
+        if ( array_key_exists( $name, $this->contents ) ) {
+            return ( is_object( $this->contents[$name] ) ? $this->contents[$name] : $this->getType( $name ) );
         } else {
             return null;
         }
@@ -127,7 +127,7 @@ Class Directory Extends AbstractPathable
      */
     public function getParent() : ?Directory
     {
-        return ( is_dir($parent = dirname($this->path)) ? new Directory( $parent ) : null );
+        return ( is_dir( $parent = dirname( $this->path ) ) ? new Directory( $parent ) : null );
     }
 
     /**
@@ -137,7 +137,7 @@ Class Directory Extends AbstractPathable
      */
     public function update() : void
     {
-        $this->rawcontents = array_flip(array_diff(scandir($this->path, null) ?: [], ['.', '..']));
+        $this->rawcontents = array_flip( array_diff( scandir($this->path, null ) ?: [], ['.', '..'] ) );
 
         return;
     }
@@ -153,10 +153,10 @@ Class Directory Extends AbstractPathable
     {
         $files = [];
 
-        if ( is_string($directory) ) {
+        if ( is_string( $directory ) ) {
             $directory = new Directory( $directory );
         } elseif ( !is_a( $directory, 'Swiftly\Filesystem\Directory' ) ) {
-            throw new \InvalidArgumentException("getFilesRecursive() only accepts a string or Filesystem\Directory object", 1);
+            throw new \InvalidArgumentException( "getFilesRecursive() only accepts a string or Filesystem\Directory object", 1 );
         }
 
         foreach( $directory->getContents() as $file_or_dir ) {
@@ -178,10 +178,10 @@ Class Directory Extends AbstractPathable
      */
     private function getType( string $relative_path ) : AbstractPathable
     {
-        if ( is_dir($real_path = ($this->path . '/' . $relative_path)) ) {
-            return ( new Directory($real_path) );
+        if ( is_dir( $real_path = ($this->path . '/' . $relative_path) ) ) {
+            return ( new Directory( $real_path ) );
         } else {
-            return ( new File($real_path) );
+            return ( new File( $real_path ) );
         }
     }
 }

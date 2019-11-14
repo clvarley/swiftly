@@ -27,7 +27,7 @@ Class Connection
     {
         // TODO
 
-        socket_create(AF_INET);
+        socket_create( AF_INET );
 
     }
 

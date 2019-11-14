@@ -47,21 +47,21 @@ Class Web Implements ApplicationInterface
     {
 
         // Get the router
-        if ( is_file(APP_CONFIG . 'routes.json') ) {
+        if ( is_file( APP_CONFIG . 'routes.json' ) ) {
             $router = Router::fromJson( APP_CONFIG . 'routes.json' );
         } else {
             $router = new Router();
         }
 
-        $request = $this->services->getService('request');
+        $request = $this->services->getService( 'request' );
 
-        $action = $router->get( $route = $request->query->asString('_route_') );
+        $action = $router->get( $route = $request->query->asString( '_route_' ) );
 
         // Get the response object
-        $response = $this->services->getService('response');
+        $response = $this->services->getService( 'response' );
 
         // Did we return a callable route?
-        if ( is_null($action) ) {
+        if ( is_null( $action ) ) {
 
             $response->setStatus( 404 );
 

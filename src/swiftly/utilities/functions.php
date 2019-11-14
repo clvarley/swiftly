@@ -14,8 +14,8 @@
  */
 function mb_ucfirst( string $subject ) : string
 {
-    if ( mb_strlen($subject) ) {
-        $subject = ( mb_strtoupper(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
+    if ( mb_strlen( $subject ) ) {
+        $subject = ( mb_strtoupper( mb_substr( $subject, 0, 1 ) ) . mb_substr( $subject, 1 ) );
     }
 
     return $subject;
@@ -29,8 +29,8 @@ function mb_ucfirst( string $subject ) : string
  */
 function mb_lcfirst( string $subject ) : string
 {
-    if ( mb_strlen($subject) ) {
-        $subject = ( mb_strtolower(mb_substr($subject, 0, 1)) . mb_substr($subject, 1) );
+    if ( mb_strlen( $subject ) ) {
+        $subject = ( mb_strtolower( mb_substr( $subject, 0, 1 ) ) . mb_substr( $subject, 1 ) );
     }
 
     return $subject;
@@ -58,23 +58,23 @@ function format_bytes( int $bytes ) : string
 
     switch ( $iterations ) {
         case 0:
-            $formatted = sprintf('%.2f %s', $bytes, 'tb');
+            $formatted = sprintf( '%.2f %s', $bytes, 'tb' );
         break;
 
         case 1:
-            $formatted = sprintf('%.2f %s', $bytes, 'gb');
+            $formatted = sprintf( '%.2f %s', $bytes, 'gb' );
         break;
 
         case 2:
-            $formatted = sprintf('%.2f %s', $bytes, 'mb');
+            $formatted = sprintf( '%.2f %s', $bytes, 'mb' );
         break;
 
         case 3:
-            $formatted = sprintf('%.2f %s', $bytes, 'kb');
+            $formatted = sprintf( '%.2f %s', $bytes, 'kb' );
         break;
 
         case 4:
-            $formatted = sprintf('%d %s', $bytes, 'b');
+            $formatted = sprintf( '%d %s', $bytes, 'b' );
         break;
     }
 

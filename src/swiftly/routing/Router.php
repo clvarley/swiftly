@@ -35,16 +35,16 @@ Class Router
     {
         $values = [];
 
-        if ( is_file($filepath) && ( $values = file_get_contents($filepath) ) !== false ) {
+        if ( is_file( $filepath ) && ( $values = file_get_contents( $filepath ) ) !== false ) {
 
-            $values = json_decode($values, true);
+            $values = json_decode( $values, true );
 
             if ( json_last_error() !== JSON_ERROR_NONE ) {
                 $values = [];
             }
         }
 
-        return ( new Router($values) );
+        return ( new Router( $values ) );
     }
 
     /**
@@ -56,36 +56,36 @@ Class Router
     public function get( string $route ) : ?callable
     {
 
-        $route = mb_strtolower(trim($route));
+        $route = mb_strtolower( trim( $route ) );
 
-        $route = rtrim($route, "/\\");
+        $route = rtrim( $route, "/\\" );
 
         $controller = '';
 
         // Get the controller name
-        if ( isset($this->routes[$route]) ) {
+        if ( isset( $this->routes[$route] ) ) {
             $controller = $this->routes[$route];
-        } elseif ( empty($route) && isset($this->routes['/']) ) {
+        } elseif ( empty( $route ) && isset( $this->routes['/'] ) ) {
             $controller = $this->routes['/'];
         }
 
         $action = null;
 
         // If there's a controller name
-        if ( !empty($controller) ) {
+        if ( !empty( $controller ) ) {
 
-            $parts = explode('::', $controller);
+            $parts = explode( '::', $controller );
 
             // If no method is specified, assume `index()`
-            if ( !isset($parts[1]) ) {
+            if ( !isset( $parts[1] ) ) {
                 $parts[1] = 'index';
             }
 
-            if ( is_file(APP_APP . $parts[0] . '.php') ) {
+            if ( is_file( APP_APP . $parts[0] . '.php' ) ) {
 
-                include( APP_APP ) . $parts[0] . '.php';
+                include( APP_APP . $parts[0] . '.php' );
 
-                if ( class_exists($parts[0]) && method_exists($parts[0], $parts[1]) ) {
+                if ( class_exists( $parts[0] ) && method_exists( $parts[0], $parts[1] ) ) {
                     $action = [ $parts[0], $parts[1] ];
                 }
             }

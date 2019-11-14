@@ -33,7 +33,7 @@ Class Config
      */
     public function hasValue( string $setting ) : bool
     {
-        return array_key_exists(mb_strtolower($setting), $this->settings);
+        return array_key_exists( mb_strtolower( $setting ), $this->settings) ;
     }
 
     /**
@@ -44,7 +44,7 @@ Class Config
      */
     public function getValue( string $setting ) // : mixed
     {
-        return ( isset($this->settings[mb_strtolower($setting)]) ? $this->settings[mb_strtolower($setting)] : null );
+        return ( isset($this->settings[mb_strtolower( $setting )]) ? $this->settings[mb_strtolower( $setting )] : null );
     }
 
     /**
@@ -59,15 +59,15 @@ Class Config
     {
         $values = [];
 
-        if ( is_file($filepath) && ( $values = file_get_contents($filepath) ) !== false ) {
+        if ( is_file( $filepath ) && ( $values = file_get_contents( $filepath ) ) !== false ) {
 
-            $values = json_decode($values, true);
+            $values = json_decode( $values, true );
 
             if ( json_last_error() !== JSON_ERROR_NONE ) {
                 $values = [];
             }
         }
 
-        return ( new Config($values) );
+        return ( new Config( $values ) );
     }
 }

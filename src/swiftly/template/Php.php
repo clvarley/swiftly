@@ -24,7 +24,7 @@ Class Php Implements TemplateInterface
 
         $this->data = $data;
 
-        if ( is_file(APP_VIEW . $template . '.html.php') && is_readable(APP_VIEW . $template . '.html.php') ) {
+        if ( is_file( APP_VIEW . $template . '.html.php' ) && is_readable( APP_VIEW . $template . '.html.php' ) ) {
             ob_start();
             include APP_VIEW . $template . '.html.php';
             $result = ob_get_contents();
@@ -42,7 +42,7 @@ Class Php Implements TemplateInterface
      */
     public function __get( string $name )
     {
-        return ( isset($this->data[$name]) ? $this->data[$name] : '' );
+        return ( isset( $this->data[$name] ) ? $this->data[$name] : '' );
     }
 
     /**
@@ -53,6 +53,6 @@ Class Php Implements TemplateInterface
      */
     public function __isset( string $name )
     {
-        return ( isset($this->data[$name]) );
+        return ( isset( $this->data[$name] ) );
     }
 }

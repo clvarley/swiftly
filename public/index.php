@@ -20,7 +20,7 @@ require_once '../definitions.php';
 
 
 // Make sure we are running a compatable PHP version
-if ( defined('SWIFTLY_MIN_PHP') && version_compare( PHP_VERSION, SWIFTLY_MIN_PHP ) < 0 ) {
+if ( defined( 'SWIFTLY_MIN_PHP' ) && version_compare( PHP_VERSION, SWIFTLY_MIN_PHP ) < 0 ) {
     exit( 'Swiftly requires PHP version ' . SWIFTLY_MIN_PHP . ' or above to run!' );
 }
 
@@ -32,8 +32,8 @@ require_once APP_SWIFTLY . 'utilities/Autoloader.php';
 
 // Get the autoloader
 $autoloader = new Autoloader();
-$autoloader->addPrefix('*', APP_APP);
-$autoloader->addPrefix('Swiftly', APP_SWIFTLY);
+$autoloader->addPrefix( '*', APP_APP );
+$autoloader->addPrefix( 'Swiftly', APP_SWIFTLY );
 
 
 // Load the config
@@ -41,14 +41,14 @@ $config = Swiftly\Config\Config::fromJson( APP_CONFIG . 'app.json' );
 
 
 // Set the encoding
-if ( $config->hasValue('encoding') ) {
-    mb_internal_encoding( $config->getValue('encoding') );
-    mb_http_output( $config->getValue('encoding') );
+if ( $config->hasValue( 'encoding' ) ) {
+    mb_internal_encoding( $config->getValue( 'encoding' ) );
+    mb_http_output( $config->getValue( 'encoding' ) );
 }
 
 
 // Are we in development mode?
-switch ( (string)$config->getValue('environment') )
+switch ( (string)$config->getValue( 'environment' ) )
 {
     case 'development':
     case 'dev':
@@ -62,13 +62,13 @@ switch ( (string)$config->getValue('environment') )
 
 
 // Does the developer want to see E_STRICT errors?
-if ( $config->hasValue('strict') && (bool)$config->getValue('strict') ) {
+if ( $config->hasValue( 'strict' ) && (bool)$config->getValue( 'strict' ) ) {
     $error_level = $error_level | E_STRICT;
 }
 
 
 // Display developer defined errors & warnings?
-if ( $config->hasValue('warnings') && (bool)$config->getValue('warnings') ) {
+if ( $config->hasValue( 'warnings' ) && (bool)$config->getValue( 'warnings' ) ) {
     $error_level = $error_level | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
 }
 
@@ -78,7 +78,7 @@ error_reporting( $error_level );
 
 
 // Start!
-if ( defined('PHP_SAPI') && PHP_SAPI === 'cli' ) {
+if ( defined( 'PHP_SAPI' ) && PHP_SAPI === 'cli' ) {
     ( new Swiftly\Application\Console( $config ) )->start();
 } else {
     ( new Swiftly\Application\Web( $config ) )->start();

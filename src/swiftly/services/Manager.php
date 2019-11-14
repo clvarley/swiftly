@@ -35,7 +35,7 @@ Final Class Manager
      */
     public static function getInstance() : Manager
     {
-        if ( is_null(self::$instance) ) {
+        if ( is_null( self::$instance ) ) {
             self::$instance = new Manager();
         }
 
@@ -50,7 +50,7 @@ Final Class Manager
      */
     public function registerService( string $name, /* object */ $service ) : void
     {
-        $this->services[mb_strtolower($name)] = $service;
+        $this->services[mb_strtolower( $name )] = $service;
     }
 
     /**
@@ -60,7 +60,7 @@ Final Class Manager
      */
     public function removeService( string $name ) : void
     {
-        unset( $this->services[mb_strtolower($name)] );
+        unset( $this->services[mb_strtolower( $name )] );
     }
 
     /**
@@ -71,6 +71,6 @@ Final Class Manager
      */
     public function getService( string $name ) // : ?object
     {
-        return ( $this->services[mb_strtolower($name)] ?? null );
+        return ( $this->services[mb_strtolower( $name )] ?? null );
     }
 }
