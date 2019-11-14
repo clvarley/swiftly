@@ -75,7 +75,7 @@ Class Request
      */
     public function __destruct()
     {
-        if ( !is_null($this->handle) ) {
+        if ( !is_null( $this->handle ) ) {
             curl_close( $this->handle );
         }
     }
@@ -132,7 +132,7 @@ Class Request
         curl_setopt( $this->handle, CURLOPT_POST, true );
         curl_setopt( $this->handle, CURLOPT_POSTFIELDS, $this->body );
         curl_setopt( $this->handle, CURLOPT_HTTPHEADER, array_merge( $this->headers, [
-            'Content-Length: ' . strlen($this->body)
+            'Content-Length: ' . strlen( $this->body )
         ]));
 
         $response = curl_exec( $this->handle );
@@ -191,7 +191,7 @@ Class Request
      */
     protected function prepare() : bool
     {
-        if ( is_null($this->handle) ) {
+        if ( is_null( $this->handle ) ) {
 
             $this->handle = curl_init();
 
@@ -202,7 +202,7 @@ Class Request
                 curl_setopt( $this->handle, CURLOPT_RETURNTRANSFER, true );
                 curl_setopt( $this->handle, CURLOPT_HEADERFUNCTION, [ $this, '_parseHeaders' ] );
 
-                if ( !empty($this->headers) ) {
+                if ( !empty( $this->headers ) ) {
 
                     curl_setopt( $this->handle, CURLOPT_HTTPHEADER, $this->headers );
 

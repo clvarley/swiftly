@@ -43,7 +43,7 @@ Class Response
         $this->body = $body;
         $this->headers = $this->_parseHeaders( $headers );
 
-        if ( isset($this->headers['content-type']) ) {
+        if ( isset( $this->headers['content-type'] ) ) {
             $this->content_type = $this->headers['content-type'][0];
         }
     }
@@ -134,25 +134,25 @@ Class Response
 
         foreach ( $headers as $index => $value ) {
 
-            if ( empty($index) ) continue;
+            if ( empty( $index ) ) continue;
 
             // $index = mb_strtolower($index);
 
-            if ( is_string($index) && is_array($headers) ) {
+            if ( is_string( $index ) && is_array( $headers ) ) {
 
-                $return_headers[mb_strtolower($index)] = $value;
+                $return_headers[mb_strtolower( $index )] = $value;
 
-            } elseif ( is_string($index) && is_string($value) ) {
+            } elseif ( is_string( $index ) && is_string( $value ) ) {
 
-                $return_headers[mb_strtolower($index)][] = $value;
+                $return_headers[mb_strtolower( $index )][] = $value;
 
-            } elseif ( is_numeric($index) && is_array($value) ) {
+            } elseif ( is_numeric( $index ) && is_array( $value ) ) {
 
-                $header_name = isset($value[0]) ? trim($value[0]) : null;
-                $header_value = isset($value[1]) ? trim($value[1]) : '';
+                $header_name = isset( $value[0] ) ? trim( $value[0] ) : null;
+                $header_value = isset( $value[1] ) ? trim( $value[1] ) : '';
 
-                if ( is_string($header_name) && !empty($header_name) && is_scalar($header_value) ) {
-                    $return_headers[mb_strtolower($header_name)][] = $header_value;
+                if ( is_string( $header_name ) && !empty( $header_name ) && is_scalar( $header_value ) ) {
+                    $return_headers[mb_strtolower( $header_name )][] = $header_value;
                 }
             }
         }

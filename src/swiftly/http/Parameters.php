@@ -33,7 +33,7 @@ Class Parameters
      */
     public function has( string $name ) : bool
     {
-        return ( isset($this->data[$name]) );
+        return ( isset( $this->data[$name] ) );
     }
 
     /**
@@ -44,7 +44,7 @@ Class Parameters
      */
     public function get( string $name ) // : mixed
     {
-        return ( isset($this->data[$name]) ? $this->data[$name] : '' );
+        return ( isset( $this->data[$name] ) ? $this->data[$name] : '' );
     }
 
     /**
@@ -66,7 +66,7 @@ Class Parameters
      */
     public function isString( string $name ) : bool
     {
-        return ( isset($this->data[$name]) && is_scalar($this->data[$name]) );
+        return ( isset( $this->data[$name] ) && is_scalar( $this->data[$name] ) );
     }
 
     /**
@@ -77,7 +77,7 @@ Class Parameters
      */
     public function isNumeric( string $name ) : bool
     {
-        return ( isset($this->data[$name]) && is_numeric($this->data[$name]) );
+        return ( isset( $this->data[$name] ) && is_numeric( $this->data[$name] ) );
     }
 
     /**
@@ -88,7 +88,7 @@ Class Parameters
      */
     public function isArray( string $name ) : bool
     {
-        return ( isset($this->data[$name]) && is_array($this->data[$name]) );
+        return ( isset( $this->data[$name] ) && is_array( $this->data[$name] ) );
     }
 
     /**
@@ -99,7 +99,7 @@ Class Parameters
      */
     public function asString( string $name ) : string
     {
-        return ( isset($this->data[$name]) && is_scalar($this->data[$name]) ? (string)$this->data[$name] : '' );
+        return ( isset( $this->data[$name] ) && is_scalar( $this->data[$name] ) ? (string)$this->data[$name] : '' );
     }
 
     /**
@@ -110,7 +110,7 @@ Class Parameters
      */
     public function asInteger( string $name ) : int
     {
-        return ( isset($this->data[$name]) && is_numeric($this->data[$name]) ? (int)$this->data[$name] : 0 );
+        return ( isset( $this->data[$name] ) && is_numeric( $this->data[$name] ) ? (int)$this->data[$name] : 0 );
     }
 
     /**
@@ -121,6 +121,6 @@ Class Parameters
      */
     public function asArray( string $name ) : array
     {
-        return ( isset($this->data[$name]) && is_array($this->data[$name]) ? $this->data[$name] : [] );
+        return ( isset( $this->data[$name] ) && is_array( $this->data[$name] ) ? $this->data[$name] : [] );
     }
 }

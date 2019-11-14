@@ -81,7 +81,7 @@ Class Response
      */
     public function redirect( string $location, int $status = 303 ) : void
     {
-        header('Location:' . $location, true, $status);
+        header( 'Location:' . $location, true, $status );
         exit;
     }
 
@@ -100,7 +100,7 @@ Class Response
             }
         }
 
-        if ( !empty($this->body) ) {
+        if ( !empty( $this->body ) ) {
             echo $this->body;
         }
 
