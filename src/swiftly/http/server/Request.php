@@ -43,6 +43,11 @@ Class Request
     private $body = '';
 
     /**
+     * @var string $read Had the payload been read
+     */
+    private $read = false;
+
+    /**
      * @var array HTTP_METHODS Allowed HTTP methods
      */
     public const HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'UPDATE', 'OPTIONS', 'TRACE'];
@@ -75,13 +80,23 @@ Class Request
      */
     protected function setMethod( string $method ) : void
     {
-        if ( in_array( mb_strtoupper($method), self::HTTP_METHODS ) ) {
-            $this->method = mb_strtoupper( $method );
+        if ( in_array(( $method = mb_strtoupper( $method ) ), self::HTTP_METHODS ) ) {
+            $this->method = $method;
         } else {
             $this->method = 'GET';
         }
 
         return;
+    }
+
+    /**
+     * Gets the HTTP method of this request
+     *
+     * @return string HTTP method
+     */
+    public function getMethod() : string
+    {
+        return $this->method;
     }
 
     /**
@@ -95,6 +110,16 @@ Class Request
     }
 
     /**
+     * Get the url for this request
+     *
+     * @return string Requested url
+     */
+    public function getUrl() : string
+    {
+        return $this->url;
+    }
+
+    /**
      * Set the HTTP headers of this request
      *
      * @param array $headers HTTP headers
@@ -102,10 +127,21 @@ Class Request
     protected function setHeaders( array $headers ) : void
     {
         foreach ( $headers as $header_name => $header_value ) {
-            $this->headers->addHeader($header_name, $header_value);
+            $this->headers->addHeader( $header_name, $header_value );
         }
 
         return;
+    }
+
+    /**
+     * Gets the value of a HTTP header
+     *
+     * @param string $name  Header name
+     * @return string       Header value [Or empty]
+     */
+    public function getHeader( string $name ) : string
+    {
+        return ( $this->headers->getHeader( $name ) ?? '' );
     }
 
     /**
@@ -145,13 +181,20 @@ Class Request
     }
 
     /**
-     * Get the url for this request
+     * Gets the body/payload of this request
      *
-     *@return string Requested url
+     * Delays fetching of the payload until it is required
+     *
+     * @return string Body
      */
-    public function getUrl() : string
+    public function getBody() : string
     {
-        return $this->url;
+        if ( $this->read && $this->method === 'POST' && empty( $this->body ) ) {
+            $this->body = file_get_contents( 'php://input' );
+            $this->read = true;
+        }
+
+        return $this->body;
     }
 
     /**
@@ -174,7 +217,7 @@ Class Request
 
         foreach ( $_SERVER as $name => $value ) {
             if ( mb_strpos($name, 'HTTP_') === 0 ) {
-                $request->headers->addHeader( mb_substr($name, 5), $value );
+                $request->headers->addHeader( mb_substr( $name, 5 ), $value );
             }
         }
 
