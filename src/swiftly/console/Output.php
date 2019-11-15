@@ -30,12 +30,4 @@ Class Output
         echo $output . PHP_EOL;
     }
 
-    /**
-     * Clears the display
-     */
-    public static function clear() : void
-    {
-        readline_redisplay();
-    }
-
 }
