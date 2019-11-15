@@ -15,7 +15,7 @@ Class Output
      *
      * @param string $output Output
      */
-    public static function write( string $output ) : void
+    public function write( string $output ) : void
     {
         echo $out;
     }
@@ -25,7 +25,7 @@ Class Output
      *
      * @param string $output Output
      */
-    public static function writeLine( string $output ) : void
+    public function writeLine( string $output = '' ) : void
     {
         echo $output . PHP_EOL;
     }

@@ -3,6 +3,8 @@
 namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
+use \Swiftly\Services\Manager;
+use \Swiftly\Console\{ Input, Output, Arguments };
 
 /**
  * The front controller for our console app
@@ -18,6 +20,11 @@ Class Console Implements ApplicationInterface
     private $config = null;
 
     /**
+     * @var Manager $services Service manager
+     */
+    private $services = null;
+
+    /**
      * Create our application
      *
      * @param Config $config Configuration values
@@ -25,15 +32,26 @@ Class Console Implements ApplicationInterface
     public function __construct( Config $config )
     {
         $this->config = $config;
+
+        $this->services = Manager::getInstance();
+        $this->services->registerService( 'console', new Output() );
+        $this->services->registerService( 'input', new Input() );
+        $this->services->registerService( 'args', Arguments::fromGlobals() );
     }
 
     /**
      * Start our app
-     *
-     * TODO: Implement console bootstrap
      */
     public function start() : void
     {
+
+        // Get the router
+        if ( is_file( APP_CONFIG . 'routes.json' ) ) {
+            $router = Router::fromJson( APP_CONFIG . 'routes.json' );
+        } else {
+            $router = new Router();
+        }
+
         return;
     }
 

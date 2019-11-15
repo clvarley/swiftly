@@ -16,7 +16,7 @@ Class Input
      * @param string $prompt  The prompt message
      * @return string         User response
      */
-    public static function prompt( string $prompt ) : string
+    public function prompt( string $prompt ) : string
     {
         $input = readline( $prompt );
 
@@ -31,7 +31,7 @@ Class Input
      * @param string $no      Value of denial
      * @return bool           User confirmed
      */
-    public static function confirm( string $prompt, string $yes = 'Y', string $no = 'N' ) : bool
+    public function confirm( string $prompt, string $yes = 'Y', string $no = 'N' ) : bool
     {
         $confirm = false;
 
@@ -41,7 +41,7 @@ Class Input
 
         // Loop until user picks one
         while ( true ) {
-            $input = trim( mb_strtoupper( readline( $prompt . " [$yes/$no]" ) ) );
+            $input = trim( mb_strtoupper( readline( $prompt . " [$yes/$no] " ) ) );
 
             if ( $input === $yes ) {
                 $confirm = true;
