@@ -1,6 +1,6 @@
 <?php
 
-namespace Swiftly\Console\Output;
+namespace Swiftly\Console;
 
 /**
  * Provides utility methods for dealing with console output
