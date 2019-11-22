@@ -4,7 +4,7 @@ namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
 use \Swiftly\Services\Manager;
-use \Swiftly\Console\{ Input, Output, Arguments };
+use \Swiftly\Console\{ Input, Output, Command };
 
 /**
  * The front controller for our console app
@@ -34,9 +34,9 @@ Class Console Implements ApplicationInterface
         $this->config = $config;
 
         $this->services = Manager::getInstance();
-        $this->services->registerService( 'console', new Output() );
+        $this->services->registerService( 'output', new Output() );
         $this->services->registerService( 'input', new Input() );
-        $this->services->registerService( 'args', Arguments::fromGlobals() );
+        $this->services->registerService( 'command', new Command() );
     }
 
     /**

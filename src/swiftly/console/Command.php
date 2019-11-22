@@ -7,7 +7,7 @@ namespace Swiftly\Console;
  *
  * @author C Varley <cvarley@highorbit.co.uk>
  */
-Class Arguments
+Class Command
 {
 
     /**
@@ -16,20 +16,6 @@ Class Arguments
     public function __construct()
     {
         // TODO
-    }
-
-    /**
-     * Create a new console arguments object
-     *
-     * @static
-     *
-     * @return Arguments CLI arguments
-     */
-    public static function fromGlobals() : Arguments
-    {
-        // TODO
-
-        return ( new Arguments() );
     }
 
 }
