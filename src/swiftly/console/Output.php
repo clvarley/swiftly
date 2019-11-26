@@ -90,8 +90,8 @@ Class Output
     /**
      * Outputs to the console
      *
-     * @param string $output Output
-     * @return Output Chainable
+     * @param string $output  Output
+     * @return Output         Chainable
      */
     public function write( string $output ) : Output
     {
@@ -103,14 +103,59 @@ Class Output
     /**
      * Outputs to the console with a newline
      *
-     * @param string $output Output
-     * @return Output Chainable
+     * @param string $output  Output
+     * @return Output         Chainable
      */
     public function writeLine( string $output = '' ) : Output
     {
         echo $output . PHP_EOL;
 
         return $this;
+    }
+
+    /**
+     * Outputs a warning to the console followed by a newline
+     *
+     * @param string $output  Output
+     * @return Output         Chainable
+     */
+    public function warn( string $output = '' ) : Output
+    {
+        $this->toYellow();
+
+        $this->writeLine( $output );
+
+        return $this->reset();
+    }
+
+    /**
+     * Outputs an error to the console followed by a newline
+     *
+     * @param string $output  Output
+     * @return Output         Chainable
+     */
+    public function error( string $output = '' ) : Output
+    {
+        $this->toRed();
+
+        $this->writeLine( $output );
+
+        return $this->reset();
+    }
+
+    /**
+     * Outputs a success message to the console followed by a newline
+     *
+     * @param string $output  Output
+     * @return Output         Chainable
+     */
+    public function success( string $output = '' ) : Output
+    {
+        $this->toGreen();
+
+        $this->writeLine( $output );
+
+        return $this->reset();
     }
 
     /**
