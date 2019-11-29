@@ -95,7 +95,7 @@ Class Output
      */
     public function write( string $output ) : Output
     {
-        echo $out;
+        echo $output;
 
         return $this;
     }
