@@ -82,6 +82,9 @@ Class Console Implements ApplicationInterface
 
             $controller = new $controller( $this->services );
 
+            // Make sure quiting stops the program
+            ignore_user_abort( false );
+
             // Call the method
             $controller->{$method}();
 

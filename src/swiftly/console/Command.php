@@ -32,6 +32,13 @@ Class Command
     private $arguments = [];
 
     /**
+     * The working directory of this command
+     *
+     * @var array $directory Working directory
+     */
+    private $directory = '';
+
+    /**
      * Create a new arguments object
      *
      * @param string $name      Command name
@@ -54,7 +61,36 @@ Class Command
      */
     public static function fromGlobals() : Command
     {
+        // Set the global CLI arguments
+        global $argv;
+
+        $name = '';
+        $args = [];
+
+        // Attempt to get the command name
+        if ( isset( $argv ) && isset( $argv[0] ) ) {
+
+            // First arg will sometimes be the Swiftly core file
+            if ( is_file( $argv[0] ) && mb_substr( $argv[0], -16 ) === 'public/index.php' ) {
+
+                $name = ( isset( $argv[1] ) ? $argv[1] : '' );
+
+            } else {
+
+                $name = $argv[0];
+
+            }
+
+            $args = array_slice( $args, 1 );
+
+        }
+
         $command = new Command();
+
+        // Set the values
+        $command->setName( $name );
+        $command->setArguments( $args );
+        $command->setDirectory( getcwd() );
 
         return $command;
     }
@@ -125,6 +161,31 @@ Class Command
     }
 
     /**
+     * Checks to see if an option is set
+     *
+     * @param string $name  Option name
+     * @return bool         Exists?
+     */
+    public function hasOption( string $name ) : bool
+    {
+        return ( array_key_exists( $name, $this->options ) );
+    }
+
+    /**
+     * Checks to see if the given flag is set
+     *
+     * Alias for the hasOption method
+     *
+     * @uses Command::hasOption
+     * @param string $name  Flag name
+     * @return bool         Exists
+     */
+    public function hasFlag( string $name ) : bool
+    {
+        return $this->hasOption( $name );
+    }
+
+    /**
      * Gets the first argument of the command
      *
      * @return string First argument
@@ -164,6 +225,26 @@ Class Command
     protected function setArguments( array $arguments ) : void
     {
         $this->arguments = $arguments;
+    }
+
+    /**
+     * Gets the current working directory of this command
+     *
+     * @return string Working directory
+     */
+    public function getDirectory() : string
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Sets the current working directory of this command
+     *
+     * @param string $directory Working directory
+     */
+    protected function setDirectory( string $directory ) : void
+    {
+        $this->directory = ( is_dir( $directory ) ? $directory : $this->directory );
     }
 
 }
