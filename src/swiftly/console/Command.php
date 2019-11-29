@@ -46,6 +46,20 @@ Class Command
     }
 
     /**
+     * Creates a new command object from PHP/CLI variables
+     *
+     * @static
+     *
+     * @return Command Command object
+     */
+    public static function fromGlobals() : Command
+    {
+        $command = new Command();
+
+        return $command;
+    }
+
+    /**
      * Returns the name of this command
      *
      * @return string Command name

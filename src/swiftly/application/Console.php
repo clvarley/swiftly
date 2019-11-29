@@ -5,6 +5,7 @@ namespace Swiftly\Application;
 use \Swiftly\Config\Config;
 use \Swiftly\Services\Manager;
 use \Swiftly\Console\{ Input, Output, Command };
+use \Swiftly\Routing\Router;
 
 /**
  * The front controller for our console app
@@ -36,7 +37,7 @@ Class Console Implements ApplicationInterface
         $this->services = Manager::getInstance();
         $this->services->registerService( 'output', new Output() );
         $this->services->registerService( 'input', new Input() );
-        $this->services->registerService( 'command', new Command() );
+        $this->services->registerService( 'command', Command::fromGlobals() );
     }
 
     /**
@@ -46,12 +47,47 @@ Class Console Implements ApplicationInterface
     {
 
         // Get the router
-        if ( is_file( APP_CONFIG . 'routes.json' ) ) {
-            $router = Router::fromJson( APP_CONFIG . 'routes.json' );
+        if ( is_file( APP_CONFIG . 'commands.json' ) ) {
+            $router = Router::fromJson( APP_CONFIG . 'commands.json' );
         } else {
             $router = new Router();
         }
 
+        $incoming = $this->services->getService( 'command' );
+
+        $command_name = $incoming->getName();
+
+        $action = $router->get( $command_name );
+
+        // Did we return a callable action?
+        if ( is_null( $action ) ) {
+
+            $cli = $this->services->getService( 'output' );
+
+            // Alert the user!
+            $cli->toRed()
+                ->write( 'Swiftly Error: ' )
+                ->reset()
+                ->writeLine( sprintf(
+                    'Could not find a handler for command \'%s\'',
+                    $command_name
+                ));
+
+            // Quit with error!
+            exit( 1 );
+
+        } else {
+
+            list( $controller, $method ) = $action;
+
+            $controller = new $controller( $this->services );
+
+            // Call the method
+            $controller->{$method}();
+
+        }
+
+        // NOTE: Controllers should exit with their own status code!
         return;
     }
 
