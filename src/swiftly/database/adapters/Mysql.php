@@ -22,9 +22,9 @@ Class Mysql Implements AdapterInterface
     /**
      * Results of last query
      *
-     * @var array $results Query results
+     * @var \mysqli_result $results Query results
      */
-    private $results = [];
+    private $results = null;
 
     /**
      * Opens a connection to the MySQL database
@@ -33,9 +33,16 @@ Class Mysql Implements AdapterInterface
      */
     public function open() : bool
     {
-        $this->handle = new mysqli();
+        $this->handle = new \mysqli();
 
-        return true;
+        $status = true;
+
+        // Check for connection error
+        if ( $this->handle->connect_errno !== 0 ) {
+            $status = false;
+        }
+
+        return $status;
     }
 
     /**
@@ -46,7 +53,30 @@ Class Mysql Implements AdapterInterface
      */
     public function query( string $query ) : bool
     {
-        return true;
+        $result = $this->handle->query( $query );
+
+        if ( $response === false ) {
+
+            $status = false;
+
+        } else {
+
+            $status = true;
+
+            // Free memory
+            if ( !is_null( $this->results ) ) {
+                $this->results->free();
+            }
+
+            // Store results object
+            if ( is_object( $response ) ) {
+                $this->results = $result;
+            } else {
+                $this->results = null;
+            }
+        }
+
+        return $status;
     }
 
     /**
@@ -56,7 +86,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResult() : array
     {
-        return [];
+        return ( is_null( $this->results ) ? [] : $this->results->fetch_array( MYSQLI_ASSOC ) );
     }
 
     /**
@@ -66,7 +96,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResults() : array
     {
-        return [];
+        return ( is_null( $this->results ) ? [] : $this->results->fetch_all( MYSQLI_ASSOC ) );
     }
 
     /**
@@ -76,7 +106,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getLastId() : int
     {
-        return 0;
+        return $this->handle->insert_id;
     }
 
     /**
@@ -84,6 +114,13 @@ Class Mysql Implements AdapterInterface
      */
     public function close() : void
     {
+        // Free any stray result object
+        if ( !is_null( $this->results ) ) {
+            $this->results->free();
+        }
+
+        $this->handle->close();
+
         return;
     }
 }
