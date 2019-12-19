@@ -104,7 +104,7 @@ Class Mysql Implements AdapterInterface
      * Executes the given query
      *
      * @param string $query   SQL query
-     * @return bool           Produced result
+     * @return bool           Produced result?
      */
     public function query( string $query ) : bool
     {

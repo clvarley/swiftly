@@ -135,4 +135,14 @@ Class Database
         return ( $this->connected ? $this->adapter->getLastId() : 0 );
     }
 
+    /**
+     * Get the connection status
+     *
+     * @return bool Connection open?
+     */
+    public function isConnected() : bool
+    {
+        return $this->connected;
+    }
+
 }
