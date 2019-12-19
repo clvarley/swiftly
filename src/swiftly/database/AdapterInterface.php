@@ -11,6 +11,13 @@ Interface AdapterInterface
 {
 
     /**
+     * Create a new adapter using the passed credentials
+     *
+     * @param array $options Database options
+     */
+    public function __construct( array $options );
+
+    /**
      * Open a connection to the database
      *
      * @return bool Connection made successfully?

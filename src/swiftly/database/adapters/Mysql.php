@@ -27,13 +27,68 @@ Class Mysql Implements AdapterInterface
     private $results = null;
 
     /**
+     * Database username
+     *
+     * @var string $username DB username
+     */
+    private $username = '';
+
+    /**
+     * Database password
+     *
+     * @var string $password DB password
+     */
+    private $password = '';
+
+    /**
+     * Database name
+     *
+     * @var string $name DB name
+     */
+    private $name = '';
+
+    /**
+     * Database host
+     *
+     * @var string $host DB host
+     */
+    private $host = '127.0.0.1';
+
+    /**
+     * Database port
+     *
+     * @var int $port DB port
+     */
+    private $port = 3306;
+
+    /**
+     * Get the credentials from the options array
+     *
+     * @param array $options Database options
+     */
+    public function __construct( array $options )
+    {
+        $this->username = ( isset( $options['username'] ) ? $options['username'] : '' );
+        $this->password = ( isset( $options['password'] ) ? $options['password'] : '' );
+        $this->name = ( isset( $options['name'] ) ? $options['name'] : '' );
+        $this->host = ( isset( $options['host'] ) ? $options['host'] : $this->host );
+        $this->port = ( isset( $options['port'] ) ? $options['post'] : $this->port );
+    }
+
+    /**
      * Opens a connection to the MySQL database
      *
      * @return bool Connection opened
      */
     public function open() : bool
     {
-        $this->handle = new \mysqli();
+        $this->handle = new \mysqli(
+            $this->host,
+            $this->username,
+            $this->password,
+            $this->name,
+            $this->port
+        );
 
         $status = true;
 
@@ -55,7 +110,7 @@ Class Mysql Implements AdapterInterface
     {
         $result = $this->handle->query( $query );
 
-        if ( $response === false ) {
+        if ( $result === false ) {
 
             $status = false;
 
@@ -69,7 +124,7 @@ Class Mysql Implements AdapterInterface
             }
 
             // Store results object
-            if ( is_object( $response ) ) {
+            if ( is_object( $result ) ) {
                 $this->results = $result;
             } else {
                 $this->results = null;

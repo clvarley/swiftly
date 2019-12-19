@@ -47,18 +47,18 @@ Class Web Implements ApplicationInterface
             // Get the correct adapter
             switch ( mb_strtolower( $db_options['adapter'] ?? 'mysqli' ) ) {
                 case 'sqlite':
-                    $adapter = new Sqlite();
+                    $adapter = new Sqlite( $db_opts );
                 break;
 
                 case 'postgres':
                 case 'postgresql':
-                    $adapter = new Postgres();
+                    $adapter = new Postgres( $db_opts );
                 break;
 
                 case 'mysql':
                 case 'mysqli':
                 default:
-                    $adapter = new Mysql();
+                    $adapter = new Mysql( $db_opts );
                 break;
             }
 
