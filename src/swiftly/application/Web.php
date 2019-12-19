@@ -45,7 +45,7 @@ Class Web Implements ApplicationInterface
         if ( $config->hasValue( 'database' ) && !empty(( $db_opts = $config->getValue( 'database' ) )) ) {
 
             // Get the correct adapter
-            switch ( mb_strtolower( $db_options['adapter'] ?? 'mysqli' ) ) {
+            switch ( mb_strtolower( $db_opts['adapter'] ?? 'mysqli' ) ) {
                 case 'sqlite':
                     $adapter = new Sqlite( $db_opts );
                 break;
