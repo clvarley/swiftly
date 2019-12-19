@@ -7,6 +7,8 @@ use \Swiftly\Services\Manager;
 use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\Php;
 use \Swiftly\Routing\Router;
+use \Swiftly\Database\Database;
+use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
 
 /**
  * The front controller for our web app
@@ -38,6 +40,36 @@ Class Web Implements ApplicationInterface
         $this->services = Manager::getInstance();
         $this->services->registerService( 'request', Request::fromGlobals() );
         $this->services->registerService( 'response', new Response() );
+
+        // Create the database object
+        if ( $config->hasValue( 'database' ) && !empty(( $db_opts = $config->getValue( 'database' ) )) ) {
+
+            // Get the correct adapter
+            switch ( mb_strtolower( $db_options['adapter'] ?? 'mysqli' ) ) {
+                case 'sqlite':
+                    $adapter = new Sqlite( $db_opts );
+                break;
+
+                case 'postgres':
+                case 'postgresql':
+                    $adapter = new Postgres( $db_opts );
+                break;
+
+                case 'mysql':
+                case 'mysqli':
+                default:
+                    $adapter = new Mysql( $db_opts );
+                break;
+            }
+
+            // Create the DB abstraction
+            $database = new Database( $adapter );
+            $database->open();
+
+            $this->services->registerService( 'db', $database );
+        }
+
+        // TODO: MORE!
     }
 
     /**

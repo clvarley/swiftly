@@ -1,7 +1,13 @@
 {
-  "encoding":     "UTF-8",
-  "environment":  "dev",
-  "strict" :      true,
-  "warnings":     true,
-  "database":     {}
+  "encoding": "UTF-8",
+  "environment": "dev",
+  "strict" : true,
+  "warnings": true,
+  "database": {
+    "adapter": "mysql",
+    "host": "127.0.0.1",
+    "username": "username",
+    "database": "database",
+    "password": "secret"
+  }
 }
