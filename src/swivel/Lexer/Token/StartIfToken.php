@@ -12,6 +12,6 @@ Class StartIfToken Extends AbstractToken
 
     static $token = 'T_START_IF';
 
-    static $regex = '\[%\s{0,}\w+\s{0,}%\]';
+    static $regex = '\[%(?:\s{1,}if)?\s{0,}\w+\s{0,}%\]';
 
 }

@@ -115,11 +115,17 @@ Class Parser Implements ParserInterface
 
             switch( $token::$token ) {
                 case 'T_START_IF':
+                    $this->tokenStartIf( $token );
+                break;
+
                 case 'T_START':
                     $this->tokenStart( $token );
                 break;
 
                 case 'T_END_IF':
+                    $this->tokenEndIf( $token );
+                break;
+
                 case 'T_END':
                     $this->tokenEnd( $token );
                 break;
@@ -140,6 +146,49 @@ Class Parser Implements ParserInterface
     }
 
     /**
+     * Handle T_START_IF tokens
+     *
+     * @param AbstractToken $token The token
+     */
+    private function tokenStartIf( AbstractToken $token ) : void
+    {
+        if ( $this->depth !== 0 && $this->stack[$this->depth - 1]::$token === 'T_START' ) {
+            throw new \Exception( "Cannot start 'IF' statement inside block scope", 1 );
+        }
+
+        preg_match( '#(?:\s{1,}if)?\s{0,}(\w+)\s{0,}#', $token->content, $matches );
+
+        if ( empty( $matches ) ) {
+            throw new \Exception( "Cannot have an empty 'IF' statement", 1 );
+        }
+
+        $match = trim( $matches[1] );
+
+        // Skip ahead if the IF fails
+        if ( !$this->hasVariable( $match ) || !(bool)$this->getVariable( $match ) ) {
+            while ( $this->lexer->next() && $this->lexer->current()::$token !== 'T_END_IF' );
+        } else {
+            $this->stack[] = $token;
+        }
+
+        return;
+    }
+
+    /**
+     * Handle T_END_IF tokens
+     *
+     * @param AbstractToken $token The token
+     */
+    private function tokenEndIf( AbstractToken $token ) : void
+    {
+        if ( $this->depth !== 0 && $this->stack[$this->depth - 1]::$token !== 'T_START_IF' ) {
+            throw new \Exception( "Cannot 'ENDIF' when not in IF statement", 1 );
+        }
+
+        return;
+    }
+
+    /**
      * Handle T_UNKNOWN and T_WHITESPACE tokens
      *
      * @param AbstractToken $token The token
@@ -149,6 +198,8 @@ Class Parser Implements ParserInterface
         if ( $this->depth !== 0 ) return;
 
         echo $token->content;
+
+        return;
     }
 
     /**
@@ -167,6 +218,8 @@ Class Parser Implements ParserInterface
         } else {
             throw new \Exception( "Template cannot access variable '$content' as it doesn't exist!" );
         }
+
+        return;
     }
 
 
@@ -179,6 +232,8 @@ Class Parser Implements ParserInterface
     {
         $this->depth++;
         $this->stack[] = $token;
+
+        return;
     }
 
     /**
@@ -190,6 +245,8 @@ Class Parser Implements ParserInterface
     {
         $this->depth--;
         array_pop( $this->stack );
+
+        return;
     }
 
     /**
@@ -200,7 +257,7 @@ Class Parser Implements ParserInterface
      */
     private function getVariable( string $name ) : ?string
     {
-        return ( isset( $this->data[$name] ) && is_scalar( $this->data[$name] ) ? (string)$this->data[$name] : null );
+        return ( isset( $this->data[$name] ) ? $this->data[$name] : null );
     }
 
     /**
