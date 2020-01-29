@@ -111,54 +111,85 @@ Class Parser Implements ParserInterface
         $this->lexer->consume( $input );
 
         while( $this->lexer->next() ) {
-            $this->handleToken( $this->lexer->current() );
+            $token = $this->lexer->current();
+
+            switch( $token::$token ) {
+                case 'T_START_IF':
+                case 'T_START':
+                    $this->tokenStart( $token );
+                break;
+
+                case 'T_END_IF':
+                case 'T_END':
+                    $this->tokenEnd( $token );
+                break;
+
+                case 'T_IDENTIFIER':
+                    $this->tokenIdentifier( $token );
+                break;
+
+                case 'T_WHITESPACE':
+                case 'T_UNKNOWN':
+                default:
+                    $this->tokenUnknown( $token );
+                break;
+            }
         }
 
         return;
     }
 
     /**
-     * Handle an individual token
+     * Handle T_UNKNOWN and T_WHITESPACE tokens
      *
-     * @param  AbstractToken $token Token
-     * @return void                 N/a
+     * @param AbstractToken $token The token
      */
-    private function handleToken( AbstractToken $token )
+    private function tokenUnknown( AbstractToken $token ) : void
     {
-        switch( $token::$token ) {
-            case 'T_START_IF':
-            case 'T_START':
-                array_push( $this->stack, $token );
-                $this->depth++;
-            break;
+        if ( $this->depth !== 0 ) return;
 
-            case 'T_END_IF':
-            case 'T_END':
-                array_pop( $this->stack );
-                $this->depth--;
-            break;
+        echo $token->content;
+    }
 
-            case 'T_IDENTIFIER':
-                $var = $token->getContent();
+    /**
+     * Handle T_IDENTIFIER tokens
+     *
+     * @param AbstractToken $token The token
+     */
+    private function tokenIdentifier( AbstractToken $token ) : void
+    {
+        $content = $token->content;
 
-                if ( $this->depth === 0 ) {
-                    echo $var;
-                } else if (( $val = $this->getVariable( $var )) !== null ) {
-                    echo $val;
-                } else {
-                    throw new \Exception( "Template cannot access variable '$var' as it doesn't exist!" );
-                }
-            break;
-
-            case 'T_WHITESPACE':
-            case 'T_UNKNOWN':
-            default:
-                if ( $this->depth !== 0 ) break;
-                echo $token->getContent();
-            break;
+        if ( $this->depth === 0 ) {
+            echo $content;
+        } elseif ( $this->hasVariable( $content ) ) {
+            echo $this->getVariable( $content );
+        } else {
+            throw new \Exception( "Template cannot access variable '$content' as it doesn't exist!" );
         }
+    }
 
-        return;
+
+    /**
+     * Handle T_START tokens
+     *
+     * @param AbstractToken $token The token
+     */
+    private function tokenStart( AbstractToken $token ) : void
+    {
+        $this->depth++;
+        $this->stack[] = $token;
+    }
+
+    /**
+     * Handle T_END tokens
+     *
+     * @param AbstractToken $token The token
+     */
+    private function tokenEnd( AbstractToken $token ) : void
+    {
+        $this->depth--;
+        array_pop( $this->stack );
     }
 
     /**
@@ -170,6 +201,17 @@ Class Parser Implements ParserInterface
     private function getVariable( string $name ) : ?string
     {
         return ( isset( $this->data[$name] ) && is_scalar( $this->data[$name] ) ? (string)$this->data[$name] : null );
+    }
+
+    /**
+     * Checks if the given variable exists in the store
+     *
+     * @param  string $name Variable name
+     * @return bool         Exists
+     */
+    private function hasVariable( string $name ) : bool
+    {
+        return isset( $this->data[$name] );
     }
 
 }

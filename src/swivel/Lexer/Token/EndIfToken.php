@@ -14,16 +14,4 @@ Class EndIfToken Extends AbstractToken
 
     static $regex = '\[%\s{0,}endif\s{0,}%\]';
 
-    private $content = '';
-
-    public function __construct( string $content )
-    {
-        $this->content = $content;
-    }
-
-    public function getContent() : string
-    {
-        return $this->content;
-    }
-
 }

@@ -14,7 +14,7 @@ Abstract Class AbstractToken
      * Name of your token
      *
      * @static
-     * @var string TOKEN Token ID
+     * @var string $token Token ID
      */
     static $token = '';
 
@@ -22,24 +22,25 @@ Abstract Class AbstractToken
      * The regex used by this token
      *
      * @static
-     * @var string REGEX Regular expression
+     * @var string $regex Regular expression
      */
     static $regex = '';
 
     /**
-     * Creates the token from the content provided
+     * The content of this token
      *
-     * @abstract
-     * @param string $content Content
+     * @var string $content Token content
      */
-    abstract public function __construct( string $content );
+    public $content = '';
 
     /**
-     * Gets the content of this token
+     * Sets the content for this token
      *
-     * @abstract
-     * @return string Content
+     * @param string $content Token content
      */
-    abstract public function getContent() : string;
+    public function __construct( string $content )
+    {
+        $this->content = $content;
+    }
 
 }

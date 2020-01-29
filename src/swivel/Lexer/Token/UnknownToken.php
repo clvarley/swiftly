@@ -14,16 +14,4 @@ Class UnknownToken Extends AbstractToken
 
     static $regex = '[^A-Za-z_]';
 
-    private $content = '';
-
-    public function __construct( string $content )
-    {
-        $this->content = $content;
-    }
-
-    public function getContent() : string
-    {
-        return $this->content;
-    }
-
 }
