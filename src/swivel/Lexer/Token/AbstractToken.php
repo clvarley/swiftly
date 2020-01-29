@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Abstract class all tokens should inherit from
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Abstract Class AbstractToken
 {

@@ -2,10 +2,12 @@
 
 namespace Lexer;
 
-use \Lexer\Token\AbstractToken;
+use \Swivel\Lexer\Token\AbstractToken;
 
 /**
  * Simple lexer class
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class Lexer Implements LexerInterface
 {
@@ -29,7 +31,7 @@ Class Lexer Implements LexerInterface
     /**
      * Stores the tokens that have been registered
      *
-     * @var AbstractToken[] $tokens Registered tokens
+     * @var \Swivel\Lexer\Token\AbstractToken[] $tokens Registered tokens
      */
     private $tokens = [];
 
@@ -105,7 +107,7 @@ Class Lexer Implements LexerInterface
     /**
      * Tokenizes all the input and returns an array of tokens
      *
-     * @return AbstractToken[] Token stream
+     * @return \Swivel\Lexer\Token\AbstractToken[] Token stream
      */
     public function all() : array
     {
@@ -135,7 +137,7 @@ Class Lexer Implements LexerInterface
     /**
      * Returns the token for the current position
      *
-     * @return AbstractToken Current token
+     * @return \Swivel\Lexer\Token\AbstractToken Current token
      */
     public function current() : AbstractToken
     {
@@ -176,13 +178,13 @@ Class Lexer Implements LexerInterface
         $lexer = new Lexer();
 
         $lexer->tokens = [
-            'T_END_IF'      => \Lexer\Token\EndIfToken::class,
-            'T_START_IF'    => \Lexer\Token\StartIfToken::class,
-            'T_START'       => \Lexer\Token\StartToken::class,
-            'T_IDENTIFIER'  => \Lexer\Token\IdentifierToken::class,
-            'T_END'         => \Lexer\Token\EndToken::class,
-            'T_WHITESPACE'  => \Lexer\Token\WhitespaceToken::class,
-            'T_UNKNOWN'     => \Lexer\Token\UnknownToken::class
+            'T_END_IF'      => \Swivel\Lexer\Token\EndIfToken::class,
+            'T_START_IF'    => \Swivel\Lexer\Token\StartIfToken::class,
+            'T_START'       => \Swivel\Lexer\Token\StartToken::class,
+            'T_IDENTIFIER'  => \Swivel\Lexer\Token\IdentifierToken::class,
+            'T_END'         => \Swivel\Lexer\Token\EndToken::class,
+            'T_WHITESPACE'  => \Swivel\Lexer\Token\WhitespaceToken::class,
+            'T_UNKNOWN'     => \Swivel\Lexer\Token\UnknownToken::class
         ];
 
         return $lexer;

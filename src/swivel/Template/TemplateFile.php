@@ -1,6 +1,6 @@
 <?php
 
-namespace Template;
+namespace Swivel\Template;
 
 Class TemplateFile
 {

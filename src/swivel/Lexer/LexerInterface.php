@@ -1,11 +1,13 @@
 <?php
 
-namespace Lexer;
+namespace Swivel\Lexer;
 
-use \Lexer\Token\AbstractToken;
+use \Swivel\Lexer\Token\AbstractToken;
 
 /**
  * The interface all Lexers should implement
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Interface LexerInterface
 {

@@ -1,9 +1,11 @@
 <?php
 
-namespace Parser;
+namespace Swivel\Parser;
 
 /**
  * The interface that all parsers should implement
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Interface ParserInterface
 {

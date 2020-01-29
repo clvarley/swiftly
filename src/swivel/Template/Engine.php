@@ -1,10 +1,16 @@
 <?php
 
-namespace Template;
+namespace Swivel\Template;
 
-use \Lexer\LexerInterface;
-use \Parser\ParserInterface;
+use \Swivel\Lexer\LexerInterface;
+use \Swivel\Parser\ParserInterface;
+use \Swivel\Template\TemplateFile;
 
+/**
+ * Swivel main engine
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
+ */
 Class Engine Implements RenderableInterface
 {
 
@@ -18,14 +24,14 @@ Class Engine Implements RenderableInterface
     /**
      * The template parser
      *
-     * @var \Lexer\ParserInterface $parser Parser
+     * @var \Swivel\Lexer\ParserInterface $parser Parser
      */
     private $parser = null;
 
     /**
      * Sets the parser for this template engine
      *
-     * @param ParserInterface $parser Parser
+     * @param \Swivel\Parser\ParserInterface $parser Parser
      */
     public function setParser( ParserInterface $parser ) : void
     {
@@ -66,6 +72,21 @@ Class Engine Implements RenderableInterface
         $this->parser->parse( $content );
 
         return;
+    }
+
+    /**
+     * Creates a default Swivel engine
+     *
+     * @return self Default engine
+     */
+    public static function fromDefault() : self
+    {
+        $lexer = \Swivel\Lexer\Lexer::fromDefault();
+
+        $parser = new \Swivel\Parser\Parser();
+        $parser->setLexer( $lexer );
+
+        return ( new Engine( $parser ) );
     }
 
 }

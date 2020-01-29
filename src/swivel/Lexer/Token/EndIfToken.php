@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Token identifying the end of a conditional
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class EndIfToken Extends AbstractToken
 {

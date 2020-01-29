@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Token representing any whitespace
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class WhitespaceToken Extends AbstractToken
 {

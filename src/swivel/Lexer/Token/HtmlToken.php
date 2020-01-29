@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Token representing HTML markup
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class HtmlToken Extends AbstractToken
 {

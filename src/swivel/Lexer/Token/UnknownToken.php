@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Represents tokens that have no meaning or are unknown
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class UnknownToken Extends AbstractToken
 {

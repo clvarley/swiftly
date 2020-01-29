@@ -1,12 +1,14 @@
 <?php
 
-namespace Parser;
+namespace Swivel\Parser;
 
 use \Lexer\Token\AbstractToken;
 use \Lexer\LexerInterface;
 
 /**
  * The parser for the markup language
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class Parser Implements ParserInterface
 {

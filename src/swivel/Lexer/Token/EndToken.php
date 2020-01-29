@@ -1,9 +1,11 @@
 <?php
 
-namespace Lexer\Token;
+namespace Swivel\Lexer\Token;
 
 /**
  * Token identifying a closing tag
+ *
+ * @author C Varley <cvarley@highorbit.co.uk>
  */
 Class EndToken Extends AbstractToken
 {
