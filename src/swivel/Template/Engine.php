@@ -82,11 +82,15 @@ Class Engine Implements RenderableInterface
     public static function fromDefault() : self
     {
         $lexer = \Swivel\Lexer\Lexer::fromDefault();
+        $lexer->compile();
 
         $parser = new \Swivel\Parser\Parser();
         $parser->setLexer( $lexer );
 
-        return ( new Engine( $parser ) );
+        $engine = new Engine();
+        $engine->parser = $parser;
+
+        return $engine;
     }
 
 }

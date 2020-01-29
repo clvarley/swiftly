@@ -2,8 +2,8 @@
 
 namespace Swivel\Parser;
 
-use \Lexer\Token\AbstractToken;
-use \Lexer\LexerInterface;
+use \Swivel\Lexer\Token\AbstractToken;
+use \Swivel\Lexer\LexerInterface;
 
 /**
  * The parser for the markup language
@@ -111,10 +111,7 @@ Class Parser Implements ParserInterface
         $this->lexer->consume( $input );
 
         while( $this->lexer->next() ) {
-            echo '<pre>';
-            var_dump( $this->lexer->current() );
-            echo '</pre>';
-            // $this->handleToken( $this->lexer->current() );
+            $this->handleToken( $this->lexer->current() );
         }
 
         return;

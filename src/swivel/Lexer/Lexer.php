@@ -1,8 +1,9 @@
 <?php
 
-namespace Lexer;
+namespace Swivel\Lexer;
 
 use \Swivel\Lexer\Token\AbstractToken;
+use \Swivel\Lexer\LexerInterface;
 
 /**
  * Simple lexer class
@@ -78,7 +79,7 @@ Class Lexer Implements LexerInterface
         $regex = [];
 
         foreach ( $this->tokens as $token ) {
-            $regex[] = '(?P<' . $token::$token . '>' . $token::$regex . ')';
+            $regex[] = '(?|' . $token::$regex . '(*MARK:' . $token::$token . '))';
         }
 
         $this->regex = '#' . implode( '|', $regex ) . '#i';
@@ -163,9 +164,9 @@ Class Lexer Implements LexerInterface
      */
     private function matchIdentifier( array $match ) : AbstractToken
     {
-        $id = array_keys( $match )[ count( $match ) - 2 ];
+        $id = $match['MARK'];
 
-        return ( new $this->tokens[$id]( $match[$id][0] ) );
+        return ( new $this->tokens[$id]( $match[0][0] ) );
     }
 
     /**
