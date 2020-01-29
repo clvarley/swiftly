@@ -5,13 +5,14 @@ namespace Swivel\Template;
 use \Swivel\Lexer\LexerInterface;
 use \Swivel\Parser\ParserInterface;
 use \Swivel\Template\TemplateFile;
+use \Swiftly\Template\TemplateInterface;
 
 /**
  * Swivel main engine
  *
  * @author C Varley <cvarley@highorbit.co.uk>
  */
-Class Engine Implements RenderableInterface
+Class Engine Implements RenderableInterface, TemplateInterface
 {
 
     /**
