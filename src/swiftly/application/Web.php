@@ -104,8 +104,19 @@ Class Web Implements ApplicationInterface
             $controller = new $controller( $this->services );
 
             // Set the renderer to use
-            // TODO: Make this a config value so template engine can be customisable
-            $controller->setRenderer( new Php() );
+            switch ( mb_strtolower( $this->config->getValue( 'template' ) ?: 'php' ) ) {
+                case 'swivel':
+                    $engine = \Swivel\Template\Engine::fromDefault();
+                    $engine->setRoot( APP_VIEW );
+                break;
+
+                case 'php':
+                default:
+                    $engine = new Php();
+                break;
+            }
+
+            $controller->setRenderer( $engine );
 
             // Call the method!
             $controller->{$method}();
