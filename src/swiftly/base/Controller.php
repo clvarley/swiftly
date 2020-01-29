@@ -12,7 +12,7 @@ use \Swiftly\Template\TemplateInterface As Renderer;
  */
 Abstract Class Controller
 {
-  
+
     /**
      * @var Manager $services Service manager
      */

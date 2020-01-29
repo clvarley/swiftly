@@ -15,8 +15,8 @@ Interface TemplateInterface
      *
      * @param string $template  Path to template
      * @param array $data       Template data
-     * @return mixed            
+     * @return string           Rendered content
      */
-    public function render( string $template, array $data = [] );
+    public function render( string $template, array $data = [] ) : string;
 
 }

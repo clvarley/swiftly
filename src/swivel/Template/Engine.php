@@ -59,7 +59,7 @@ Class Engine Implements RenderableInterface, TemplateInterface
      * @param string $template Template file
      * @param array  $data     (Optional) Template data
      */
-    public function render( string $template, array $data = [] ) : void
+    public function render( string $template, array $data = [] ) : string
     {
         $template = new TemplateFile( $this->root . $template );
 
@@ -70,9 +70,12 @@ Class Engine Implements RenderableInterface, TemplateInterface
         }
 
         $this->parser->setData( $data );
+
+        ob_start();
+        
         $this->parser->parse( $content );
 
-        return;
+        return ob_get_clean() ?: '';
     }
 
     /**

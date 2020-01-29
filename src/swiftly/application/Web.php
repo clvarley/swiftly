@@ -104,7 +104,7 @@ Class Web Implements ApplicationInterface
             $controller = new $controller( $this->services );
 
             // Set the renderer to use
-            switch ( mb_strtolower( $this->config->getValue( 'templates' ) ?: 'php' ) ) {
+            switch ( mb_strtolower( $this->config->getValue( 'template' ) ?: 'php' ) ) {
                 case 'swivel':
                     $engine = \Swivel\Template\Engine::fromDefault();
                     $engine->setRoot( APP_VIEW );

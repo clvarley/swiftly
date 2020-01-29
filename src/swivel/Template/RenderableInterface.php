@@ -15,8 +15,8 @@ Interface RenderableInterface
      *
      * @param string $file  Template file
      * @param array  $data  (Optional) Template data
-     * @return mixed
+     * @return string       Rendered content
      */
-    public function render( string $file, array $data = [] );
+    public function render( string $file, array $data = [] ) : string;
 
 }
