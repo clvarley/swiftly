@@ -114,8 +114,8 @@ Class Lexer Implements LexerInterface
     {
         $return = [];
 
-        foreach ( $this->matches as $match ) {
-            $return[] = $this->matchIdentifier( $match );
+        for ( $i = 0, $length = count( $this->matches ); $i < $length; $i++ ) {
+            $return[] = $this->matchIdentifier( $this->matches[$i] );
         }
 
         $this->index = count( $this->matches );
@@ -164,9 +164,7 @@ Class Lexer Implements LexerInterface
      */
     private function matchIdentifier( array $match ) : AbstractToken
     {
-        $id = $match['MARK'];
-
-        return ( new $this->tokens[$id]( $match[0][0] ) );
+        return ( new $this->tokens[$match['MARK']]( $match[0][0] ) );
     }
 
     /**
