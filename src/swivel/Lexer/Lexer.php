@@ -44,6 +44,13 @@ Class Lexer Implements LexerInterface
     private $matches = [];
 
     /**
+     * Count of matches made
+     *
+     * @var int $count Total matches
+     */
+    private $count = 0;
+
+    /**
      * Current position of the reader in the input
      *
      * @var int $index Reader index
@@ -102,6 +109,8 @@ Class Lexer Implements LexerInterface
 
         preg_match_all( $this->regex, $this->input, $this->matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE );
 
+        $this->count = count( $this->matches );
+
         return;
     }
 
@@ -132,7 +141,7 @@ Class Lexer Implements LexerInterface
     {
         $this->index++;
 
-        return $this->index < count( $this->matches );
+        return $this->index < $this->count;
     }
 
     /**
