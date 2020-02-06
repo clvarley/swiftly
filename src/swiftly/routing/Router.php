@@ -2,95 +2,101 @@
 
 namespace Swiftly\Routing;
 
+use \Swiftly\Routing\{ RouteLoaderInterface, RouterAdapterInterface };
+
 /**
- * Performs routing
+ * Attempts to route the given request
  *
  * @author C Varley <clvarley>
  */
-Class Router
+Final Class Router
 {
 
     /**
-     * @var array $routes Array of routes
+     * Loader responsible for parsing the routes file
+     *
+     * @var RouteLoaderInterface $loader Route loader
      */
-    private $routes = [];
+    private $loader = null;
 
     /**
-     * Builds a router for the routes provided
+     * Router responsible for routing request
      *
-     * @param array $routes [Optional] Route definitions
+     * @var RouterAdapterInterface $adapter Router implementation
      */
-    public function __construct( array $routes = [] )
+    private $adapter = null;
+
+    /**
+     * Constructs the router with the adapters provided
+     *
+     * @param RouteLoaderInterface $loader    Route loader
+     * @param RouterAdapterInterface $adapter Router implementation
+     */
+    public function __construct( RouteLoaderInterface $loader, RouterAdapterInterface $adapter )
     {
-        $this->routes = $routes;
+        $this->loader = $loader;
+        $this->adapter = $adapter;
     }
 
     /**
-     * Create a router from a JSON route file
+     * Load the given routes file
      *
-     * @param string $filepath  Path to JSON file
-     * @return Router           Router object
+     * @param string $file  Path to routes file
+     * @return bool         Loaded successfully?
      */
-    public static function fromJson( string $filepath ) : Router
+    public function load( string $file ) : bool
     {
-        $values = [];
-
-        if ( is_file( $filepath ) && ( $values = file_get_contents( $filepath ) ) !== false ) {
-
-            $values = json_decode( $values, true );
-
-            if ( json_last_error() !== JSON_ERROR_NONE ) {
-                $values = [];
-            }
+        if ( !\is_file( $file ) || !\is_readable( $file ) ) {
+            return false;
         }
 
-        return ( new Router( $values ) );
+        // Check if the loader supports this file
+        if ( !$this->loader->supports( $file ) ) {
+            return false;
+        }
+
+        $routes = $this->loader->parse( $file );
+
+        $this->adapter->addRoutes( $routes );
+
+        return !empty( $routes );
     }
 
     /**
-     * Gets the callable for the route specified
+     * Attempt to match the given request to a route
      *
-     * @param string $route The route
-     * @return callable|null
+     * @param string $request User request
+     * @param string $method  (Optional) Method
+     * @return TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
-    public function get( string $route ) : ?callable
+    public function dispatch( string $request, string $method = '' )
     {
-
-        $route = mb_strtolower( trim( $route ) );
-
-        $route = rtrim( $route, "/\\" );
-
-        $controller = '';
-
-        // Get the controller name
-        if ( isset( $this->routes[$route] ) ) {
-            $controller = $this->routes[$route];
-        } elseif ( empty( $route ) && isset( $this->routes['/'] ) ) {
-            $controller = $this->routes['/'];
-        }
-
-        $action = null;
-
-        // If there's a controller name
-        if ( !empty( $controller ) ) {
-
-            $parts = explode( '::', $controller );
-
-            // If no method is specified, assume `index()`
-            if ( !isset( $parts[1] ) ) {
-                $parts[1] = 'index';
-            }
-
-            if ( is_file( APP_APP . $parts[0] . '.php' ) ) {
-
-                include( APP_APP . $parts[0] . '.php' );
-
-                if ( class_exists( $parts[0] ) && method_exists( $parts[0], $parts[1] ) ) {
-                    $action = [ $parts[0], $parts[1] ];
-                }
-            }
-        }
-
-        return $action;
+        return $this->adapter->dispatch( $request, $method );
     }
+
+    /**
+     * Creates a new router for the simple routing format
+     *
+     * @return self Simple router
+     */
+    public static function newSimple() : self
+    {
+        return new Router(
+            new SimpleRouteLoader,
+            new SimpleRouter
+        );
+    }
+
+    /**
+     * Creates a new router for the advanced routing format
+     */
+    public static function newAdvanced() : self
+    {
+        return new Router(
+            new AdvancedRouteLoader,
+            new AdvancedRouter
+        );
+    }
+
+
 }
