@@ -45,7 +45,7 @@ Class Web Implements ApplicationInterface
         if ( $config->hasValue( 'database' ) && !empty(( $db_opts = $config->getValue( 'database' ) )) ) {
 
             // Get the correct adapter
-            switch ( mb_strtolower( $db_opts['adapter'] ?? 'mysqli' ) ) {
+            switch ( \mb_strtolower( $db_opts['adapter'] ?? 'mysqli' ) ) {
                 case 'sqlite':
                     $adapter = new Sqlite( $db_opts );
                 break;
@@ -78,28 +78,34 @@ Class Web Implements ApplicationInterface
     public function start() : void
     {
 
-        // Get the router
-        if ( is_file( APP_CONFIG . 'routes.json' ) ) {
-            $router = Router::fromJson( APP_CONFIG . 'routes.json' );
-        } else {
-            $router = new Router();
+        // Create a router (only type: simple is currently supported)
+        $router = Router::newSimple();
+
+        // Get the global request object
+        $http = $this->services->getService( 'request' );
+
+        $path = $http->query->asString( '_route_' );
+        $method = $http->getMethod();
+
+
+        // Load route.json and dispatch
+        if ( \is_file( APP_CONFIG . 'routes.json' ) ) {
+            $router->load( APP_CONFIG . 'routes.json' );
         }
 
-        $request = $this->services->getService( 'request' );
+        $route = $router->dispatch( $path, $method );
 
-        $action = $router->get( $route = $request->query->asString( '_route_' ) );
-
-        // Get the response object
+        // Get the global response object
         $response = $this->services->getService( 'response' );
 
         // Did we return a callable route?
-        if ( is_null( $action ) ) {
+        if ( \is_null( $route ) ) {
 
             $response->setStatus( 404 );
 
         } else {
 
-            list( $controller, $method ) = $action;
+            list( 'class' => $controller, 'method' => $method ) = $route['handler'];
 
             $controller = new $controller( $this->services );
             $controller->setRenderer( new Php() );
