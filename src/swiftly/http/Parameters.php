@@ -5,7 +5,7 @@ namespace Swiftly\Http;
 /**
  * Contains HTTP parameters
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Parameters
 {

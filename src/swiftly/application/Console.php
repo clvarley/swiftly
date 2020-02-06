@@ -10,7 +10,7 @@ use \Swiftly\Routing\Router;
 /**
  * The front controller for our console app
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Console Implements ApplicationInterface
 {

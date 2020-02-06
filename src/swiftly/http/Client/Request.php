@@ -7,7 +7,7 @@ use \Swiftly\Http\Client\Response;
 /**
  * Represents a HTTP request sent by this client (outgoing)
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Request
 {

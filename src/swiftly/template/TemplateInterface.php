@@ -5,7 +5,7 @@ namespace Swiftly\Template;
 /**
  * Interface for renderable templates
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Interface TemplateInterface
 {

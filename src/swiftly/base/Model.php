@@ -8,7 +8,7 @@ use Swiftly\Services\Manager;
 /**
  * The abstract class all models should inherit
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Abstract Class Model
 {

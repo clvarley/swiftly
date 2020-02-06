@@ -5,7 +5,7 @@ namespace Swiftly\Routing;
 /**
  * Performs routing
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Router
 {

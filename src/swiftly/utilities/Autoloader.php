@@ -3,7 +3,7 @@
 /**
  * Provides simple wrapper around autoload
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Final Class Autoloader
 {

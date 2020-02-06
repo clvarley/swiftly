@@ -5,7 +5,7 @@ namespace Swiftly\Filesystem;
 /**
  * Represents a file or directory path
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Abstract Class AbstractPathable
 {

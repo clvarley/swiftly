@@ -9,7 +9,7 @@ use \Swiftly\Base\Model;
 /**
  * The abstract class all controllers should inherit
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Abstract Class Controller
 {

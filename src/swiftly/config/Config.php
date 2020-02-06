@@ -5,7 +5,7 @@ namespace Swiftly\Config;
 /**
  * Represents a collection of config values
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Config
 {

@@ -5,7 +5,7 @@ namespace Swiftly\Database;
 /**
  * Interface that all DB adapters/drivers should implement
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Interface AdapterInterface
 {

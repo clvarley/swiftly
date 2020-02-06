@@ -5,7 +5,7 @@ namespace Swiftly\Services;
 /**
  * Service manager singleton
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Final Class Manager
 {

@@ -13,7 +13,7 @@ use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
 /**
  * The front controller for our web app
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Web Implements ApplicationInterface
 {

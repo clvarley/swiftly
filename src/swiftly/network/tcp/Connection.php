@@ -5,7 +5,7 @@ namespace Swiftly\Network\Tcp;
 /**
  * Basic abstraction wrapper for TCP connections
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Connection
 {

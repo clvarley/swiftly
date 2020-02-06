@@ -7,7 +7,7 @@ use \Swiftly\Config\Config;
 /**
  * Interface that all applications must implement
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Interface ApplicationInterface
 {

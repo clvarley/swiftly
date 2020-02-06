@@ -10,7 +10,7 @@
  * readme file.
  *
  * @license MIT License
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  * @version 1.0.0 2019-08-11
  */
 
@@ -84,4 +84,3 @@ if ( defined( 'PHP_SAPI' ) && PHP_SAPI === 'cli' ) {
 } else {
     ( new Swiftly\Application\Web( $config ) )->start();
 }
-

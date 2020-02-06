@@ -7,7 +7,7 @@ use \Swiftly\Database\AdapterInterface;
 /**
  * A database wrapper implementing the adapter pattern
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Database
 {

@@ -3,7 +3,7 @@
 /**
  * Utility functions
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 
 /**

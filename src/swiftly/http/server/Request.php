@@ -7,7 +7,7 @@ use \Swiftly\Http\{ Headers, Parameters};
 /**
  * Represents a HTTP request received by the server (incoming)
  *
- * @author C Varley <cvarley@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Request
 {
