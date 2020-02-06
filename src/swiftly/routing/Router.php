@@ -71,6 +71,10 @@ Final Class Router
      */
     public function dispatch( string $request, string $method = '' )
     {
+        if ( empty( $request ) ) {
+            $request = '/';
+        }
+
         return $this->adapter->dispatch( $request, $method );
     }
 

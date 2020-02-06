@@ -44,7 +44,11 @@ Class SimpleRouter Implements RouterAdapterInterface
             return;
         }
 
-        $path = \trim( \mb_strtolower( $route['path'] ), " \t\n\r\0\x0B\\/" );
+        $path = \trim( \mb_strtolower( $route['path'] ) );
+
+        if ( $path !== '/' ) {
+            $path = rtrim( $path, '\\/' );
+        }
 
         if ( !empty( $path ) ) {
             $this->routes[$path] = $route;
@@ -64,7 +68,11 @@ Class SimpleRouter Implements RouterAdapterInterface
      */
     public function dispatch( string $request, string $method = '' ) : ?array
     {
-        $request = \trim( \mb_strtolower( $request ), " \t\n\r\0\x0B\\/" );
+        $request = \trim( \mb_strtolower( $request ) );
+
+        if ( $request !== '/' ) {
+            $request = rtrim( $request, '\\/' );
+        }
 
         $handler = null;
 

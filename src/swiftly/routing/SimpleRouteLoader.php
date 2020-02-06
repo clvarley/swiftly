@@ -85,7 +85,7 @@ Class SimpleRouteLoader Implements RouteLoaderInterface
             $routes[] = [
                 'path'    => $path,
                 'handler' => [
-                    'object'  => $handler[0],
+                    'class'   => $handler[0],
                     'method'  => $handler[1]
                 ],
                 'params'  => []
