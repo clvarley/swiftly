@@ -32,3 +32,6 @@ define( 'APP_APP', APP_BASE . 'app/controller/' );
 
 // Template folder
 define( 'APP_VIEW', APP_BASE . 'app/view/' );
+
+// Models folder
+define( 'APP_MODEL', APP_BASE . 'app/model/' );

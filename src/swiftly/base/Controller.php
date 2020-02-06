@@ -4,6 +4,7 @@ namespace Swiftly\Base;
 
 use \Swiftly\Services\Manager;
 use \Swiftly\Template\TemplateInterface As Renderer;
+use \Swiftly\Base\Model;
 
 /**
  * The abstract class all controllers should inherit
@@ -12,7 +13,7 @@ use \Swiftly\Template\TemplateInterface As Renderer;
  */
 Abstract Class Controller
 {
-  
+
     /**
      * @var Manager $services Service manager
      */
@@ -22,6 +23,11 @@ Abstract Class Controller
      * @var Renderer $renderer Internal renderer
      */
     private $renderer = null;
+
+    /**
+     * @var Model[] $models DB Models
+     */
+    private $models = [];
 
     /**
      * @var string $output Controller output
@@ -89,6 +95,44 @@ Abstract Class Controller
     }
 
     /**
+     * Attempts to get a DB model
+     *
+     * @param string $name  Model name
+     * @return Model|null   DB model (Or null)
+     */
+    public function getModel( string $name ) : ?Model
+    {
+        if ( !isset( $this->models[$name] ) ) {
+            $this->models[$name] = $this->createModel( $name );
+        }
+
+        return $this->models[$name];
+    }
+
+    /**
+     * Tries to create a model of the given type
+     *
+     * @param string $name  Model name
+     * @return Model|null   Db model (Or null)
+     */
+    private function createModel( string $name ) : ?Model
+    {
+        $result = null;
+
+        // TODO: This needs a lot of work!
+        if ( is_file( APP_MODEL . $name . '.php' ) ) {
+
+            include APP_MODEL . $name . '.php';
+
+            if ( class_exists( $name ) ) {
+                $result = new $name( $this->getService( 'db' ) );
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Renders the given template with the data provided
      *
      * @param  string $template Template to render
@@ -97,7 +141,7 @@ Abstract Class Controller
      */
     public function render( string $template, array $data = [] ) : string
     {
-        return $this->renderer->render( $template, $data );
+        return $this->renderer->render( APP_VIEW . $template, $data );
     }
 
 }

@@ -24,10 +24,10 @@ Class Php Implements TemplateInterface
 
         $this->data = $data;
 
-        if ( is_file( APP_VIEW . $template . '.html.php' ) && is_readable( APP_VIEW . $template . '.html.php' ) ) {
+        if ( is_file( $template . '.html.php' ) && is_readable( $template . '.html.php' ) ) {
             ob_start();
-            include APP_VIEW . $template . '.html.php';
-            $result = ob_get_contents();
+            include $template . '.html.php';
+            $result = ob_get_contents() ?: '';
             ob_end_clean();
         }
 
