@@ -67,7 +67,9 @@ Class Request
     public function __construct( string $url, array $headers = [] )
     {
         $this->url = $url;
-        $this->headers = $headers;
+        $this->headers = array_merge([
+            'User-Agent: Swiftly-Http/1.1 (PHP; curl)'
+        ], $headers );
     }
 
     /**

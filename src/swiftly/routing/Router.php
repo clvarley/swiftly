@@ -93,6 +93,8 @@ Final Class Router
 
     /**
      * Creates a new router for the advanced routing format
+     *
+     * @return self Advanced router
      */
     public static function newAdvanced() : self
     {

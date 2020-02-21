@@ -47,17 +47,14 @@ Class Console Implements ApplicationInterface
     {
 
         // Get the router
-        if ( is_file( APP_CONFIG . 'commands.json' ) ) {
-            $router = Router::fromJson( APP_CONFIG . 'commands.json' );
-        } else {
-            $router = new Router();
-        }
+        $router = Router::newSimple();
+        $router->load( APP_CONFIG . 'commands.json' );
 
         $incoming = $this->services->getService( 'command' );
 
         $command_name = $incoming->getName();
 
-        $action = $router->get( $command_name );
+        $action = $router->dispatch( $command_name );
 
         // Did we return a callable action?
         if ( is_null( $action ) ) {
@@ -78,7 +75,7 @@ Class Console Implements ApplicationInterface
 
         } else {
 
-            list( $controller, $method ) = $action;
+            list( 'class' => $controller, 'method' => $method ) = $action['handler'];
 
             $controller = new $controller( $this->services );
 
