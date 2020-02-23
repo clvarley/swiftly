@@ -63,10 +63,10 @@ Class Web Implements ApplicationInterface
             }
 
             // Create the DB abstraction
-            $database = new Database( $adapter );
-            $database->open();
+            // $database = new Database( $adapter );
+            // $database->open();
 
-            $this->services->registerService( 'db', $database );
+            // $this->services->registerService( 'db', $database );
         }
 
         // TODO: MORE!
@@ -78,8 +78,12 @@ Class Web Implements ApplicationInterface
     public function start() : void
     {
 
-        // Create a router (only type: simple is currently supported)
-        $router = Router::newSimple();
+        // Create a router
+        if ( $this->config->getValue( 'router' ) === 'advanced' ) {
+            $router = Router::newAdvanced();
+        } else {
+            $router = Router::newSimple();
+        }
 
         // Get the global request object
         $http = $this->services->getService( 'request' );
