@@ -58,7 +58,7 @@ Class SimpleRouteLoader Implements RouteLoaderInterface
     /**
      * Builds a route array from the JSON_DECODED content
      *
-     * TODO: Rebuild to use the new *Route* class
+     * TODO: Rebuild
      *
      * @param array $content  Json decoded array
      * @return array          Array of routes
