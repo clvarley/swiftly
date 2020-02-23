@@ -84,16 +84,13 @@ Class Web Implements ApplicationInterface
         // Get the global request object
         $http = $this->services->getService( 'request' );
 
-        $path = $http->query->asString( '_route_' );
-        $method = $http->getMethod();
-
 
         // Load route.json and dispatch
         if ( \is_file( APP_CONFIG . 'routes.json' ) ) {
             $router->load( APP_CONFIG . 'routes.json' );
         }
 
-        $action = $router->dispatch( $path, $method );
+        $action = $router->dispatch( $http );
 
         // Get the global response object
         $response = $this->services->getService( 'response' );
@@ -108,9 +105,9 @@ Class Web Implements ApplicationInterface
             $action->getController()->setRenderer( new Php() );
 
             // Execute the request
-            $result = $action->execute(  );
+            $result = $action->execute();
 
-            if ( !empty($body = $result->getOutput() ) ) {
+            if ( !empty( $body = $result->getOutput() ) ) {
                 $response->setBody( $body );
             }
         }

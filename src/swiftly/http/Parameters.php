@@ -48,6 +48,16 @@ Class Parameters
     }
 
     /**
+     * Gets all the parameters
+     *
+     * @return array Parameters
+     */
+    public function getAll() : array
+    {
+        return $this->data;
+    }
+
+    /**
      * Set a paramater
      *
      * @param string $name  Parameter name

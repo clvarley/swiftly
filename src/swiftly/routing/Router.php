@@ -2,6 +2,7 @@
 
 namespace Swiftly\Routing;
 
+use \Swiftly\Http\Server\Request;
 use \Swiftly\Routing\{ RouteLoaderInterface, RouterAdapterInterface, Action };
 
 /**
@@ -65,18 +66,19 @@ Final Class Router
     /**
      * Attempt to match the given request to a route
      *
-     * @param string $request User request
-     * @param string $method  (Optional) Method
-     * @return Action         Action (Or null)
+     * @param Request $request  User request
+     * @return Action           Action (Or null)
      */
-    public function dispatch( string $request, string $method = '' ) : ?Action
+    public function dispatch( Request $request ) : ?Action
     {
-        if ( empty( $request ) ) {
-            $request = '/';
+        $path = $request->query->asString( '_route_' );
+
+        if ( empty( $path ) ) {
+            $path = '/';
         }
 
         // Get the route definition
-        $def = $this->adapter->dispatch( $request, $method );
+        $def = $this->adapter->dispatch( $path, $request->getMethod() ?: 'GET' );
 
         // Checks for null or empty
         if ( empty( $def ) ) {
@@ -85,9 +87,13 @@ Final Class Router
 
         list( 'class' => $controller, 'method' => $method ) = $def['handler'];
 
-        $action = new Action( $controller, $method );
+        $context = $request->query->getAll();
 
-        return new Action( $controller, $method );
+        if ( !empty( $def['params'] ) ) {
+            $context = \array_merge( $context, $def['params'] );
+        }
+
+        return new Action( $controller, $method, $context );
     }
 
     /**

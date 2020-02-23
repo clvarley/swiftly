@@ -34,15 +34,24 @@ Class Action
     private $controller = null;
 
     /**
+     * Scoped context variables
+     *
+     * @var array $context The context
+     */
+    private $context = [];
+
+    /**
      * Create a new action using the controller and method provided
      *
-     * @param string $class                     Controller name
-     * @param string $method                    Controller method
+     * @param string $class   Controller name
+     * @param string $method  Controller method
+     * @param array $context  (Optional) The context
      */
-    public function __construct( string $class, string $method )
+    public function __construct( string $class, string $method, array $context = [] )
     {
         $this->class = $class;
         $this->method = $method;
+        $this->context = $context;
     }
 
     /**
@@ -71,7 +80,7 @@ Class Action
      * @param array $args Constructor arguments
      * @return bool       Prepared successfully?
      */
-    public function prepare( ...$args = [] ) : bool
+    public function prepare( ...$args ) : bool
     {
         // Already prepared!
         if ( !\is_null( $this->controller ) ) {
@@ -79,14 +88,14 @@ Class Action
         }
 
         // No classname
-        if ( empty( $class ) ) {
+        if ( empty( $this->class ) ) {
             return false;
         }
 
         $this->controller = new $this->class( ...$args );
         $this->method = $this->method ?: 'index';
 
-        return \method_exists( $this->context, $this->method );
+        return \method_exists( $this->controller, $this->method );
     }
 
     /**
@@ -100,6 +109,8 @@ Class Action
     public function execute( array $params = [] ) : Controller
     {
         $args = [];
+
+        $params = \array_merge( $this->context, $params );
 
         $method_info = new \ReflectionMethod( $this->controller, $this->method );
 
@@ -161,6 +172,11 @@ Class Action
         $result = false;
 
         $name = $type->getName();
+
+        // No type specified
+        if ( empty( $name ) ) {
+            return true;
+        }
 
         if ( $type->isBuiltin() ) {
 
