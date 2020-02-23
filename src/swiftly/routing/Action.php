@@ -46,11 +46,32 @@ Class Action
     }
 
     /**
+     * Get the controller for this action
+     *
+     * @return \Swiftly\Base\Controller|null Controller
+     */
+    public function getController() : ?Controller
+    {
+        return $this->controller;
+    }
+
+    /**
+     * Get the method for this action
+     *
+     * @return string Method name
+     */
+    public function getMethod() : string
+    {
+        return $this->method;
+    }
+
+    /**
      * Prepares the controller and method for execution
      *
-     * @return bool Prepared successfully?
+     * @param array $args Constructor arguments
+     * @return bool       Prepared successfully?
      */
-    public function prepare() : bool
+    public function prepare( ...$args = [] ) : bool
     {
         // Already prepared!
         if ( !\is_null( $this->controller ) ) {
@@ -62,7 +83,7 @@ Class Action
             return false;
         }
 
-        $this->controller = new $this->class;
+        $this->controller = new $this->class( ...$args );
         $this->method = $this->method ?: 'index';
 
         return \method_exists( $this->context, $this->method );
