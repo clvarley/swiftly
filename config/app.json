@@ -4,10 +4,10 @@
     "strict" : true,
     "warnings": true,
     "database": {
-      "adapter": "mysql",
-      "host": "mysql",
-      "username": "username",
-      "database": "database",
-      "password": "secret"
+        "adapter": "mysql",
+        "host": "mysql",
+        "username": "username",
+        "database": "database",
+        "password": "secret"
     }
-  }
+}

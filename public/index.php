@@ -34,7 +34,6 @@ require_once APP_SWIFTLY . 'utilities/Autoloader.php';
 $autoloader = new Autoloader();
 $autoloader->addPrefix( '*', APP_APP );
 $autoloader->addPrefix( 'Swiftly', APP_SWIFTLY );
-$autoloader->addPrefix( 'Swivel', APP_SRC . 'swivel/' );
 
 
 // Load the config
