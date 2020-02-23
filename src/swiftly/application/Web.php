@@ -93,27 +93,24 @@ Class Web Implements ApplicationInterface
             $router->load( APP_CONFIG . 'routes.json' );
         }
 
-        $route = $router->dispatch( $path, $method );
+        $action = $router->dispatch( $path, $method );
 
         // Get the global response object
         $response = $this->services->getService( 'response' );
 
         // Did we return a callable route?
-        if ( \is_null( $route ) ) {
+        if ( \is_null( $action ) || !$action->prepare( $this->services ) ) {
 
             $response->setStatus( 404 );
 
         } else {
 
-            list( 'class' => $controller, 'method' => $method ) = $route['handler'];
+            $action->getController()->setRenderer( new Php() );
 
-            $controller = new $controller( $this->services );
-            $controller->setRenderer( new Php() );
+            // Execute the request
+            $result = $action->execute(  );
 
-            // Call the method!
-            $controller->{$method}();
-
-            if ( !empty($body = $controller->getOutput() ) ) {
+            if ( !empty($body = $result->getOutput() ) ) {
                 $response->setBody( $body );
             }
         }

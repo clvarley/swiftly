@@ -2,7 +2,7 @@
 
 namespace Swiftly\Routing;
 
-use \Swiftly\Routing\{ RouteLoaderInterface, RouterAdapterInterface };
+use \Swiftly\Routing\{ RouteLoaderInterface, RouterAdapterInterface, Action };
 
 /**
  * Attempts to route the given request
@@ -67,15 +67,27 @@ Final Class Router
      *
      * @param string $request User request
      * @param string $method  (Optional) Method
-     * @return TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * @return Action         Action (Or null)
      */
-    public function dispatch( string $request, string $method = '' )
+    public function dispatch( string $request, string $method = '' ) : ?Action
     {
         if ( empty( $request ) ) {
             $request = '/';
         }
 
-        return $this->adapter->dispatch( $request, $method );
+        // Get the route definition
+        $def = $this->adapter->dispatch( $request, $method );
+
+        // Checks for null or empty
+        if ( empty( $def ) ) {
+            return null;
+        }
+
+        list( 'class' => $controller, 'method' => $method ) = $def['handler'];
+
+        $action = new Action( $controller, $method );
+
+        return new Action( $controller, $method );
     }
 
     /**
