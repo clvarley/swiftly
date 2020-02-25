@@ -119,12 +119,12 @@ Class Mysql Implements AdapterInterface
             $status = true;
 
             // Free memory
-            if ( !is_null( $this->results ) ) {
+            if ( !\is_null( $this->results ) ) {
                 $this->results->free();
             }
 
             // Store results object
-            if ( is_object( $result ) ) {
+            if ( \is_object( $result ) ) {
                 $this->results = $result;
             } else {
                 $this->results = null;
@@ -141,7 +141,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResult() : array
     {
-        return ( is_null( $this->results ) ? [] : $this->results->fetch_array( MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results ) ? [] : $this->results->fetch_array( MYSQLI_ASSOC ) );
     }
 
     /**
@@ -151,7 +151,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResults() : array
     {
-        return ( is_null( $this->results ) ? [] : $this->results->fetch_all( MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results ) ? [] : $this->results->fetch_all( MYSQLI_ASSOC ) );
     }
 
     /**
@@ -170,7 +170,7 @@ Class Mysql Implements AdapterInterface
     public function close() : void
     {
         // Free any stray result object
-        if ( !is_null( $this->results ) ) {
+        if ( !\is_null( $this->results ) ) {
             $this->results->free();
         }
 

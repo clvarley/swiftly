@@ -22,7 +22,7 @@ Abstract Class AbstractPathable
      */
     public function isValid() : bool
     {
-        return file_exists( $this->path );
+        return \file_exists( $this->path );
     }
 
     /**
@@ -42,7 +42,7 @@ Abstract Class AbstractPathable
      */
     public function getName() : string
     {
-        return basename( $this->path );
+        return \basename( $this->path );
     }
 
     /**
@@ -52,7 +52,7 @@ Abstract Class AbstractPathable
      */
     public function isFile() : bool
     {
-        return ( is_file( $this->path ) && is_readable( $this->path ) );
+        return ( \is_file( $this->path ) && \is_readable( $this->path ) );
     }
 
     /**
@@ -62,7 +62,7 @@ Abstract Class AbstractPathable
      */
     public function isDir() : bool
     {
-        return is_dir( $this->path );
+        return \is_dir( $this->path );
     }
 
 }

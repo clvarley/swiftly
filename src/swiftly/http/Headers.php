@@ -67,7 +67,7 @@ Class Headers
      */
     public function hasHeader( string $name ) : bool
     {
-        return ( array_key_exists( mb_strtolower( $name ), $this->headers ) );
+        return ( \array_key_exists( \mb_strtolower( $name ), $this->headers ) );
     }
 
     /**
@@ -81,7 +81,7 @@ Class Headers
      */
     public function setHeader( string $name, string $value ) : void
     {
-        $this->headers[mb_strtolower( $name )] = [$value];
+        $this->headers[\mb_strtolower( $name )] = [$value];
     }
 
     /**
@@ -92,10 +92,10 @@ Class Headers
      */
     public function addHeader( string $name, string $value ) : void
     {
-        if ( array_key_exists( mb_strtolower( $name ), $this->headers ) ) {
-            $this->headers[mb_strtolower( $name )][] = $value;
+        if ( \array_key_exists( \mb_strtolower( $name ), $this->headers ) ) {
+            $this->headers[\mb_strtolower( $name )][] = $value;
         } else {
-            $this->headers[mb_strtolower( $name )] = [$value];
+            $this->headers[\mb_strtolower( $name )] = [$value];
         }
 
         return;

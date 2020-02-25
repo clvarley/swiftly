@@ -120,11 +120,11 @@ Abstract Class Controller
         $result = null;
 
         // TODO: This needs a lot of work!
-        if ( is_file( APP_MODEL . $name . '.php' ) ) {
+        if ( \is_file( APP_MODEL . $name . '.php' ) ) {
 
             include APP_MODEL . $name . '.php';
 
-            if ( class_exists( $name ) ) {
+            if ( \class_exists( $name ) ) {
                 $result = new $name( $this->getService( 'db' ) );
             }
         }

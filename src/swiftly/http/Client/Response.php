@@ -86,7 +86,7 @@ Class Response
      */
     public function getHeader( string $name ) : string
     {
-        return ( array_key_exists( $name, $this->headers ) ? $this->headers[$name][0] : '' );
+        return ( \array_key_exists( $name, $this->headers ) ? $this->headers[$name][0] : '' );
     }
 
     /**
@@ -97,7 +97,7 @@ Class Response
      */
     public function getHeaders( string $name ) : array
     {
-        return ( array_key_exists( $name, $this->headers ) ? $this->headers[$name] : [] );
+        return ( \array_key_exists( $name, $this->headers ) ? $this->headers[$name] : [] );
     }
 
     /**
@@ -138,21 +138,21 @@ Class Response
 
             // $index = mb_strtolower($index);
 
-            if ( is_string( $index ) && is_array( $headers ) ) {
+            if ( \is_string( $index ) && \is_array( $headers ) ) {
 
-                $return_headers[mb_strtolower( $index )] = $value;
+                $return_headers[\mb_strtolower( $index )] = $value;
 
-            } elseif ( is_string( $index ) && is_string( $value ) ) {
+            } elseif ( \is_string( $index ) && \is_string( $value ) ) {
 
-                $return_headers[mb_strtolower( $index )][] = $value;
+                $return_headers[\mb_strtolower( $index )][] = $value;
 
-            } elseif ( is_numeric( $index ) && is_array( $value ) ) {
+            } elseif ( \is_numeric( $index ) && \is_array( $value ) ) {
 
-                $header_name = isset( $value[0] ) ? trim( $value[0] ) : null;
-                $header_value = isset( $value[1] ) ? trim( $value[1] ) : '';
+                $header_name = isset( $value[0] ) ? \trim( $value[0] ) : null;
+                $header_value = isset( $value[1] ) ? \trim( $value[1] ) : '';
 
-                if ( is_string( $header_name ) && !empty( $header_name ) && is_scalar( $header_value ) ) {
-                    $return_headers[mb_strtolower( $header_name )][] = $header_value;
+                if ( \is_string( $header_name ) && !empty( $header_name ) && \is_scalar( $header_value ) ) {
+                    $return_headers[\mb_strtolower( $header_name )][] = $header_value;
                 }
             }
         }

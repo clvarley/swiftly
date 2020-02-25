@@ -80,7 +80,7 @@ Class Request
      */
     protected function setMethod( string $method ) : void
     {
-        if ( in_array(( $method = mb_strtoupper( $method ) ), self::HTTP_METHODS ) ) {
+        if ( \in_array(( $method = \mb_strtoupper( $method ) ), self::HTTP_METHODS ) ) {
             $this->method = $method;
         } else {
             $this->method = 'GET';
@@ -190,7 +190,7 @@ Class Request
     public function getBody() : string
     {
         if ( $this->read && $this->method === 'POST' && empty( $this->body ) ) {
-            $this->body = file_get_contents( 'php://input' );
+            $this->body = \file_get_contents( 'php://input' );
             $this->read = true;
         }
 
@@ -216,7 +216,7 @@ Class Request
         );
 
         foreach ( $_SERVER as $name => $value ) {
-            if ( mb_strpos($name, 'HTTP_') === 0 ) {
+            if ( \mb_strpos($name, 'HTTP_') === 0 ) {
                 $request->headers->addHeader( mb_substr( $name, 5 ), $value );
             }
         }

@@ -47,7 +47,7 @@ Class SimpleRouter Implements RouterAdapterInterface
         $path = \trim( \mb_strtolower( $route['path'] ) );
 
         if ( $path !== '/' ) {
-            $path = rtrim( $path, '\\/' );
+            $path = \rtrim( $path, '\\/' );
         }
 
         if ( !empty( $path ) ) {
@@ -71,7 +71,7 @@ Class SimpleRouter Implements RouterAdapterInterface
         $request = \trim( \mb_strtolower( $request ) );
 
         if ( $request !== '/' ) {
-            $request = rtrim( $request, '\\/' );
+            $request = \rtrim( $request, '\\/' );
         }
 
         $handler = null;

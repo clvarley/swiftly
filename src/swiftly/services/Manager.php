@@ -5,6 +5,10 @@ namespace Swiftly\Services;
 /**
  * Service manager singleton
  *
+ * NOTE: When I have time I will refactor the project to avoid singletons and
+ * will make this manager a DI container, but until then, singleton will have
+ * to do.
+ *
  * @author C Varley <clvarley>
  */
 Final Class Manager
@@ -50,7 +54,7 @@ Final Class Manager
      */
     public function registerService( string $name, /* object */ $service ) : void
     {
-        $this->services[mb_strtolower( $name )] = $service;
+        $this->services[\mb_strtolower( $name )] = $service;
     }
 
     /**
@@ -60,7 +64,7 @@ Final Class Manager
      */
     public function removeService( string $name ) : void
     {
-        unset( $this->services[mb_strtolower( $name )] );
+        unset( $this->services[\mb_strtolower( $name )] );
     }
 
     /**
@@ -71,6 +75,6 @@ Final Class Manager
      */
     public function getService( string $name ) // : ?object
     {
-        return ( $this->services[mb_strtolower( $name )] ?? null );
+        return ( $this->services[\mb_strtolower( $name )] ?? null );
     }
 }

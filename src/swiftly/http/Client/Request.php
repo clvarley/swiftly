@@ -67,7 +67,7 @@ Class Request
     public function __construct( string $url, array $headers = [] )
     {
         $this->url = $url;
-        $this->headers = array_merge([
+        $this->headers = \array_merge([
             'User-Agent: Swiftly-Http/1.1 (PHP; curl)'
         ], $headers );
     }
@@ -77,8 +77,8 @@ Class Request
      */
     public function __destruct()
     {
-        if ( !is_null( $this->handle ) ) {
-            curl_close( $this->handle );
+        if ( !\is_null( $this->handle ) ) {
+            \curl_close( $this->handle );
         }
     }
 
@@ -105,13 +105,13 @@ Class Request
             return null;
         }
 
-        $response = curl_exec( $this->handle );
+        $response = \curl_exec( $this->handle );
 
         if ( $response === false ) {
             return null;
         }
 
-        $status_code = +(int)curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
+        $status_code = +(int)\curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
 
         return ( new Response( $status_code, $this->response_headers, $response ) );
     }
@@ -131,10 +131,10 @@ Class Request
             $this->body = $body;
         }
 
-        curl_setopt( $this->handle, CURLOPT_POST, true );
-        curl_setopt( $this->handle, CURLOPT_POSTFIELDS, $this->body );
-        curl_setopt( $this->handle, CURLOPT_HTTPHEADER, array_merge( $this->headers, [
-            'Content-Length: ' . strlen( $this->body )
+        \curl_setopt( $this->handle, CURLOPT_POST, true );
+        \curl_setopt( $this->handle, CURLOPT_POSTFIELDS, $this->body );
+        \curl_setopt( $this->handle, CURLOPT_HTTPHEADER, \array_merge( $this->headers, [
+            'Content-Length: ' . \strlen( $this->body )
         ]));
 
         $response = curl_exec( $this->handle );
@@ -143,7 +143,7 @@ Class Request
             return null;
         }
 
-        $status_code = +(int)curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
+        $status_code = +(int)\curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
 
         // TODO: Check this is robust enough, dev will have to content type
 
@@ -161,7 +161,7 @@ Class Request
             return null;
         }
 
-        curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'PUT' );
+        \curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'PUT' );
 
         // TODO:
 
@@ -179,7 +179,7 @@ Class Request
             return null;
         }
 
-        curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'DELETE' );
+        \curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'DELETE' );
 
         // TODO:
 
@@ -193,20 +193,20 @@ Class Request
      */
     protected function prepare() : bool
     {
-        if ( is_null( $this->handle ) ) {
+        if ( \is_null( $this->handle ) ) {
 
-            $this->handle = curl_init();
+            $this->handle = \curl_init();
 
             if ( $this->handle !== false ) {
 
-                curl_setopt( $this->handle, CURLOPT_URL, $this->url );
-                curl_setopt( $this->handle, CURLOPT_HEADER, false );
-                curl_setopt( $this->handle, CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $this->handle, CURLOPT_HEADERFUNCTION, [ $this, '_parseHeaders' ] );
+                \curl_setopt( $this->handle, CURLOPT_URL, $this->url );
+                \curl_setopt( $this->handle, CURLOPT_HEADER, false );
+                \curl_setopt( $this->handle, CURLOPT_RETURNTRANSFER, true );
+                \curl_setopt( $this->handle, CURLOPT_HEADERFUNCTION, [ $this, '_parseHeaders' ] );
 
                 if ( !empty( $this->headers ) ) {
 
-                    curl_setopt( $this->handle, CURLOPT_HTTPHEADER, $this->headers );
+                    \curl_setopt( $this->handle, CURLOPT_HTTPHEADER, $this->headers );
 
                 }
 
@@ -233,9 +233,9 @@ Class Request
     private function _parseHeaders( $curl_handle = null, string $header )
     {
         if ( $header ) {
-            $this->response_headers[] = explode( ':', $header, 2 );
+            $this->response_headers[] = \explode( ':', $header, 2 );
         }
 
-        return strlen( $header );
+        return \strlen( $header );
     }
 }

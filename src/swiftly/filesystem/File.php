@@ -19,7 +19,7 @@ Class File Extends AbstractPathable
      */
     public function __construct( string $filepath = '' )
     {
-        if ( is_file( $filepath ) && is_readable( $filepath ) ) {
+        if ( \is_file( $filepath ) && \is_readable( $filepath ) ) {
 
             $this->path = $filepath;
 
@@ -36,7 +36,7 @@ Class File Extends AbstractPathable
      */
     public function getSize() : int
     {
-        return @filesize( $this->path ) ?: 0;
+        return @\filesize( $this->path ) ?: 0;
     }
 
     /**
@@ -47,7 +47,7 @@ Class File Extends AbstractPathable
      */
     public function copy( string $path ) : bool
     {
-        return ( !empty( $this->path ) && is_file( $this->path ) && copy( $this->path, $path ) );
+        return ( !empty( $this->path ) && \is_file( $this->path ) && \copy( $this->path, $path ) );
     }
 
     /**
@@ -61,7 +61,7 @@ Class File Extends AbstractPathable
      */
     public function rename( string $name ) : bool
     {
-        return ( !empty( $this->path ) && is_file( $this->path ) && rename( $this->path, dirname( $this->path ) . '/' . $name ) );
+        return ( !empty( $this->path ) && \is_file( $this->path ) && \rename( $this->path, \dirname( $this->path ) . '/' . $name ) );
     }
 
     /**
@@ -76,7 +76,7 @@ Class File Extends AbstractPathable
      */
     public function move( string $path ) : bool
     {
-        return ( !empty( $this->path ) && is_file( $this->path ) && rename( $this->path, $path ) );
+        return ( !empty( $this->path ) && \is_file( $this->path ) && \rename( $this->path, $path ) );
     }
 
 }
