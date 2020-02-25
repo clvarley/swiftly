@@ -1,7 +1,6 @@
 <?php
 
 use Swiftly\Base\Controller;
-use Swiftly\Filesystem\Directory;
 
 /**
  * The default controller that handles the homepage
@@ -20,6 +19,15 @@ Class Home Extends Controller
         return $this->setOutput($this->render('home', [
             'title'   => 'Swiftly',
             'message' => 'Thanks for installing Swiftly!'
+        ]));
+    }
+
+    public function hello( string $name )
+    {
+        // Pass the named paramater in
+        return $this->setOutput($this->render('home', [
+            'title'   => \mb_ucfirst( $name ),
+            'message' => 'Welcome to Swiftly!'
         ]));
     }
 }

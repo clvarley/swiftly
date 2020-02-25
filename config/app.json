@@ -3,6 +3,7 @@
     "environment": "dev",
     "strict" : true,
     "warnings": true,
+    "router": "advanced",
     "database": {
         "adapter": "mysql",
         "host": "mysql",
