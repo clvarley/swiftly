@@ -104,7 +104,7 @@ Class AdvancedRouter Implements RouterAdapterInterface
             $regex[] = '(?:^' . $route['path'] . '$(*MARK:' . $index . '))';
         }
 
-        $this->compiled = '(' . implode( '|', $regex ) . ')';
+        $this->compiled = '@(?|' . implode( '|', $regex ) . ')@';
 
         return;
     }

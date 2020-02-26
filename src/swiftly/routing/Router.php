@@ -75,6 +75,8 @@ Final Class Router
 
         if ( empty( $path ) ) {
             $path = '/';
+        } else {
+            $path = \rtrim( $path, " \t\n\r\0\x0B\\/" );
         }
 
         // Get the route definition
