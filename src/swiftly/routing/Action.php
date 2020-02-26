@@ -110,6 +110,7 @@ Class Action
     {
         $args = [];
 
+        // Merge the context with any passed params
         $params = \array_merge( $this->context, $params );
 
         $method_info = new \ReflectionMethod( $this->controller, $this->method );

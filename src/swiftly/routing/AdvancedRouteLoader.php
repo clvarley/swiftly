@@ -15,7 +15,7 @@ Class AdvancedRouteLoader Implements RouteLoaderInterface
      *
      * @var string REGEX Regular expression
      */
-    private const REGEX = '/\[(?P<type>i|s):(?P<name>\w+)\]/i';
+    private const REGEX = '/\[(?:(?P<type>i|s):)?(?P<name>\w+)\]/i';
 
     /**
      * Check if this loader supports the given routes file
@@ -85,7 +85,7 @@ Class AdvancedRouteLoader Implements RouteLoaderInterface
 
                 $params[] = $matches['name'];
 
-                switch( $matches['type'] ) {
+                switch( $matches['type'] ?? '' ) {
                     // Match integer
                     case 'i':
                         $regex .= '\d+';
@@ -93,6 +93,7 @@ Class AdvancedRouteLoader Implements RouteLoaderInterface
 
                     // Match string
                     case 's':
+                    default:
                         $regex .= '[A-Za-z-_0-9]+';
                     break;
                 }
