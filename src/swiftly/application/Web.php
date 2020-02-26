@@ -41,32 +41,34 @@ Class Web Implements ApplicationInterface
         $this->services->registerService( 'request', Request::fromGlobals() );
         $this->services->registerService( 'response', new Response() );
 
+        $database = $config->getValue( 'database' );
+
         // Create the database object
-        if ( $config->hasValue( 'database' ) && !empty(( $db_opts = $config->getValue( 'database' ) )) ) {
+        if ( !empty( $database ) && !empty( $database['adapter'] ) ) {
 
             // Get the correct adapter
-            switch ( \mb_strtolower( $db_opts['adapter'] ?? 'mysqli' ) ) {
+            switch ( \mb_strtolower( $database['adapter'] ?? 'mysqli' ) ) {
                 case 'sqlite':
-                    $adapter = new Sqlite( $db_opts );
+                    $adapter = new Sqlite( $database );
                 break;
 
                 case 'postgres':
                 case 'postgresql':
-                    $adapter = new Postgres( $db_opts );
+                    $adapter = new Postgres( $database );
                 break;
 
                 case 'mysql':
                 case 'mysqli':
                 default:
-                    $adapter = new Mysql( $db_opts );
+                    $adapter = new Mysql( $database );
                 break;
             }
 
             // Create the DB abstraction
-            // $database = new Database( $adapter );
-            // $database->open();
+            $database = new Database( $adapter );
+            $database->open();
 
-            // $this->services->registerService( 'db', $database );
+            $this->services->registerService( 'db', $database );
         }
 
         // TODO: MORE!
