@@ -7,7 +7,7 @@ use \Swiftly\Filesystem\AbstractPathable;
 /**
  * Abstraction used to represent a filesystem directory
  *
- * @author C Varley <conor@highorbit.co.uk>
+ * @author C Varley <clvarley>
  */
 Class Directory Extends AbstractPathable
 {

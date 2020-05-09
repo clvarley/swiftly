@@ -7,7 +7,7 @@ use \Swiftly\Filesystem\AbstractPathable;
 /**
  * Usefull class used to represent a generic file
  *
- * @author C Varley <conor@highorbit.co.uk>
+ * @author C Varley <conor@clvarley>
  */
 Class File Extends AbstractPathable
 {
