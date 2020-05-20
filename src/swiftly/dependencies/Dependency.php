@@ -44,7 +44,22 @@ Class Dependency
      */
     public function resolve( Container $container ) /* : object */
     {
-        return;
-    }
+        $result = null;
 
+        if ( is_callable( $this->implementation ) ) {
+            $callback = $this->implementation;
+            $result = $callback( $container );
+        } elseif ( is_object( $this->implementation ) ) {
+            $result = $this->implementation;
+        } elseif ( is_string( $this->implementation ) && class_exists( $this->implementation ) ) {
+            $result = new $this->implementation;
+        }
+
+        if ( $this->is_singleton ) {
+            $this->implementation = $result;
+            $this->is_singleton = false;
+        }
+
+        return $result;
+    }
 }
