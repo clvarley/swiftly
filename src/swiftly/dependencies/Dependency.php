@@ -86,8 +86,10 @@ Class Dependency
         foreach ( $constructor->getParameters() as $param ) {
             $value = null;
 
-            if ( !$param->isBuiltin() ) {
-                $value = $container->resolve( $param->getType() );
+            $type = $param->getType();
+
+            if ( !$type->isBuiltin() ) {
+                $value = $container->resolve( $type->getName() );
             }
 
             if ( $value === null && $param->isOptional() ) {

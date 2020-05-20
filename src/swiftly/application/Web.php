@@ -7,7 +7,7 @@ use \Swiftly\Dependencies\Container;
 use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\Php;
 use \Swiftly\Routing\Router;
-use \Swiftly\Database\Database;
+use \Swiftly\Database\{ Database, AdapterInterface };
 use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
 
 /**
@@ -45,7 +45,7 @@ Class Web Implements ApplicationInterface
         $this->dependencies->bindSingleton( Response::class, new Response() );
 
         // Register the database object
-        if ( $config->hasValue( 'adapter' ) ) {
+        if ( $config->hasValue( 'database' ) ) {
             $this->bindDatabase( $this->dependencies, $config->getValue( 'database' ) );
         }
 
@@ -137,12 +137,12 @@ Class Web Implements ApplicationInterface
         }
 
         // Bind the adapter
-        $services->bindInstance( Swiftly\Database\AdapterInterface::class, function() use (&$config) {
+        $services->bindInstance( AdapterInterface::class, function() use (&$config, $adapter) {
             return new $adapter( $config );
         });
 
         // Bind the database wrapper
-        $services->bindSingleton( Swiftly\Database\Database::class, Swiftly\Database\Database::class );
+        $services->bindSingleton( Database::class, Database::class );
 
         return;
     }

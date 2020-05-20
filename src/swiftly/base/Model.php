@@ -3,7 +3,6 @@
 namespace Swiftly\Base;
 
 use Swiftly\Database\Database;
-use Swiftly\Services\Manager;
 
 /**
  * The abstract class all models should inherit
