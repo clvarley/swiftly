@@ -35,3 +35,6 @@ define( 'APP_VIEW', APP_BASE . 'app/view/' );
 
 // Models folder
 define( 'APP_MODEL', APP_BASE . 'app/model/' );
+
+// Entities/services folder
+define( 'APP_ENTITY', APP_BASE . 'app/entity/' );
