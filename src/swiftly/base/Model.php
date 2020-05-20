@@ -48,7 +48,7 @@ Abstract Class Model
      */
     protected function getDb() : Database
     {
-        return $this->getDatabase();
+        return $this->database;
     }
 
 }
