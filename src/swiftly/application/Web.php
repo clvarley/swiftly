@@ -3,7 +3,7 @@
 namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
-use \Swiftly\Services\Manager;
+use \Swiftly\Dependencies\Container;
 use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\Php;
 use \Swiftly\Routing\Router;
@@ -24,9 +24,9 @@ Class Web Implements ApplicationInterface
     private $config = null;
 
     /**
-     * @var Manager $services Service manager
+     * @var Container $services Dependency manager
      */
-    private $services = null;
+    private $dependencies = null;
 
     /**
      * Create our application
@@ -37,41 +37,26 @@ Class Web Implements ApplicationInterface
     {
         $this->config = $config;
 
-        $this->services = Manager::getInstance();
-        $this->services->registerService( 'request', Request::fromGlobals() );
-        $this->services->registerService( 'response', new Response() );
+        $this->dependencies = new Container;
 
-        $database = $config->getValue( 'database' );
+        // Bind app singletons
+        $this->dependencies->bindSingleton( Config::class,   $config );
+        $this->dependencies->bindSingleton( Request::class,  Request::fromGlobals() );
+        $this->dependencies->bindSingleton( Response::class, new Response() );
 
-        // Create the database object
-        if ( !empty( $database ) && !empty( $database['adapter'] ) ) {
-
-            // Get the correct adapter
-            switch ( \mb_strtolower( $database['adapter'] ?? 'mysqli' ) ) {
-                case 'sqlite':
-                    $adapter = new Sqlite( $database );
-                break;
-
-                case 'postgres':
-                case 'postgresql':
-                    $adapter = new Postgres( $database );
-                break;
-
-                case 'mysql':
-                case 'mysqli':
-                default:
-                    $adapter = new Mysql( $database );
-                break;
-            }
-
-            // Create the DB abstraction
-            $database = new Database( $adapter );
-            $database->open();
-
-            $this->services->registerService( 'db', $database );
+        // Register the database object
+        if ( $config->hasValue( 'adapter' ) ) {
+            $this->bindDatabase( $this->dependencies, $config->getValue( 'database' ) );
         }
 
-        // TODO: MORE!
+        // Register the template engine
+        if ( $config->hasValue( 'template' ) ) {
+            // TODO: Tidy this whole section up
+        } else {
+            $this->dependencies->bindInstance( Swiftly\Template\TemplateInterface::class, Php::class );
+        }
+
+        // TODO:
     }
 
     /**
@@ -88,7 +73,7 @@ Class Web Implements ApplicationInterface
         }
 
         // Get the global request object
-        $http = $this->services->getService( 'request' );
+        $http = $this->dependencies->resolve( Request::class );
 
 
         // Load route.json and dispatch
@@ -99,10 +84,10 @@ Class Web Implements ApplicationInterface
         $action = $router->dispatch( $http );
 
         // Get the global response object
-        $response = $this->services->getService( 'response' );
+        $response = $this->dependencies->resolve( Response::class );
 
         // Did we return a callable route?
-        if ( \is_null( $action ) || !$action->prepare( $this->services ) ) {
+        if ( \is_null( $action ) || !$action->prepare( $this->dependencies ) ) {
 
             $response->setStatus( 404 );
 
@@ -120,6 +105,44 @@ Class Web Implements ApplicationInterface
 
         // Send the response and end!
         $response->send();
+
+        return;
+    }
+
+    /**
+     * Binds the database adapter
+     *
+     * @param Swiftly\Dependencies\Container $services  Dependency manager
+     * @param array $config                             Database config
+     * @return void                                     N/a
+     */
+    private function bindDatabase( Container $services, array $config ) : void
+    {
+        // Get the correct adapter
+        switch( \mb_strtolower( $config['adapter'] ) ) {
+            case 'sqlite':
+                $adapter = Sqlite::class;
+            break;
+
+            case 'postgres':
+            case 'postgresql':
+                $adapter = Postgres::class;
+            break;
+
+            case 'mysql':
+            case 'mysqli':
+            default:
+                $adapter = Mysql::class;
+            break;
+        }
+
+        // Bind the adapter
+        $services->bindInstance( Swiftly\Database\AdapterInterface::class, function() use (&$config) {
+            return new $adapter( $config );
+        });
+
+        // Bind the database wrapper
+        $services->bindSingleton( Swiftly\Database\Database::class, Swiftly\Database\Database::class );
 
         return;
     }
