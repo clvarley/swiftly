@@ -94,6 +94,7 @@ Abstract Class Controller
      */
     public function getModel( string $name ) : ?Model
     {
+
         if ( !isset( $this->models[$name] ) ) {
             $this->models[$name] = $this->createModel( $name );
         }
@@ -117,7 +118,8 @@ Abstract Class Controller
             include APP_MODEL . $name . '.php';
 
             if ( \class_exists( $name ) ) {
-                $result = new $name( $this->dependencies->resolve( Swiftly\Database\Database::class ) );
+                $this->dependencies->bindSingleton( $name, $name );
+                $result = $this->dependencies->resolve( $name );
             }
         }
 
