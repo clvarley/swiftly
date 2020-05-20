@@ -23,7 +23,7 @@ Abstract Class Model
      *
      * @param Database $database DB wrapper
      */
-    public function __construct( Database $database = null )
+    public function __construct( Database $database )
     {
         $this->database = $database;
     }
@@ -35,7 +35,7 @@ Abstract Class Model
      */
     protected function getDatabase() : Database
     {
-        return ( $this->database ?? Manager::getInstance()->getService( 'db' ) );
+        return $this->database;
     }
 
     /**
