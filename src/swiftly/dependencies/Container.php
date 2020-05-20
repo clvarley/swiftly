@@ -44,8 +44,8 @@ Class Container
     /**
      * Resolve the given dependency
      *
-     * @param string $name
-     * @return
+     * @param string $name Service name
+     * @return object|null Service implementation
      */
     public function resolve( string $name ) /* : ?object */
     {
@@ -56,5 +56,16 @@ Class Container
         }
 
         return $result;
+    }
+
+    /**
+     * Check to see if a service exists
+     *
+     * @param string $name  Service name
+     * @return bool         Service exists
+     */
+    public function has( string $name ) : bool
+    {
+        return isset( $this->services[$name] );
     }
 }
