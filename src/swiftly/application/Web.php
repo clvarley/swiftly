@@ -93,10 +93,10 @@ Class Web Implements ApplicationInterface
 
         } else {
 
-            $action->getController()->setRenderer( new Php() );
+            $action->getController()->setRenderer( $this->dependencies->resolve( Swiftly\Template\TemplateInterface::class ) );
 
             // Execute the request
-            $result = $action->execute();
+            $result = $action->execute( $this->dependencies );
 
             if ( !empty( $body = $result->getOutput() ) ) {
                 $response->setBody( $body );

@@ -3,6 +3,7 @@
 namespace Swiftly\Routing;
 
 use \Swiftly\Base\Controller;
+use \Swiftly\Dependencies\Container;
 
 /**
  * Represents an action that can be called
@@ -103,10 +104,11 @@ Class Action
      *
      * Calling code should have already called the {@see Action::prepare} method
      *
-     * @param array $params             Parameters
-     * @return \Swiftly\Base\Controller The controller
+     * @param Swiftly\Dependencies\Container $services  Dependency manager
+     * @param array $params                             Parameters
+     * @return \Swiftly\Base\Controller                 The controller
      */
-    public function execute( array $params = [] ) : Controller
+    public function execute( Container $services, array $params = [] ) : Controller
     {
         $args = [];
 
@@ -118,8 +120,8 @@ Class Action
         $method_params = $method_info->getParameters();
 
         // Handle the parameters
-        if ( !empty( $method_params ) && !empty( $params ) ) {
-            $args = $this->handleParams( $method_params, $params );
+        if ( !empty( $method_params ) ) {
+            $args = $this->handleParams( $method_params, $params, $services );
         }
 
         // Execute the method
@@ -133,9 +135,10 @@ Class Action
      *
      * @param  array $method_params Method Parameters
      * @param  array $context       Context variables
+     * @param  Container $services  Dependency manager
      * @return array                Method arguments
      */
-    private function handleParams( array $method_params, array $context ) : array
+    private function handleParams( array $method_params, array $context, Container $services ) : array
     {
         $args = [];
 
@@ -145,14 +148,16 @@ Class Action
             $name = $param->getName();
             $type = $param->getType();
 
+            // Try to guess what the method wants
             if ( isset( $context[$name] ) && $this->isType( $type, $context[$name] ) ) {
                 $value = $context[$name];
-            } elseif ( $param->isOptional() ) {
+            } elseif ( !$type->isBuiltin() ) {
+                $value = $services->resolve( $type->getName() );
+            }
+
+            // If we fail and get nothing
+            if ( is_null( $value ) && $param->isOptional() ) {
                 $value = $param->getDefaultValue();
-            } elseif ( $param->allowsNull() ) {
-                $value = null;
-            } else {
-                // TODO: Handle error cases
             }
 
             $args[$param->getPosition()] = $value;
@@ -179,29 +184,27 @@ Class Action
             return true;
         }
 
-        if ( $type->isBuiltin() ) {
+        // Use the appropriate check
+        switch ( $name ) {
+            case 'string':
+                $result = \is_scalar( $variable );
+            break;
 
-            // Use the appropriate check
-            switch ( $name ) {
-                case 'string':
-                    $result = \is_scalar( $variable );
-                break;
+            case 'int':
+            case 'integer':
+            case 'float':
+            case 'double':
+                $result = \is_numeric( $variable );
+            break;
 
-                case 'int':
-                case 'integer':
-                case 'float':
-                case 'double':
-                    $result = \is_numeric( $variable );
-                break;
+            case 'bool':
+            case 'boolean':
+                $result = \is_bool( $variable );
+            break;
 
-                case 'bool':
-                case 'boolean':
-                    $result = \is_bool( $variable );
-                break;
-            }
-
-        } elseif ( is_a( $variable, $name ) ) {
-            $result = true;
+            default:
+                $result = \is_a( $variable, $name );
+            break;
         }
 
         return $result;

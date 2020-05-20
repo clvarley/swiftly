@@ -2,8 +2,8 @@
 
 namespace Swiftly\Base;
 
-use \Swiftly\Services\Manager;
-use \Swiftly\Template\TemplateInterface As Renderer;
+use \Swiftly\Template\TemplateInterface;
+use \Swiftly\Dependencies\Container;
 use \Swiftly\Base\Model;
 
 /**
@@ -15,12 +15,12 @@ Abstract Class Controller
 {
 
     /**
-     * @var Manager $services Service manager
+     * @var Swiftly\Dependencies\Container $dependencies Dependency manager
      */
-    private $services = null;
+    private $dependencies = null;
 
     /**
-     * @var Renderer $renderer Internal renderer
+     * @var TemplateInterface $renderer Internal renderer
      */
     private $renderer = null;
 
@@ -37,31 +37,23 @@ Abstract Class Controller
     /**
      * Load the services into the base controller
      *
-     * @param Manager $services Service manager
+     * @param Swiftly\Dependencies\Container $container Dependency manager
      */
-    public function __construct( Manager $services = null )
+    public function __construct( Container $container )
     {
-        $this->services = $services;
+        $this->dependencies = $container;
     }
 
-    /**
-     * Provide access to services directly
-     *
-     * @param string $name Service name
-     */
-    public function __get( string $name )
-    {
-        return ( $this->services !== null ? $this->services->getService( $name ) : null );
-    }
 
     /**
      * Provide access to services
      *
-     * @param string $name Service name
+     * @param string $name  Service name
+     * @return object|null  Service (Or null)
      */
     public function getService( string $name )
     {
-        return ( $this->services !== null ? $this->services->getService( $name ) : null );
+        return $this->dependencies->resolve( $name );
     }
 
     /**
@@ -87,9 +79,9 @@ Abstract Class Controller
     /**
      * Sets the object that will be used for rendering
      *
-     * @param
+     * @param TemplateInterface $renderer Template renderer
      */
-    public function setRenderer( Renderer $renderer ) : void
+    public function setRenderer( TemplateInterface $renderer ) : void
     {
         $this->renderer = $renderer;
     }
@@ -125,7 +117,7 @@ Abstract Class Controller
             include APP_MODEL . $name . '.php';
 
             if ( \class_exists( $name ) ) {
-                $result = new $name( $this->getService( 'db' ) );
+                $result = new $name( $this->dependencies->resolve( Swiftly\Database\Database::class ) );
             }
         }
 
