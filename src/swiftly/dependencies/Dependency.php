@@ -52,7 +52,7 @@ Class Dependency
         } elseif ( is_object( $this->implementation ) ) {
             $result = $this->implementation;
         } elseif ( is_string( $this->implementation ) && class_exists( $this->implementation ) ) {
-            $result = new $this->implementation;
+            $result = $this->initialize( $this->implementation, $container );
         }
 
         if ( $this->is_singleton ) {
@@ -61,5 +61,42 @@ Class Dependency
         }
 
         return $result;
+    }
+
+    /**
+     * Resolves arameters of an object constructor and creates an object
+     *
+     * @param string $class                   Class name
+     * @param Swiftly\Dependencies\Container  Dependency container
+     * @return object                         Initialized object
+     */
+    private function initialize( string $class, Container $container ) /* :object */
+    {
+        $constructor = ( new \ReflectionClass( $class ) )->getConstructor();
+
+        // No constructor
+        if ( empty( $constructor ) ) {
+            return ( new $class );
+        }
+
+        // TODO: Needs a tidy
+
+        $arguments = [];
+
+        foreach ( $constructor->getParameters() as $param ) {
+            $value = null;
+
+            if ( !$param->isBuiltin() ) {
+                $value = $container->resolve( $param->getType() );
+            }
+
+            if ( $value === null && $param->isOptional() ) {
+                $value = $param->getDefaultValue();
+            }
+
+            $arguments[$param->getPosition()] = $value;
+        }
+
+        return ( new $class( ...$arguments ) );
     }
 }
