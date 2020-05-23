@@ -137,12 +137,16 @@ Class Web Implements ApplicationInterface
         }
 
         // Bind the adapter
-        $services->bindInstance( AdapterInterface::class, function() use (&$config, $adapter) {
+        $services->bindInstance( AdapterInterface::class, function () use (&$config, $adapter) {
             return new $adapter( $config );
         });
 
         // Bind the database wrapper
-        $services->bindSingleton( Database::class, Database::class );
+        $services->bindSingleton( Database::class, function ( $service ) {
+            $database = new Database( $service->resolve( AdapterInterface::class ) );
+            $database->open();
+            return $database;
+        });
 
         return;
     }
