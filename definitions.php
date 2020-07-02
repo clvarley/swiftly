@@ -24,9 +24,6 @@ define( 'APP_CONFIG', APP_BASE . 'config/' );
 // Source folder
 define( 'APP_SRC', APP_BASE . 'src/' );
 
-// Swiftly source
-define( 'APP_SWIFTLY', APP_SRC . 'swiftly/' );
-
 // App folder
 define( 'APP_APP', APP_BASE . 'app/controller/' );
 
@@ -38,3 +35,6 @@ define( 'APP_MODEL', APP_BASE . 'app/model/' );
 
 // Entities/services folder
 define( 'APP_ENTITY', APP_BASE . 'app/entity/' );
+
+// Swiftly source
+define( 'APP_SWIFTLY', APP_SRC . 'swiftly/' );

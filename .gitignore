@@ -2,6 +2,3 @@
 *.sql
 *.log
 *.env
-
-# Swivel is not yet ready for public consumption :)
-/src/swivel

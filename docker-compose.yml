@@ -8,7 +8,7 @@ services:
       - ./:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - atomicnet
+      - net
   php:
     build:
       context: .
@@ -17,7 +17,7 @@ services:
     volumes:
      - .:/var/www/html
     networks:
-     - atomicnet
+     - net
   mysql:
     image: mysql:5.7
     ports:
@@ -28,13 +28,11 @@ services:
       MYSQL_USER: "username"
       MYSQL_PASSWORD: "secret"
     volumes:
-      # - mysqldata:/var/lib/mysql
       - ./data/development.sql:/docker-entrypoint-initdb.d/development.sql
     networks:
-      - atomicnet
-    # command: ["sh", "-c", "envsubst '$$ENV' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+      - net
 networks:
-  atomicnet:
+  net:
     driver: "bridge"
 volumes:
   mysqldata:
