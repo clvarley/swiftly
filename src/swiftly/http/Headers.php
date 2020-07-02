@@ -92,10 +92,12 @@ Class Headers
      */
     public function addHeader( string $name, string $value ) : void
     {
-        if ( \array_key_exists( \mb_strtolower( $name ), $this->headers ) ) {
-            $this->headers[\mb_strtolower( $name )][] = $value;
+        $name = \mb_strtolower( $name );
+
+        if ( \array_key_exists( $name, $this->headers ) ) {
+            $this->headers[$name][] = $value;
         } else {
-            $this->headers[\mb_strtolower( $name )] = [$value];
+            $this->headers[$name] = [ $value ];
         }
 
         return;
