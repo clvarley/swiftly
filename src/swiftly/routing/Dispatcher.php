@@ -2,6 +2,7 @@
 
 namespace Swiftly\Routing\Dispatcher;
 
+use \Swiftly\Http\Server\Request;
 use \Swiftly\Routing\Parser\ParserInterface;
 
 /**
@@ -94,17 +95,18 @@ Class Dispatcher
     /**
      * Returns all the routes that match the path
      *
-     * @param  string $method [description]
-     * @param  string $path   [description]
-     * @return array          [description]
+     * @param \Swiftly\Http\Server\Request $request HTTP request
+     * @return \Swiftly\Routing\Action|null         Action
      */
-    public function dispatch( string $method, string $path ) : array
+    public function dispatch( Request $request ) : ?Action
     {
+        $method = $request->getMethod();
+
         if ( !\in_array( $method, self::ALLOWED_METHODS ) ) {
             $method = 'GET';
         }
 
-        $path = \rtrim( $path, " \n\r\t\0\x0B\\/" );
+        $path = \rtrim( $request->getUrl(), " \n\r\t\0\x0B\\/" );
 
         if ( empty( $path ) ) {
             $path = '/';
@@ -116,7 +118,7 @@ Class Dispatcher
         }
 
         if ( !\preg_match_all( $this->compiled[$method], $path, $matches, \PREG_SET_ORDER ) ) {
-            return [];
+            return null;
         }
 
         $route = $this->routes[$matches[0]['MARK']];
@@ -127,6 +129,11 @@ Class Dispatcher
         foreach ( $route['args'] ?? [] as $index => $param ) {
             $args[$param['name']] = $matches[0][$index + 1] ?? null;
         }
+
+        echo '<pre>';
+        var_dump( $handler, $args );
+        echo '</pre>';
+        die;
 
         return [ $route['handler'], $args ];
     }

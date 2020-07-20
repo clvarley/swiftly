@@ -104,7 +104,7 @@ Class Action
      *
      * Calling code should have already called the {@see Action::prepare} method
      *
-     * @param Swiftly\Dependencies\Container $services  Dependency manager
+     * @param \Swiftly\Dependencies\Container $services Dependency manager
      * @param array $params                             Parameters
      * @return \Swiftly\Base\Controller                 The controller
      */
@@ -209,5 +209,4 @@ Class Action
 
         return $result;
     }
-
 }
