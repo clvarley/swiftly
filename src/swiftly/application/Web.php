@@ -9,6 +9,7 @@ use \Swiftly\Template\Php;
 use \Swiftly\Routing\Router;
 use \Swiftly\Database\{ Database, AdapterInterface };
 use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
+use \Swiftly\Routing\Parser\{ ParserInterface, JsonParser };
 
 /**
  * The front controller for our web app
@@ -40,9 +41,10 @@ Class Web Implements ApplicationInterface
         $this->dependencies = new Container;
 
         // Bind app singletons
-        $this->dependencies->bindSingleton( Config::class,   $config );
-        $this->dependencies->bindSingleton( Request::class,  Request::fromGlobals() );
-        $this->dependencies->bindSingleton( Response::class, new Response() );
+        $this->dependencies->bindSingleton( Config::class,          $config );
+        $this->dependencies->bindSingleton( Request::class,         Request::fromGlobals() );
+        $this->dependencies->bindSingleton( Response::class,        new Response() );
+        $this->dependencies->bindSingleton( ParserInterface::class, new JsonParser() );
 
         // Register the database object
         if ( $config->hasValue( 'database' ) ) {
@@ -65,12 +67,10 @@ Class Web Implements ApplicationInterface
     public function start() : void
     {
 
-        // Create a router
-        if ( $this->config->getValue( 'router' ) === 'advanced' ) {
-            $router = Router::newAdvanced();
-        } else {
-            $router = Router::newSimple();
-        }
+        // Create a new router
+        $parser = $this->dependencies->resolve( ParserInterface::class );
+        $router = new Dispatcher( $parser );
+
 
         // Get the global request object
         $http = $this->dependencies->resolve( Request::class );
