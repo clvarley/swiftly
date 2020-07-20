@@ -6,7 +6,7 @@ use \Swiftly\Config\Config;
 use \Swiftly\Dependencies\Container;
 use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\Php;
-use \Swiftly\Routing\Router;
+use \Swiftly\Routing\Dispatcher;
 use \Swiftly\Database\{ Database, AdapterInterface };
 use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
 use \Swiftly\Routing\Parser\{ ParserInterface, JsonParser };

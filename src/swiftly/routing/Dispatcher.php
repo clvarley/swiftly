@@ -1,6 +1,6 @@
 <?php
 
-namespace Swiftly\Routing\Dispatcher;
+namespace Swiftly\Routing;
 
 use \Swiftly\Http\Server\Request;
 use \Swiftly\Routing\Parser\ParserInterface;
@@ -88,8 +88,6 @@ Class Dispatcher
     public function load( string $filename ) : void
     {
         $this->routes = $this->parser->parseFile( $filename );
-
-        return;
     }
 
     /**
@@ -130,12 +128,11 @@ Class Dispatcher
             $args[$param['name']] = $matches[0][$index + 1] ?? null;
         }
 
-        echo '<pre>';
-        var_dump( $handler, $args );
-        echo '</pre>';
-        die;
-
-        return [ $route['handler'], $args ];
+        return new Action(
+            $route['handler']['class'],
+            $route['handler']['method'],
+            $args
+        );
     }
 
     /**
