@@ -21,6 +21,7 @@ function mb_ucfirst( string $subject ) : string
     return $subject;
 }
 
+
 /**
  * Lowercases the first letter of the string
  *
@@ -35,6 +36,7 @@ function mb_lcfirst( string $subject ) : string
 
     return $subject;
 }
+
 
 /**
  * Formats a human readable string for this number of bytes
@@ -80,6 +82,7 @@ function format_bytes( int $bytes ) : string
 
     return $formatted;
 }
+
 
 /**
  * Checks to see if every element in the array satisfies the callback
