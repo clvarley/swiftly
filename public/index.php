@@ -32,7 +32,7 @@ require_once APP_SWIFTLY . 'utilities/Autoloader.php';
 
 // Get the autoloader
 $autoloader = new Autoloader();
-$autoloader->addPrefix( '*', APP_APP );
+$autoloader->addPrefix( '*', APP_CONTROLLER );
 $autoloader->addPrefix( 'Swiftly', APP_SWIFTLY );
 
 
@@ -79,4 +79,3 @@ error_reporting( $error_level );
 
 // Start!
 ( new Swiftly\Application\Web( $config ) )->start();
-
