@@ -72,11 +72,11 @@ Final Class Autoloader
             if ( !\is_dir( $route_dir ) ) return; // Missing directory!
         }
 
-        $files = \glob( $route_dir . '*.php' );
+        $files = \scandir( $route_dir, \SCANDIR_SORT_NONE );
 
         foreach ( $files as $file ) {
-            if ( \mb_strtolower( \basename( $file, '.php' ) ) === $class_name ) {
-                require $file;
+            if ( \mb_strtolower( \mb_substr( $file, 0, -4 ) ) === $class_name ) {
+                require $route_dir . $file;
                 return; // Class file found!
             }
         }
