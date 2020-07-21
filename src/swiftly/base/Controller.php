@@ -113,9 +113,9 @@ Abstract Class Controller
         $result = null;
 
         // TODO: This needs a lot of work!
-        if ( \is_file( APP_MODEL . $name . '.php' ) ) {
+        if ( \is_file( \APP_MODEL . $name . '.php' ) ) {
 
-            include APP_MODEL . $name . '.php';
+            include \APP_MODEL . $name . '.php';
 
             if ( \class_exists( $name ) ) {
                 $this->dependencies->bindSingleton( $name, $name );
@@ -135,7 +135,7 @@ Abstract Class Controller
      */
     public function render( string $template, array $data = [] ) : string
     {
-        return $this->renderer->render( APP_VIEW . $template, $data );
+        return $this->renderer->render( \APP_VIEW . $template, $data );
     }
 
 }
