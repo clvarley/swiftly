@@ -63,8 +63,7 @@ Final Class Autoloader
             $route_dir = \get_include_path();
         }
 
-        /
-        if ( \is_dir( $route_dir ) ) {
+        if ( !\is_dir( $route_dir ) ) {
             return;
         }
 
@@ -76,7 +75,7 @@ Final Class Autoloader
         $files = \glob( $route_dir . '*.php' );
 
         foreach ( $files as $file ) {
-            if ( \basename( $file, '.php' ) === $class_name ) {
+            if ( \mb_strtolower( \basename( $file, '.php' ) ) === $class_name ) {
                 require $file;
                 return; // Class file found!
             }
