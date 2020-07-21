@@ -40,15 +40,15 @@ Final Class Autoloader
      * Used by spl_autoload_register
      *
      * @param string $class_name  Class name
-     * @return bool               File found?
+     * @return void               N/a
      */
-    public function find( string $class_name ) : bool
+    public function find( string $class_name ) : void
     {
-        $class_name = mb_strtolower( trim( $class_name, '\\ ' ) );
+        $class_name = \mb_strtolower( \trim( $class_name, '\\ ' ) );
 
-        if ( mb_strpos( $class_name, '\\') !== false ) {
-            $namespace_parts = explode( '\\', $class_name );
-            $class_name = array_pop( $namespace_parts );
+        if ( \mb_strpos( $class_name, '\\') !== false ) {
+            $namespace_parts = \explode( '\\', $class_name );
+            $class_name = \array_pop( $namespace_parts );
         } else {
             $namespace_parts = [];
             $class_name = $class_name;
@@ -60,25 +60,28 @@ Final Class Autoloader
         } elseif ( isset( $this->prefixes['*'] ) ) {
             $route_dir = $this->prefixes['*'];
         } else {
-            return false; // Error!
+            $route_dir = \get_include_path();
         }
 
-        if ( is_dir( $route_dir ) ) {
-            foreach ( $namespace_parts as $part ) {
-                $route_dir .= $part . DIRECTORY_SEPARATOR;
-                if ( !is_dir( $route_dir ) ) return false; // Missing directory!
-            }
+        /
+        if ( \is_dir( $route_dir ) ) {
+            return;
+        }
 
-            $files = glob( $route_dir . '*.php' );
+        foreach ( $namespace_parts as $part ) {
+            $route_dir .= $part . \DIRECTORY_SEPARATOR;
+            if ( !\is_dir( $route_dir ) ) return; // Missing directory!
+        }
 
-            foreach ( $files as $file ) {
-                if ( mb_strtolower( basename( $file, '.php' ) ) === $class_name ) {
-                    include_once $file;
-                    return true; // Class file found!
-                }
+        $files = \glob( $route_dir . '*.php' );
+
+        foreach ( $files as $file ) {
+            if ( \basename( $file, '.php' ) === $class_name ) {
+                require $file;
+                return; // Class file found!
             }
         }
 
-        return false; // Not found!
+        return; // Not found! :(
     }
 }
