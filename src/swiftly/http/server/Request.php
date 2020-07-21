@@ -217,7 +217,7 @@ Class Request
 
         foreach ( $_SERVER as $name => $value ) {
             if ( \mb_strpos($name, 'HTTP_') === 0 ) {
-                $request->headers->addHeader( mb_substr( $name, 5 ), $value );
+                $request->headers->addHeader( \mb_substr( $name, 5 ), $value );
             }
         }
 

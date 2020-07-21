@@ -102,14 +102,14 @@ Class JsonParser Implements ParserInterface
         }
 
         // Get the path
-        if ( empty( $route['path'] ) || !is_string( $route['path'] ) ) {
+        if ( empty( $route['path'] ) || !\is_string( $route['path'] ) ) {
             // TODO: Logic to handle this
         } else {
             $standard['path'] = $this->parseRoute( $route['path'], $standard['args'] );
         }
 
         // Get the controller
-        if ( empty( $route['handler'] ) || !is_string( $route['handler'] ) ) {
+        if ( empty( $route['handler'] ) || !\is_string( $route['handler'] ) ) {
             // TODO: Logic to handle this
         }
 

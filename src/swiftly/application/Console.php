@@ -57,7 +57,7 @@ Class Console Implements ApplicationInterface
         $action = $router->dispatch( $command_name );
 
         // Did we return a callable action?
-        if ( is_null( $action ) ) {
+        if ( \is_null( $action ) ) {
 
             $cli = $this->services->getService( 'output' );
 
@@ -65,7 +65,7 @@ Class Console Implements ApplicationInterface
             $cli->toRed()
                 ->write( 'Swiftly Error: ' )
                 ->reset()
-                ->writeLine( sprintf(
+                ->writeLine( \sprintf(
                     'Could not find a handler for command \'%s\'',
                     $command_name
                 ));
@@ -80,7 +80,7 @@ Class Console Implements ApplicationInterface
             $controller = new $controller( $this->services );
 
             // Make sure quiting stops the program
-            ignore_user_abort( false );
+            \ignore_user_abort( false );
 
             // Call the method
             $controller->{$method}();

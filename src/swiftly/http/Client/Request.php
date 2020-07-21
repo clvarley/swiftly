@@ -111,7 +111,7 @@ Class Request
             return null;
         }
 
-        $status_code = +(int)\curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
+        $status_code = +(int)\curl_getinfo( $this->handle, \CURLINFO_HTTP_CODE );
 
         return ( new Response( $status_code, $this->response_headers, $response ) );
     }
@@ -143,7 +143,7 @@ Class Request
             return null;
         }
 
-        $status_code = +(int)\curl_getinfo( $this->handle, CURLINFO_HTTP_CODE );
+        $status_code = +(int)\curl_getinfo( $this->handle, \CURLINFO_HTTP_CODE );
 
         // TODO: Check this is robust enough, dev will have to content type
 
@@ -161,7 +161,7 @@ Class Request
             return null;
         }
 
-        \curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'PUT' );
+        \curl_setopt( $this->handle, \CURLOPT_CUSTOMREQUEST, 'PUT' );
 
         // TODO:
 
@@ -179,7 +179,7 @@ Class Request
             return null;
         }
 
-        \curl_setopt( $this->handle, CURLOPT_CUSTOMREQUEST, 'DELETE' );
+        \curl_setopt( $this->handle, \CURLOPT_CUSTOMREQUEST, 'DELETE' );
 
         // TODO:
 
@@ -199,14 +199,14 @@ Class Request
 
             if ( $this->handle !== false ) {
 
-                \curl_setopt( $this->handle, CURLOPT_URL, $this->url );
-                \curl_setopt( $this->handle, CURLOPT_HEADER, false );
-                \curl_setopt( $this->handle, CURLOPT_RETURNTRANSFER, true );
-                \curl_setopt( $this->handle, CURLOPT_HEADERFUNCTION, [ $this, '_parseHeaders' ] );
+                \curl_setopt( $this->handle, \CURLOPT_URL, $this->url );
+                \curl_setopt( $this->handle, \CURLOPT_HEADER, false );
+                \curl_setopt( $this->handle, \CURLOPT_RETURNTRANSFER, true );
+                \curl_setopt( $this->handle, \CURLOPT_HEADERFUNCTION, [ $this, '_parseHeaders' ] );
 
                 if ( !empty( $this->headers ) ) {
 
-                    \curl_setopt( $this->handle, CURLOPT_HTTPHEADER, $this->headers );
+                    \curl_setopt( $this->handle, \CURLOPT_HTTPHEADER, $this->headers );
 
                 }
 

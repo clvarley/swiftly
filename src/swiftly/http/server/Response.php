@@ -81,7 +81,7 @@ Class Response
      */
     public function redirect( string $location, int $status = 303 ) : void
     {
-        header( 'Location:' . $location, true, $status );
+        \header( 'Location:' . $location, true, $status );
         exit;
     }
 
@@ -91,12 +91,12 @@ Class Response
     public function send() : void
     {
         if ( $this->status_code !== 200 ) {
-            http_response_code( $this->status_code );
+            \http_response_code( $this->status_code );
         }
 
         foreach ( $this->headers->getAll() as $header_name => $values ) {
             foreach ( $values as $key => $value ) {
-                header( $header_name . ': ' . $value, $key < 1 );
+                \header( $header_name . ': ' . $value, $key < 1 );
             }
         }
 

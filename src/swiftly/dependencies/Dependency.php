@@ -46,12 +46,12 @@ Class Dependency
     {
         $result = null;
 
-        if ( is_callable( $this->implementation ) ) {
+        if ( \is_callable( $this->implementation ) ) {
             $callback = $this->implementation;
             $result = $callback( $container );
-        } elseif ( is_object( $this->implementation ) ) {
+        } elseif ( \is_object( $this->implementation ) ) {
             $result = $this->implementation;
-        } elseif ( is_string( $this->implementation ) && class_exists( $this->implementation ) ) {
+        } elseif ( \is_string( $this->implementation ) && \class_exists( $this->implementation ) ) {
             $result = $this->initialize( $this->implementation, $container );
         }
 

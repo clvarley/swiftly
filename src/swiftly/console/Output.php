@@ -108,7 +108,7 @@ Class Output
      */
     public function writeLine( string $output = '' ) : Output
     {
-        echo $output . PHP_EOL;
+        echo $output . \PHP_EOL;
 
         return $this;
     }

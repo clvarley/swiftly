@@ -1,6 +1,7 @@
 <?php
 
 use Swiftly\Base\Controller;
+use Swiftly\Database\Database;
 
 /**
  * The default controller that handles the homepage

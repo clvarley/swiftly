@@ -156,7 +156,7 @@ Class Action
             }
 
             // If we fail and get nothing
-            if ( is_null( $value ) && $param->isOptional() ) {
+            if ( \is_null( $value ) && $param->isOptional() ) {
                 $value = $param->getDefaultValue();
             }
 

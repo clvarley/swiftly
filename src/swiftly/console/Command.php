@@ -71,7 +71,7 @@ Class Command
         if ( isset( $argv ) && isset( $argv[0] ) ) {
 
             // First arg will sometimes be the Swiftly core file
-            if ( is_file( $argv[0] ) && mb_substr( $argv[0], -16 ) === 'public/index.php' ) {
+            if ( \is_file( $argv[0] ) && \mb_substr( $argv[0], -16 ) === 'public/index.php' ) {
 
                 $name = ( isset( $argv[1] ) ? $argv[1] : '' );
 
@@ -81,7 +81,7 @@ Class Command
 
             }
 
-            $args = array_slice( $args, 1 );
+            $args = \array_slice( $args, 1 );
 
         }
 
@@ -90,7 +90,7 @@ Class Command
         // Set the values
         $command->setName( $name );
         $command->setArguments( $args );
-        $command->setDirectory( getcwd() );
+        $command->setDirectory( \getcwd() );
 
         return $command;
     }
@@ -168,7 +168,7 @@ Class Command
      */
     public function hasOption( string $name ) : bool
     {
-        return ( array_key_exists( $name, $this->options ) );
+        return ( \array_key_exists( $name, $this->options ) );
     }
 
     /**
@@ -244,7 +244,7 @@ Class Command
      */
     protected function setDirectory( string $directory ) : void
     {
-        $this->directory = ( is_dir( $directory ) ? $directory : $this->directory );
+        $this->directory = ( \is_dir( $directory ) ? $directory : $this->directory );
     }
 
 }

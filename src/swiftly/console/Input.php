@@ -18,9 +18,9 @@ Class Input
      */
     public function prompt( string $prompt ) : string
     {
-        $input = readline( $prompt );
+        $input = \readline( $prompt );
 
-        return trim( $input );
+        return \trim( $input );
     }
 
     /**
@@ -35,13 +35,13 @@ Class Input
     {
         $confirm = false;
 
-        $yes = mb_strtoupper( $yes );
+        $yes = \mb_strtoupper( $yes );
 
-        $no = mb_strtoupper( $no );
+        $no = \mb_strtoupper( $no );
 
         // Loop until user picks one
         while ( true ) {
-            $input = trim( mb_strtoupper( readline( $prompt . " [$yes/$no] " ) ) );
+            $input = \trim( \mb_strtoupper( \readline( $prompt . " [$yes/$no] " ) ) );
 
             if ( $input === $yes ) {
                 $confirm = true;

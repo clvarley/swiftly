@@ -35,7 +35,7 @@ Class Headers
      */
     public function getHeader( string $name ) : ?string
     {
-        return ( $this->headers[mb_strtolower($name)][0] ?? null );
+        return ( $this->headers[\mb_strtolower( $name )][0] ?? null );
     }
 
     /**
@@ -46,7 +46,7 @@ Class Headers
      */
     public function getHeaders( string $name ) : ?array
     {
-        return ( $this->headers[mb_strtolower( $name )] ?? null );
+        return ( $this->headers[\mb_strtolower( $name )] ?? null );
     }
 
     /**

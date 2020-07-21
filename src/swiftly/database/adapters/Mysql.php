@@ -141,7 +141,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResult() : array
     {
-        return ( \is_null( $this->results ) ? [] : $this->results->fetch_array( MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results ) ? [] : $this->results->fetch_array( \MYSQLI_ASSOC ) );
     }
 
     /**
@@ -151,7 +151,7 @@ Class Mysql Implements AdapterInterface
      */
     public function getResults() : array
     {
-        return ( \is_null( $this->results ) ? [] : $this->results->fetch_all( MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results ) ? [] : $this->results->fetch_all( \MYSQLI_ASSOC ) );
     }
 
     /**

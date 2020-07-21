@@ -18,7 +18,7 @@ Final Class Autoloader
      */
     public function __construct()
     {
-        spl_autoload_register([ $this, 'find' ]);
+        \spl_autoload_register([ $this, 'find' ]);
     }
 
     /**
@@ -29,8 +29,8 @@ Final Class Autoloader
      */
     public function addPrefix( string $prefix, string $path ) : void
     {
-        if ( '' !== $prefix && is_dir( $path ) ) {
-            $this->prefixes[mb_strtolower( $prefix )] = $path;
+        if ( '' !== $prefix && \is_dir( $path ) ) {
+            $this->prefixes[\mb_strtolower( $prefix )] = $path;
         }
     }
 
