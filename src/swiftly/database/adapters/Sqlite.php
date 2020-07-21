@@ -52,7 +52,7 @@ Class Sqlite Implements AdapterInterface
     {
         $this->handle = new \SQLite3(
           $this->file,
-          SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE
+          \SQLITE3_OPEN_READWRITE | \SQLITE3_OPEN_CREATE
         );
 
         // TODO: Greater error checking here!
@@ -80,7 +80,7 @@ Class Sqlite Implements AdapterInterface
             $status = true;
 
             // Free memory
-            if ( !is_null( $this->result ) ) {
+            if ( !\is_null( $this->result ) ) {
                 $this->result->finalize();
             }
 
@@ -98,7 +98,7 @@ Class Sqlite Implements AdapterInterface
      */
     public function getResult() : array
     {
-        return ( is_null( $this->result ) ? [] : $this->result->fetchArray( SQLITE3_ASSOC ) );
+        return ( \is_null( $this->result ) ? [] : $this->result->fetchArray( \SQLITE3_ASSOC ) );
     }
 
     /**
@@ -110,8 +110,8 @@ Class Sqlite Implements AdapterInterface
         $return = [];
 
         // Are there results to read?
-        if ( !is_null( $this->result ) && $this->result->numColumns() ) {
-            while (( $result = $this->result->fetchArray( SQLITE3_ASSOC ) )) {
+        if ( !\is_null( $this->result ) && $this->result->numColumns() ) {
+            while (( $result = $this->result->fetchArray( \SQLITE3_ASSOC ) )) {
                 $return[] = $result;
             }
         }
@@ -135,7 +135,7 @@ Class Sqlite Implements AdapterInterface
     public function close() : void
     {
         // Free any stray result objects
-        if ( !is_null( $this->result ) ) {
+        if ( !\is_null( $this->result ) ) {
             $this->result->finalize();
         }
 
