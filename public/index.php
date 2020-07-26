@@ -52,7 +52,7 @@ switch ( (string)$config->getValue( 'environment' ) )
 {
     case 'development':
     case 'dev':
-        $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE /* | E_DEPRECATED */;
+        $error_level = E_ERROR | E_WARNING | E_PARSE | E_NOTICE | E_DEPRECATED | E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING;
     break;
 
     default:
