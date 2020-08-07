@@ -48,7 +48,7 @@ Class Container
      *
      * @param Swiftly\Dependencies\LoaderInterface $loader Dependency loader
      */
-    public function loadDependencies( LoaderInterface $loader ) : void
+    public function load( LoaderInterface $loader ) : void
     {
         $loader->load( $this );
     }
