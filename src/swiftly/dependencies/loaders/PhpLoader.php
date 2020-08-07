@@ -57,7 +57,14 @@ Class PhpLoader Implements LoaderInterface
                 continue;
             }
 
-            $implementation = !empty( $options['handler'] ) ? $options['handler'] : $name;
+            // Has a 'handler' function been set? Or an alternate name given?
+            if ( !empty( $options['handler'] ) && \is_callable( $options['handler'] ) ) {
+                $implementation = $options['handler'];
+            } elseif ( !empty( $options ) && \is_string( $options ) ) {
+                $implementation = $options;
+            } else {
+                $implementation = $name;
+            }
 
             // Add them to the container
             if ( !empty( $options['singleton'] ) ) {
