@@ -2,6 +2,8 @@
 
 namespace Swiftly\Dependencies;
 
+use Swiftly\Dependencies\LoaderInterface;
+
 /**
  * Dependency management
  *
@@ -39,6 +41,16 @@ Class Container
     public function bindInstance( string $name, $implementation ) : void
     {
         $this->services[$name] = new Dependency( $implementation, false );
+    }
+
+    /**
+     * Load services from the given dependency loader
+     *
+     * @param Swiftly\Dependencies\LoaderInterface $loader Dependency loader
+     */
+    public function loadDependencies( LoaderInterface $loader ) : void
+    {
+        $loader->load( $this );
     }
 
     /**
