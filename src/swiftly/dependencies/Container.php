@@ -20,33 +20,40 @@ Class Container
     private $services = [];
 
     /**
-     * Binds a service as a singleton
+     * Binds a new service by name
      *
-     * @param string $name    Service name
-     * @param callable|object Service implementation
-     * @return void           N/a
+     * @param string $name                      Service name
+     * @param callable|object                   Service implementation
+     * @return \Swiftly\Dependencies\Dependency  Dependency wrapper
      */
-    public function bindSingleton( string $name, $implementation ) : void
+    public function bind( string $name, $implementation ) : Dependency
     {
-        $this->services[$name] = new Dependency( $implementation, true );
+        $this->services[$name] = new Dependency( $implementation, $this );
+
+        return $this->services[$name];
     }
 
     /**
-     * Binds a service
+     * Used to assign an alias to a dependency
      *
-     * @param string $name    Service name
-     * @param callable|object Service implementation
-     * @return void           N/a
+     * @internal
+     *
+     * @param string $name                                  Service name
+     * @param \Swiftly\Dependencies\Dependency $dependency  Dependency wrapper
+     * @return \Swiftly\Dependencies\Dependency             Dependency wrapper
      */
-    public function bindInstance( string $name, $implementation ) : void
+    public function alias( string $name, Dependency $dependency ) : Dependency
     {
-        $this->services[$name] = new Dependency( $implementation, false );
+        $this->services[$name] = $dependency;
+
+        return $dependency;
     }
 
     /**
      * Load services from the given dependency loader
      *
-     * @param Swiftly\Dependencies\LoaderInterface $loader Dependency loader
+     * @param \Swiftly\Dependencies\LoaderInterface $loader Dependency loader
+     * @return void                                         N/a
      */
     public function load( LoaderInterface $loader ) : void
     {

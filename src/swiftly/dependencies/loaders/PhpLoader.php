@@ -32,8 +32,8 @@ Class PhpLoader Implements LoaderInterface
     /**
      * Attempts to load the dependencies from PHP file
      *
-     * @param Swiftly\Dependencies\Container $container Dependency container
-     * @return void                                     N/a
+     * @param \Swiftly\Dependencies\Container $container  Dependency container
+     * @return void                                       N/a
      */
     public function load( Container $container ) : void
     {
@@ -67,11 +67,8 @@ Class PhpLoader Implements LoaderInterface
             }
 
             // Add them to the container
-            if ( !empty( $options['singleton'] ) ) {
-                $container->bindSingleton( $name, $implementation );
-            } else {
-                $container->bindInstance( $name, $implementation );
-            }
+            $dependency = $container->bind( $name, $implementation );
+            $dependency->singleton( !empty( $options['singleton'] ) );
         }
 
         return;

@@ -22,8 +22,8 @@ Interface LoaderInterface
     /**
      * Load the dependencies defined in the file into the given container
      *
-     * @param Swiftly\Dependencies\Container $container Dependency container
-     * @return void                                     N/a
+     * @param \Swiftly\Dependencies\Container $container  Dependency container
+     * @return void                                       N/a
      */
     public function load( Container $container ) : void;
 

@@ -45,7 +45,7 @@ Class Web Implements ApplicationInterface
         $this->dependencies->load( $services );
 
         // Bind this config
-        $this->dependencies->bindSingleton( Config::class, $config );
+        $this->dependencies->bind( Config::class, $config )->singleton( true );
 
 
         // Register the appropriate database adapter
@@ -107,7 +107,7 @@ Class Web Implements ApplicationInterface
     /**
      * Binds the database adapter
      *
-     * @param Swiftly\Dependencies\Container $services  Dependency manager
+     * @param \Swiftly\Dependencies\Container $services Dependency manager
      * @param array $config                             Database config
      * @return void                                     N/a
      */
@@ -132,16 +132,16 @@ Class Web Implements ApplicationInterface
         }
 
         // Bind the adapter
-        $services->bindInstance( AdapterInterface::class, function () use (&$config, $adapter) {
+        $services->bind( AdapterInterface::class, function () use (&$config, $adapter) {
             return new $adapter( $config );
         });
 
-        // Bind the database wrapper
-        $services->bindSingleton( Database::class, function ( $service ) {
+        // Bind the database as a singleton
+        $services->bind( Database::class, function ( $service ) {
             $database = new Database( $service->resolve( AdapterInterface::class ) );
             $database->open();
             return $database;
-        });
+        })->singleton( true );
 
         return;
     }

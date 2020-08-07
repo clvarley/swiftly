@@ -2,6 +2,8 @@
 
 namespace Swiftly\Dependencies;
 
+use Swiftly\Dependencies\Container;
+
 /**
  * Wraps a dependency in the dependency container
  *
@@ -11,11 +13,18 @@ Class Dependency
 {
 
     /**
+     * The parent container for this dependency
+     *
+     * @var \Swiftly\Dependencies\Container $container Dependency container
+     */
+    private $container = null;
+
+    /**
      * Is this dependency a singleton?
      *
-     * @var bool $is_singleton Is singleton?
+     * @var bool $singleton Is singleton?
      */
-    private $is_singleton = false;
+    private $singleton = false;
 
     /**
      * Actual implementation of this dependency
@@ -27,37 +36,62 @@ Class Dependency
     /**
      * Creates a new dependency
      *
-     * @param callable|object $implementation Dependency implementation
-     * @param bool $is_singleton              (Optional) Is singleton
+     * @param callable|object $implementation           Implementation
+     * @param \Swiftly\Dependencies\Container $container Dependency container
      */
-    public function __construct( $implementation, bool $is_singleton = false )
+    public function __construct( $implementation, Container $container )
     {
         $this->implementation = $implementation;
-        $this->is_singleton = $is_singleton;
+        $this->container = $container;
+    }
+
+    /**
+     * Sets whether or not this dependency is a singleton
+     *
+     * @param bool $singleton   Is singleton?
+     * @return self             Allow chaining
+     */
+    public function singleton( bool $singleton ) : self
+    {
+        $this->singleton = $singleton;
+
+        return $this;
+    }
+
+    /**
+     * Sets an alias for this dependency
+     *
+     * @param string $name  Dependency alias
+     * @return self         Allow chaining
+     */
+    public function alias( string $name ) : self
+    {
+        $this->container->alias( $name, $this );
+
+        return $this;
     }
 
     /**
      * Resolve this dependency
      *
-     * @param Swiftly\Dependencies\Container $container Dependency container
-     * @return object                                   Resolved dependency
+     * @return object Resolved dependency
      */
-    public function resolve( Container $container ) /* : object */
+    public function resolve() /* : object */
     {
         $result = null;
 
         if ( \is_callable( $this->implementation ) ) {
             $callback = $this->implementation;
-            $result = $callback( $container );
+            $result = $callback( $this->container );
         } elseif ( \is_object( $this->implementation ) ) {
             $result = $this->implementation;
         } elseif ( \is_string( $this->implementation ) && \class_exists( $this->implementation ) ) {
-            $result = $this->initialize( $this->implementation, $container );
+            $result = $this->initialize( $this->implementation );
         }
 
-        if ( $this->is_singleton ) {
+        if ( $this->singleton ) {
             $this->implementation = $result;
-            $this->is_singleton = false;
+            $this->singleton = false;
         }
 
         return $result;
@@ -66,11 +100,10 @@ Class Dependency
     /**
      * Resolves arameters of an object constructor and creates an object
      *
-     * @param string $class                   Class name
-     * @param Swiftly\Dependencies\Container  Dependency container
-     * @return object                         Initialized object
+     * @param string $class Class name
+     * @return object       Initialized object
      */
-    private function initialize( string $class, Container $container ) /* :object */
+    private function initialize( string $class ) /* :object */
     {
         $constructor = ( new \ReflectionClass( $class ) )->getConstructor();
 
@@ -89,7 +122,7 @@ Class Dependency
             $type = $param->getType();
 
             if ( !$type->isBuiltin() ) {
-                $value = $container->resolve( $type->getName() );
+                $value = $this->container->resolve( $type->getName() );
             }
 
             if ( $value === null && $param->isOptional() ) {
