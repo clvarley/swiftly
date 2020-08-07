@@ -2,6 +2,8 @@
 
 namespace Swiftly\Routing\Parser;
 
+use Swiftly\Routing\ParserInterface;
+
 /**
  * Class responsible for loading routes from .json files
  *

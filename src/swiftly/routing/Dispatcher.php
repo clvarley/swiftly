@@ -3,7 +3,7 @@
 namespace Swiftly\Routing;
 
 use \Swiftly\Http\Server\Request;
-use \Swiftly\Routing\Parser\ParserInterface;
+use \Swiftly\Routing\ParserInterface;
 
 /**
  * Handles dispatching of HTTP requests
@@ -16,7 +16,7 @@ Class Dispatcher
     /**
      * The route file parser to use
      *
-     * @var \Swiftly\Routing\Parser\ParserInterface $parser Route parser
+     * @var \Swiftly\Routing\ParserInterface $parser Route parser
      */
     private $parser = null;
 
@@ -50,7 +50,7 @@ Class Dispatcher
     /**
      * Create a new router specifying the parser to use
      *
-     * @param \Swiftly\Routing\Parser\ParserInterface $parser Route parser
+     * @param \Swiftly\Routing\ParserInterface $parser Route parser
      */
     public function __construct( ParserInterface $parser )
     {

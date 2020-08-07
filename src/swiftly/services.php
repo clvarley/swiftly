@@ -8,27 +8,23 @@ use Swiftly\Dependencies\Container;
  * @author C Varley <clvarley>
  */
 return [
-    // Database service
-    Swiftly\Database\Database::class => [
-        'singleton' => true
-    ],
-    Swiftly\Database\AdapterInterface::class => [
-        'private'   => true,
-        'handler'   => function ( Container $services ) {
 
+    // HTTP services
+    Swiftly\Http\Server\Request::class => [
+        'singleton' => true,
+        'handler'   => function () {
+            return Swiftly\Http\Server\Request::fromGlobals();
         }
     ],
-
-    // HTTP response object
-    Swiftly\Http\Server\Request::class => [
+    Swiftly\Http\Server\Response::class => [
         'singleton' => true
     ],
 
     // Template engine
-    Swiftly\Template\TemplateInterface::class => [
-        // TEMP: Allow config of this
-        'handler'   => function ( Container $services ) {
-            return $services->resolve( Swiftly\Template\Php::class );
-        }
-    ]
+    // TEMP: Allow config in future
+    Swiftly\Template\TemplateInterface::class => Swiftly\Template\Php::class,
+
+    // Route parser
+    // TEMP: Allow config in future
+    Swiftly\Routing\ParserInterface::class => Swiftly\Routing\Parser\JsonParser::class
 ];

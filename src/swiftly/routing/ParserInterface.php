@@ -1,6 +1,6 @@
 <?php
 
-namespace Swiftly\Routing\Parser;
+namespace Swiftly\Routing;
 
 /**
  * Interface for classes that can parse the Swiftly route format
