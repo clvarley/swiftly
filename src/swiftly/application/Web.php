@@ -4,12 +4,12 @@ namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
 use \Swiftly\Dependencies\Container;
+use \Swiftly\Dependencies\Loaders\PhpLoader;
 use \Swiftly\Http\Server\{ Request, Response };
-use \Swiftly\Template\Php;
-use \Swiftly\Routing\Dispatcher;
+use \Swiftly\Template\TemplateInterface;
+use \Swiftly\Routing\{ Dispatcher, ParserInterface };
 use \Swiftly\Database\{ Database, AdapterInterface };
 use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
-use \Swiftly\Routing\Parser\{ ParserInterface, JsonParser };
 
 /**
  * The front controller for our web app
@@ -38,24 +38,19 @@ Class Web Implements ApplicationInterface
     {
         $this->config = $config;
 
+        $services = new PhpLoader( APP_SWIFTLY . 'services.php'  );
+
+        // Register default services
         $this->dependencies = new Container;
+        $this->dependencies->load( $services );
 
-        // Bind app singletons
-        $this->dependencies->bindSingleton( Config::class,          $config );
-        $this->dependencies->bindSingleton( Request::class,         Request::fromGlobals() );
-        $this->dependencies->bindSingleton( Response::class,        new Response() );
-        $this->dependencies->bindSingleton( ParserInterface::class, new JsonParser() );
+        // Bind this config
+        $this->dependencies->bindSingleton( Config::class, $config );
 
-        // Register the database object
+
+        // Register the appropriate database adapter
         if ( $config->hasValue( 'database' ) ) {
             $this->bindDatabase( $this->dependencies, $config->getValue( 'database' ) );
-        }
-
-        // Register the template engine
-        if ( $config->hasValue( 'template' ) ) {
-            // TODO: Tidy this whole section up
-        } else {
-            $this->dependencies->bindInstance( Swiftly\Template\TemplateInterface::class, Php::class );
         }
 
         // TODO:
@@ -93,7 +88,7 @@ Class Web Implements ApplicationInterface
 
         } else {
 
-            $action->getController()->setRenderer( $this->dependencies->resolve( Swiftly\Template\TemplateInterface::class ) );
+            $action->getController()->setRenderer( $this->dependencies->resolve( TemplateInterface::class ) );
 
             // Execute the request
             $result = $action->execute( $this->dependencies );
