@@ -1,12 +1,11 @@
 <?php
 
-use Swiftly\Dependencies\Container;
-
 /**
  * Provides some of the default services used by most web apps
  *
  * @author C Varley <clvarley>
  */
+ 
 return [
 
     // HTTP services
