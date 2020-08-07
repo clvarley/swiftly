@@ -12,9 +12,7 @@ return [
     // HTTP services
     Swiftly\Http\Server\Request::class => [
         'singleton' => true,
-        'handler'   => function () {
-            return Swiftly\Http\Server\Request::fromGlobals();
-        }
+        'handler'   => [ Swiftly\Http\Server\Request::class, 'fromGlobals' ]
     ],
     Swiftly\Http\Server\Response::class => [
         'singleton' => true
