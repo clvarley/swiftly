@@ -15,12 +15,12 @@ Interface LoaderInterface
     /**
      * Construct a dependency loader for the given file
      *
-     * @param string $filepath  Path to file
+     * @param string $filepath  File path
      */
-    public function __construct( string $filepath ) : void;
+    public function __construct( string $filepath );
 
     /**
-     * Load the services defined in the file into the given container
+     * Load the dependencies defined in the file into the given container
      *
      * @param Swiftly\Dependencies\Container $container Dependency container
      * @return void                                     N/a
