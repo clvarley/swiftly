@@ -15,12 +15,12 @@ Abstract Class Controller
 {
 
     /**
-     * @var Swiftly\Dependencies\Container $dependencies Dependency manager
+     * @var \Swiftly\Dependencies\Container $dependencies Dependency manager
      */
     private $dependencies = null;
 
     /**
-     * @var TemplateInterface $renderer Internal renderer
+     * @var \Swiftly\Template\Interface $renderer Internal renderer
      */
     private $renderer = null;
 
@@ -37,7 +37,7 @@ Abstract Class Controller
     /**
      * Load the services into the base controller
      *
-     * @param Swiftly\Dependencies\Container $container Dependency manager
+     * @param \Swiftly\Dependencies\Container $container  Dependency manager
      */
     public function __construct( Container $container )
     {
@@ -118,7 +118,7 @@ Abstract Class Controller
             include \APP_MODEL . $name . '.php';
 
             if ( \class_exists( $name ) ) {
-                $this->dependencies->bindSingleton( $name, $name );
+                $this->dependencies->bind( $name, $name )->singleton( true );
                 $result = $this->dependencies->resolve( $name );
             }
         }
