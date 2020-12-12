@@ -20,7 +20,7 @@ Abstract Class Controller
     private $dependencies = null;
 
     /**
-     * @var \Swiftly\Template\Interface $renderer Internal renderer
+     * @var \Swiftly\Template\TemplateInterface $renderer Internal renderer
      */
     private $renderer = null;
 
