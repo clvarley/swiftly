@@ -15,7 +15,7 @@ Class Container
     /**
      * The service implementations
      *
-     * @var array $services Array of implementations
+     * @var Dependency[] $services Array of implementations
      */
     private $services = [];
 
