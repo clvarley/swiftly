@@ -7,10 +7,9 @@
         <style>
             body {
                 font-family: 'Segoe UI', Roboto, sans-serif;
-                font-size: 18px;
                 height: 100vh;
                 margin: 0;
-                padding: 15px;
+                padding: 1rem;
                 box-sizing: border-box;
             }
             .content {
@@ -21,18 +20,18 @@
             .inner {
                 position: absolute;
                 top: 50%;
-                left: 15px;
-                right: 15px;
+                left: 1rem;
+                right: 1rem;
                 transform: translateY(-50%);
                 text-align: center;
             }
             h1 {
                 font-family: Calibri, Helvectia, sans-serif;
-                font-size: 28px;
+                font-size: 1.75rem;
                 margin: 0;
             }
             p {
-                margin: 15px 0 0 0;
+                margin: 1rem 0 0 0;
             }
         </style>
     </head>
