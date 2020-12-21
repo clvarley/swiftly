@@ -104,7 +104,7 @@ Class Dispatcher
             $method = 'GET';
         }
 
-        $path = \rtrim( $request->getUrl(), " \n\r\t\0\x0B\\/" );
+        $path = \rtrim( $request->query->asString( '_route_' ), " \n\r\t\0\x0B\\/" );
 
         if ( empty( $path ) ) {
             $path = '/';
