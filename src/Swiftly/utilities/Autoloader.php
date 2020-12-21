@@ -70,9 +70,19 @@ Final Class Autoloader
         }
 
         // Atempt 2. Traverse directories
-        foreach ( $parts as $part ) {
-            $dir_path .= $part . '/';
-            if ( !\is_dir( $dir_path ) ) return; // Missing directory!
+        while ( !empty( $parts ) ) {
+            $directory = \scandir( $dir_path, \SCANDIR_SORT_NONE );
+
+            $current = \array_shift( $parts );
+
+            foreach ( $directory as $dir ) {
+                if ( \strcasecmp( $dir, $current ) === 0 ) {
+                    $dir_path .= "$dir/";
+                    continue 2;
+                }
+            }
+
+            return;
         }
 
         $files = \scandir( $dir_path, \SCANDIR_SORT_NONE );
