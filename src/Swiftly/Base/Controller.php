@@ -113,9 +113,9 @@ Abstract Class Controller
         $result = null;
 
         // TODO: This needs a lot of work!
-        if ( \is_file( \APP_MODEL . $name . '.php' ) ) {
+        if ( \is_file( $file = \APP_MODEL . $name . '.php' ) ) {
 
-            include \APP_MODEL . $name . '.php';
+            include $file;
 
             if ( \class_exists( $name ) ) {
                 $this->dependencies->bind( $name, $name )->singleton( true );
@@ -138,4 +138,29 @@ Abstract Class Controller
         return $this->renderer->render( \APP_VIEW . $template, $data );
     }
 
+    /**
+     * Renders and outputs the given template
+     *
+     * @temp
+     * @param  string $template Template to render
+     * @param  array  $data     Template data
+     * @return void             N/a
+     */
+    public function output( string $template, array $data = [] ) : void
+    {
+        $this->output = $this->renderer->render( \APP_VIEW . $template, $data );
+    }
+
+    /**
+     * Redirect the user to a new location
+     *
+     * @temp
+     * @param string $url Redirect location
+     * @param int $code   (Optional) HTTP code
+     * @return void       N/a
+     */
+    public function redirect( string $url, int $code = 303 ) : void
+    {
+        $this->dependencies->resolve( 'Swiftly\Http\Server\Response' )->redirect( $url, $code );
+    }
 }
