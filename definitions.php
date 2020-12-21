@@ -25,7 +25,7 @@ define( 'APP_CONFIG', APP_ROOT . 'config/' );
 define( 'APP_SRC', APP_ROOT . 'src/' );
 
 // Swiftly source
-define( 'APP_SWIFTLY', APP_ROOT . 'src/swiftly/' );
+define( 'APP_SWIFTLY', APP_ROOT . 'src/Swiftly/' );
 
 // App folder
 define( 'APP_BASE', APP_ROOT . 'app/' );
