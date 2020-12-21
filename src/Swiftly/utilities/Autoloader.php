@@ -30,7 +30,7 @@ Final Class Autoloader
     public function addPrefix( string $prefix, string $path ) : void
     {
         if ( \is_dir( $path ) ) {
-            $this->prefixes[\mb_strtolower( $prefix )] = $path;
+            $this->prefixes[\mb_strtolower( $prefix )] = \rtrim( $path ) . '/';
         }
     }
 
