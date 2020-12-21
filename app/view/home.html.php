@@ -13,16 +13,13 @@
                 box-sizing: border-box;
             }
             .content {
-                position: relative;
                 border: 1px solid #eaeaea;
                 height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
             .inner {
-                position: absolute;
-                top: 50%;
-                left: 1rem;
-                right: 1rem;
-                transform: translateY(-50%);
                 text-align: center;
             }
             h1 {

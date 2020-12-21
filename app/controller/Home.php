@@ -26,7 +26,7 @@ Class Home Extends Controller
     /**
      * Says hello to the given name
      *
-     * @param  string $name User name
+     * @param string $name User name
      */
     public function hello( string $name )
     {
