@@ -29,7 +29,7 @@ Final Class Autoloader
      */
     public function addPrefix( string $prefix, string $path ) : void
     {
-        if ( '' !== $prefix && \is_dir( $path ) ) {
+        if ( \is_dir( $path ) ) {
             $this->prefixes[\mb_strtolower( $prefix )] = $path;
         }
     }
@@ -44,40 +44,42 @@ Final Class Autoloader
      */
     public function find( string $class_name ) : void
     {
-        $class_name = \mb_strtolower( \trim( $class_name, '\\ ' ) );
 
-        if ( \mb_strpos( $class_name, '\\') !== false ) {
-            $namespace_parts = \explode( '\\', $class_name );
-            $class_name = \array_pop( $namespace_parts );
+        $parts = \explode( '\\', $class_name );
+        $class = \array_pop( $parts );
+
+        // Get class vendor
+        if ( !empty( $parts ) ) {
+            $vendor = \strtolower( \array_shift( $parts ) );
         } else {
-            $namespace_parts = [];
-            $class_name = $class_name;
+            $vendor = '*';
         }
 
-        if ( isset( $namespace_parts[0] ) && isset( $this->prefixes[$namespace_parts[0]] ) ) {
-            $route_dir = $this->prefixes[$namespace_parts[0]];
-            unset( $namespace_parts[0] );
-        } elseif ( isset( $this->prefixes['*'] ) ) {
-            $route_dir = $this->prefixes['*'];
+        // Vendor directory override?
+        if ( !empty( $this->prefixes[$vendor] ) ) {
+            $dir_path = $this->prefixes[\strtolower( $vendor )];
         } else {
-            $route_dir = \get_include_path();
+            $dir_path = \get_include_path();
         }
 
-        if ( !\is_dir( $route_dir ) ) {
+        // Attempt 1. Simple file include?
+        if ( \is_file( $file = $dir_path . \implode( \DIRECTORY_SEPARATOR, $parts ) . "/$class.php" ) ) {
+            require $file;
             return;
         }
 
-        foreach ( $namespace_parts as $part ) {
-            $route_dir .= $part . \DIRECTORY_SEPARATOR;
-            if ( !\is_dir( $route_dir ) ) return; // Missing directory!
+        // Atempt 2. Traverse directories
+        foreach ( $parts as $part ) {
+            $dir_path .= $part . \DIRECTORY_SEPARATOR;
+            if ( !\is_dir( $dir_path ) ) return; // Missing directory!
         }
 
-        $files = \scandir( $route_dir, \SCANDIR_SORT_NONE );
+        $files = \scandir( $dir_path, \SCANDIR_SORT_NONE );
 
         foreach ( $files as $file ) {
-            if ( \mb_strtolower( \mb_substr( $file, 0, -4 ) ) === $class_name ) {
-                require $route_dir . $file;
-                return; // Class file found!
+            if ( \mb_strtolower( \mb_substr( $file, 0, -4 ) ) === $class ) {
+                require $dir_path . $file;
+                return;
             }
         }
 
