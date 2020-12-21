@@ -13,8 +13,8 @@ Interface ParserInterface
     /**
      * Parse the routes file and return the routes
      *
-     * @param string $filename  Routes file
-     * @return array            Parsed routes
+     * @param string $filename Routes file
+     * @return Route[]         Parsed routes
      */
     public function parseFile( string $filename ) : array;
 

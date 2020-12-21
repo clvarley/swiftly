@@ -2,7 +2,7 @@
 
 namespace Swiftly\Routing\Parser;
 
-use Swiftly\Routing\ParserInterface;
+use Swiftly\Routing\{ Route, ParserInterface };
 
 /**
  * Class responsible for loading routes from .json files
@@ -78,11 +78,11 @@ Class JsonParser Implements ParserInterface
      * Converts the file route definition into a standardised format
      *
      * @param  array $route Route file definition
-     * @return array        Standardised definition
+     * @return Route        Standardised definition
      */
-    private function convert( array $route ) : array
+    private function convert( array $route ) : Route
     {
-        $standard = [];
+        $standard = new Route;
 
         // Get the method
         if ( !empty( $route['methods'] ) ) {
@@ -98,16 +98,16 @@ Class JsonParser Implements ParserInterface
             // Strip out invalid methods
             $methods = \array_intersect( self::HTTP_METHODS, $methods );
 
-            $standard['methods'] = ( $methods ?: [ 'GET' ] );
+            $standard->http_methods = ( $methods ?: [ 'GET' ] );
         } else {
-            $standard['methods'] = [ 'GET' ];
+            $standard->http_methods = [ 'GET' ];
         }
 
         // Get the path
         if ( empty( $route['path'] ) || !\is_string( $route['path'] ) ) {
             // TODO: Logic to handle this
         } else {
-            $standard['path'] = $this->parseRoute( $route['path'], $standard['args'] );
+            $standard->regex = $this->parseRoute( $route['path'], $standard->arguments );
         }
 
         // Get the controller
@@ -122,10 +122,8 @@ Class JsonParser Implements ParserInterface
             $handler[1] = 'index';
         }
 
-        $standard['handler'] = [
-            'class'   => $handler[0],
-            'method'  => $handler[1]
-        ];
+        $standard->class = $handler[0];
+        $standard->method = $handler[1];
 
         return $standard;
     }

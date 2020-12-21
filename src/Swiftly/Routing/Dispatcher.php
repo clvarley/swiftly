@@ -3,7 +3,7 @@
 namespace Swiftly\Routing;
 
 use \Swiftly\Http\Server\Request;
-use \Swiftly\Routing\ParserInterface;
+use \Swiftly\Routing\{ Route, ParserInterface };
 
 /**
  * Handles dispatching of HTTP requests
@@ -30,7 +30,7 @@ Class Dispatcher
     /**
      * The routes for this router
      *
-     * @var array $routes Route definitions
+     * @var \Swiftly\Routing\Route[] $routes Route definitions
      */
     private $routes = [];
 
@@ -63,9 +63,9 @@ Class Dispatcher
      * Returns null if the given route does not exist
      *
      * @param  string $name Route name
-     * @return array|null   Route definition
+     * @return Route|null   Route definition
      */
-    public function getRoute( string $name ) : ?array
+    public function getRoute( string $name ) : ?Route
     {
         return $this->routes[ $name ] ?? null;
     }
@@ -73,7 +73,7 @@ Class Dispatcher
     /**
      * Gets all the registered routes
      *
-     * @return array Route definitions
+     * @return Route[] Route definitions
      */
     public function getRoutes() : array
     {
@@ -124,13 +124,13 @@ Class Dispatcher
         $args = [];
 
         // Handle params (if any)
-        foreach ( $route['args'] ?? [] as $index => $param ) {
+        foreach ( $route->arguments as $index => $param ) {
             $args[$param['name']] = $matches[0][$index + 1] ?? null;
         }
 
         return new Action(
-            $route['handler']['class'],
-            $route['handler']['method'],
+            $route->class,
+            $route->method,
             $args
         );
     }
@@ -147,11 +147,11 @@ Class Dispatcher
 
         // Only routes that support the method
         foreach ( $this->routes as $name => $route ) {
-            if ( !\in_array( $method, $route['methods'] ) ) {
+            if ( !\in_array( $method, $route->http_methods ) ) {
                 continue;
             }
 
-            $regexes[] = '(?>' . $route['path'] . '(*:' . $name . '))';
+            $regexes[] = '(?>' . $route->regex . '(*:' . $name . '))';
         }
 
         $this->compiled[$method] = '~^(?|' . \implode( '|', $regexes ) . ')$~ixX';
