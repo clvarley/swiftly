@@ -5,7 +5,7 @@ namespace Swiftly\Database;
 use \Swiftly\Database\AdapterInterface;
 
 /**
- * A database wrapper implementing the adapter pattern
+ * A wrapper around the underlying database implementations
  *
  * @author C Varley <clvarley>
  */
@@ -13,12 +13,16 @@ Class Database
 {
 
     /**
-     * @var AdapterInterface $adapter The DB driver
+     * Database specific implementation
+     *
+     * @var AdapterInterface $adapter Database adapter
      */
     private $adapter = null;
 
     /**
-     * @var bool $connected Is connection to DB open
+     * Database connection status
+     *
+     * @var bool $connected Connection status
      */
     private $connected = false;
 
@@ -43,14 +47,12 @@ Class Database
     /**
      * Attempts to open a connection to the database
      *
-     * @return bool Connection made successfully?
+     * @return bool Database connected?
      */
     public function open() : bool
     {
         if ( !$this->connected ) {
-
             $this->connected = $this->adapter->open();
-
         }
 
         return $this->connected;
@@ -58,14 +60,14 @@ Class Database
 
     /**
      * Close the connection to the database
+     *
+     * @return void N/a
      */
     public function close() : void
     {
         if ( $this->connected ) {
-
             $this->adapter->close();
             $this->connected = false;
-
         }
 
         return;
@@ -74,14 +76,12 @@ Class Database
     /**
      * Executes the given query
      *
-     * @param string $query Query
+     * @param string $query SQL query
      */
     public function query( string $query ) : void
     {
         if ( $this->connected ) {
-
             $this->adapter->query( $query );
-
         }
 
         return;
@@ -90,7 +90,7 @@ Class Database
     /**
      * Executes the given query and returns the first result
      *
-     * @param string $query Query
+     * @param string $query SQL query
      * @return array        Query result
      */
     public function queryResult( string $query ) : array
@@ -98,9 +98,7 @@ Class Database
         $result = [];
 
         if ( $this->connected && $this->adapter->query( $query ) ) {
-
             $result = $this->adapter->getResult();
-
         }
 
         return $result;
@@ -109,7 +107,7 @@ Class Database
     /**
      * Executes the given query and returns all the results
      *
-     * @param string $query Query
+     * @param string $query SQL query
      * @return array        Query results
      */
     public function queryResults( string $query ) : array
@@ -117,9 +115,7 @@ Class Database
         $results = [];
 
         if ( $this->connected && $this->adapter->query( $query ) ) {
-
             $results = $this->adapter->getResults();
-
         }
 
         return $results;
@@ -144,5 +140,4 @@ Class Database
     {
         return $this->connected;
     }
-
 }

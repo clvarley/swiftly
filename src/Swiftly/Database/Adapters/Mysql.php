@@ -93,11 +93,7 @@ Class Mysql Implements AdapterInterface
         $status = true;
 
         // Check for connection error
-        if ( $this->handle->connect_errno !== 0 ) {
-            $status = false;
-        }
-
-        return $status;
+        return ( $this->handle->connect_errno === 0 );
     }
 
     /**
@@ -111,27 +107,22 @@ Class Mysql Implements AdapterInterface
         $result = $this->handle->query( $query );
 
         if ( $result === false ) {
-
-            $status = false;
-
-        } else {
-
-            $status = true;
-
-            // Free memory
-            if ( !\is_null( $this->results ) ) {
-                $this->results->free();
-            }
-
-            // Store results object
-            if ( \is_object( $result ) ) {
-                $this->results = $result;
-            } else {
-                $this->results = null;
-            }
+            return false;
         }
 
-        return $status;
+        // Free memory
+        if ( !\is_null( $this->results ) ) {
+            $this->results->free();
+        }
+
+        // Store results object
+        if ( \is_object( $result ) ) {
+            $this->results = $result;
+        } else {
+            $this->results = null;
+        }
+
+        return true;
     }
 
     /**

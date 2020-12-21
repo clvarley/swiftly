@@ -55,8 +55,6 @@ Class Sqlite Implements AdapterInterface
           \SQLITE3_OPEN_READWRITE | \SQLITE3_OPEN_CREATE
         );
 
-        // TODO: Greater error checking here!
-
         // Naive check to see if successfull
         return ( $this->handle->lastErrorCode() === 0 );
     }
@@ -71,24 +69,19 @@ Class Sqlite Implements AdapterInterface
     {
         $result = $this->handle->query( $query );
 
-        if ( $result === FALSE ) {
-
-            $status = false;
-
-        } else {
-
-            $status = true;
-
-            // Free memory
-            if ( !\is_null( $this->result ) ) {
-                $this->result->finalize();
-            }
-
-            // Store result
-            $this->result = $result;
+        if ( $result === false ) {
+            return false;
         }
 
-        return $status;
+        // Free memory
+        if ( !\is_null( $this->result ) ) {
+            $this->result->finalize();
+        }
+
+        // Store result
+        $this->result = $result;
+
+        return true;
     }
 
     /**
@@ -143,5 +136,4 @@ Class Sqlite Implements AdapterInterface
 
         return;
     }
-
 }
