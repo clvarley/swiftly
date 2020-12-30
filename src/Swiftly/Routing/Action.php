@@ -4,6 +4,7 @@ namespace Swiftly\Routing;
 
 use \Swiftly\Base\Controller;
 use \Swiftly\Dependencies\Container;
+use \Swiftly\Http\Server\Response;
 
 /**
  * Represents an action that can be called
@@ -106,9 +107,9 @@ Class Action
      *
      * @param \Swiftly\Dependencies\Container $services Dependency manager
      * @param array $params                             Parameters
-     * @return \Swiftly\Base\Controller                 The controller
+     * @return \Swiftly\Http\Server\Response|null       Controller response
      */
-    public function execute( Container $services, array $params = [] ) : Controller
+    public function execute( Container $services, array $params = [] ) : ?Response
     {
         $args = [];
 
@@ -125,9 +126,9 @@ Class Action
         }
 
         // Execute the method
-        $this->controller->{$this->method}( ...$args );
+        $response = $this->controller->{$this->method}( ...$args );
 
-        return $this->controller;
+        return ( $response instanceof Response ? $response : null );
     }
 
     /**

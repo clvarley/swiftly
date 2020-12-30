@@ -68,7 +68,7 @@ Class Web Implements ApplicationInterface
 
 
         // Get the global request object
-        $http = $this->dependencies->resolve( Request::class );
+        $request = $this->dependencies->resolve( Request::class );
 
 
         // Load route.json and dispatch
@@ -76,25 +76,22 @@ Class Web Implements ApplicationInterface
             $router->load( APP_CONFIG . 'routes.json' );
         }
 
-        $action = $router->dispatch( $http );
-
-        // Get the global response object
-        $response = $this->dependencies->resolve( Response::class );
+        $action = $router->dispatch( $request );
 
         // Did we return a callable route?
         if ( \is_null( $action ) || !$action->prepare( $this->dependencies ) ) {
 
-            $response->setStatus( 404 );
+            $response = new Response( '', 404 );
 
         } else {
 
             $action->getController()->setRenderer( $this->dependencies->resolve( TemplateInterface::class ) );
 
             // Execute the request
-            $result = $action->execute( $this->dependencies );
+            $response = $action->execute( $this->dependencies );
 
-            if ( !empty( $body = $result->getOutput() ) ) {
-                $response->setBody( $body );
+            if ( $response === null ) {
+                $response = new Response( '', 404 );
             }
         }
 

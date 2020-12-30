@@ -5,6 +5,10 @@ namespace Swiftly\Base;
 use \Swiftly\Template\TemplateInterface;
 use \Swiftly\Dependencies\Container;
 use \Swiftly\Base\Model;
+use \Swiftly\Http\Server\{
+    Response,
+    RedirectResponse
+};
 
 /**
  * The abstract class all controllers should inherit
@@ -30,11 +34,6 @@ Abstract Class Controller
     private $models = [];
 
     /**
-     * @var string $output Controller output
-     */
-    private $output = '';
-
-    /**
      * Load the services into the base controller
      *
      * @param \Swiftly\Dependencies\Container $container  Dependency manager
@@ -54,26 +53,6 @@ Abstract Class Controller
     public function getService( string $name )
     {
         return $this->dependencies->resolve( $name );
-    }
-
-    /**
-     * Set the output for this controller
-     *
-     * @param string $output The output
-     */
-    protected function setOutput( string $output = '' )
-    {
-        $this->output = $output;
-    }
-
-    /**
-     * Get the output for this controller
-     *
-     * @return string Controller output
-     */
-    public function getOutput() : string
-    {
-        return $this->output;
     }
 
     /**
@@ -129,9 +108,9 @@ Abstract Class Controller
     /**
      * Renders the given template with the data provided
      *
-     * @param  string $template Template to render
+     * @param  string $template Template path
      * @param  array  $data     Template data
-     * @return string           The result
+     * @return string           Rendered template
      */
     public function render( string $template, array $data = [] ) : string
     {
@@ -139,28 +118,32 @@ Abstract Class Controller
     }
 
     /**
-     * Renders and outputs the given template
+     * Renders a template and wraps it in a Response object
      *
-     * @temp
-     * @param  string $template Template to render
-     * @param  array  $data     Template data
-     * @return void             N/a
+     * @param  string $template              Template
+     * @param  array  $data                  Template data
+     * @return \Swiftly\Http\Server\Response Response object
      */
-    public function output( string $template, array $data = [] ) : void
+    public function output( string $template, array $data = [] ) : Response
     {
-        $this->output = $this->renderer->render( \APP_VIEW . $template, $data );
+        return new Response(
+            $this->renderer->render( \APP_VIEW . $template, $data ),
+            200,
+            []
+        );
     }
 
     /**
      * Redirect the user to a new location
      *
-     * @temp
      * @param string $url Redirect location
      * @param int $code   (Optional) HTTP code
      * @return void       N/a
      */
     public function redirect( string $url, int $code = 303 ) : void
     {
-        $this->dependencies->resolve( 'Swiftly\Http\Server\Response' )->redirect( $url, $code );
+        $redirect = new RedirectResponse( $url, $code, [] );
+        $redirect->send();
+        die;
     }
 }

@@ -17,10 +17,10 @@ Class Home Extends Controller
     public function index()
     {
         // Output a response
-        return $this->setOutput($this->render('home', [
+        return $this->output( 'home', [
             'title'   => 'Swiftly',
             'message' => 'Thanks for installing Swiftly!'
-        ]));
+        ]);
     }
 
     /**
@@ -31,9 +31,9 @@ Class Home Extends Controller
     public function hello( string $name )
     {
         // Pass the named paramater in
-        return $this->setOutput($this->render('home', [
+        return $this->output( 'home', [
             'title'   => \mb_ucfirst( $name ),
             'message' => 'Welcome to Swiftly!'
-        ]));
+        ]);
     }
 }

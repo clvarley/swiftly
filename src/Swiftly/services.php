@@ -5,13 +5,18 @@
  *
  * @author C Varley <clvarley>
  */
- 
+
 return [
 
     // HTTP services
+    Swiftly\Http\Server\RequestFactory::class => [
+        'singleton' => true
+    ],
     Swiftly\Http\Server\Request::class => [
         'singleton' => true,
-        'handler'   => [ Swiftly\Http\Server\Request::class, 'fromGlobals' ]
+        'handler'   => function ( Swiftly\Dependencies\Container $app ) {
+            return $app->resolve( Swiftly\Http\Server\RequestFactory::class )->fromGlobals();
+        }
     ],
     Swiftly\Http\Server\Response::class => [
         'singleton' => true

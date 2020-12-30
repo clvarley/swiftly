@@ -1,6 +1,6 @@
 <?php
 
-namespace Http;
+namespace Swiftly\Http;
 
 /**
  * Utility class for managing URLs
