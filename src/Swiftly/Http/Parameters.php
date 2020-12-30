@@ -3,7 +3,7 @@
 namespace Swiftly\Http;
 
 /**
- * Contains HTTP parameters
+ * Utility container for managing HTTP parameters
  *
  * @author C Varley <clvarley>
  */
@@ -11,126 +11,114 @@ Class Parameters
 {
 
     /**
-     * @var array $data Parameters
+     * Array of HTTP parameters
+     *
+     * @var array[]
      */
-    private $data = [];
+    protected $parameters;
 
     /**
-     * Create a new parameter group
+     * Creates a new parameter bag from the (optionally) provided parameters
      *
-     * @param array $data Parameters
+     * @param array $parameters (Optional) Http parameters
      */
-    public function __construct( array $data = [] )
+    public function __construct( array $parameters = [] )
     {
-        $this->data = $data;
+        $this->parameters = $parameters;
     }
 
     /**
-     * Check to see if the given parameter exists
+     * Sets the value for the named parameter
      *
-     * @param string $name  Parameter name
-     * @return bool         Parameter exists
-     */
-    public function has( string $name ) : bool
-    {
-        return ( isset( $this->data[$name] ) );
-    }
-
-    /**
-     * Get the value of a given parameter
-     *
-     * @param string $name  Parameter name
-     * @return mixed        Parameter value
-     */
-    public function get( string $name ) // : mixed
-    {
-        return ( isset( $this->data[$name] ) ? $this->data[$name] : '' );
-    }
-
-    /**
-     * Gets all the parameters
-     *
-     * @return array Parameters
-     */
-    public function getAll() : array
-    {
-        return $this->data;
-    }
-
-    /**
-     * Set a paramater
-     *
-     * @param string $name  Parameter name
-     * @param mixed $value  Parameter value
+     * @param string $name Parameter name
+     * @param mixed $value Parameter value
+     * @return void        N/a
      */
     public function set( string $name, /* mixed */ $value ) : void
     {
-        $this->data[$name] = $value;
+        $this->parameters[$name] = $value;
     }
 
     /**
-     * Is the given parameter a string?
+     * Gets the value for the named parameter
      *
-     * @param string $name  Parameter name
-     * @return bool         Is string?
+     * @param string $name Parameter name
+     * @return mixed|null  Parameter value
      */
-    public function isString( string $name ) : bool
+    public function get( string $name ) // : mixed
     {
-        return ( isset( $this->data[$name] ) && \is_scalar( $this->data[$name] ) );
+        return $this->parameters[$name] ?? null;
     }
 
     /**
-     * Is the given parameter an integer?
+     * Checks to see if a named parameter has been set
      *
-     * @param string $name  Parameter name
-     * @return bool         Is numeric?
+     * @param string $name Parameter name
+     * @return bool        Parameter set?
      */
-    public function isNumeric( string $name ) : bool
+    public function has( string $name ) : bool
     {
-        return ( isset( $this->data[$name] ) && \is_numeric( $this->data[$name] ) );
+        return \array_key_exists( $name, $this->parameters );
     }
 
     /**
-     * Is the given parameter an array?
+     * Gets all parameters
      *
-     * @param string $name  Parameter name
-     * @return bool         Is array?
+     * @return array Parameter values
      */
-    public function isArray( string $name ) : bool
+    public function all() : array
     {
-        return ( isset( $this->data[$name] ) && \is_array( $this->data[$name] ) );
+        return $this->parameters;
     }
 
     /**
-     * Get the given parameter value as a string
+     * Gets the value for the named parameter as a string
      *
-     * @param string $name  Parameter name
-     * @return string       Paramater value as string
+     * If the parameter doesn't exist or cannot be represented as a string, an
+     * empty string will be returned instead.
+     *
+     * @param string $name Parameter name
+     * @return string      Parameter value
      */
     public function asString( string $name ) : string
     {
-        return ( isset( $this->data[$name] ) && \is_scalar( $this->data[$name] ) ? (string)$this->data[$name] : '' );
+        return ( isset( $this->parameters[$name] ) && \is_scalar( $this->parameters[$name] )
+            ? (string)$this->parameters[$name]
+            : ''
+        );
     }
 
     /**
-     * Get the given parameter value as an integer
+     * Gets the value for the named parameter as an integer
      *
-     * @param string $name  Parameter name
-     * @return int          Paramater value as int
+     * If the parameter doesn't exist or cannot be represented as an int, the
+     * return value will be 0.
+     *
+     * @param string $name Parameter name
+     * @return int         Parameter value
      */
-    public function asInteger( string $name ) : int
+    public function asInt( string $name ) : int
     {
-        return ( isset( $this->data[$name] ) && \is_numeric( $this->data[$name] ) ? (int)$this->data[$name] : 0 );
+        return ( isset( $this->parameters[$name] ) && \is_numeric( $this->parameters[$name] )
+            ? (int)$this->parameters[$name]
+            : 0
+        );
     }
 
     /**
-     * Get the given parameter value as an array
+     * Gets the value(s) for the named parameter as an array
      *
-     * @param string $name  Parameter name
-     * @return array        Paramater value as array
+     * If the parameter doesn't exist or cannot be represented as an array, an
+     * empty array will be returned instead.
+     *
+     * @param string $name Parameter name
+     * @return array       Parameter value
      */
     public function asArray( string $name ) : array
     {
-        return ( isset( $this->data[$name] ) && \is_array( $this->data[$name] ) ? $this->data[$name] : [] );
+        return ( isset( $this->parameters[$name] ) && \is_array( $this->parameters[$name] )
+            ? $this->parameters[$name]
+            : []
+        );
     }
 }

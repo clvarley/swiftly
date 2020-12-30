@@ -2,10 +2,14 @@
 
 namespace Swiftly\Http\Server;
 
-use \Swiftly\Http\{ Headers, Parameters};
+use \Swiftly\Http\{
+    Headers,
+    Parameters,
+    Url
+};
 
 /**
- * Represents a HTTP request received by the server (incoming)
+ * Class used to represent HTTP requests coming into the server
  *
  * @author C Varley <clvarley>
  */
@@ -13,86 +17,90 @@ Class Request
 {
 
     /**
-     * @var Headers $headers HTTP header collection
-     */
-    public $headers = null;
-
-    /**
-     * @var string $method HTTP method
-     */
-    private $method = 'GET';
-
-    /**
-     * @var string $url The URL of this request
-     */
-    private $url = '';
-
-    /**
-     * @var Parameters $post The POST data send with this request
-     */
-    public $post = null;
-
-    /**
-     * @var Parameters $query The query (GET) params sent with this request
-     */
-    public $query = null;
-
-    /**
-     * @var string $body The request body/payload
-     */
-    private $body = '';
-
-    /**
-     * @var string $read Had the payload been read
-     */
-    private $read = false;
-
-    /**
-     * @var array HTTP_METHODS Allowed HTTP methods
-     */
-    public const HTTP_METHODS = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'UPDATE', 'OPTIONS', 'TRACE'];
-
-    /**
-     * Construct a new request
+     * Recognised HTTP methods we can respond to
      *
-     * @param string $method  HTTP method
-     * @param string $url     Request URL
-     * @param array $headers  HTTP headers
-     * @param array $get      Query (GET) params
-     * @param array $post     POST data
-     * @param string $body    Request body
+     * We are not currently planning to support the TRACE or CONNECT verbs.
+     *
+     * @var string[] ALLOWED_METHODS HTTP verbs
      */
-    public function __construct( string $method = 'GET', string $url = '', array $headers = [], array $get = [], array $post = [], string $body = '' )
-    {
-        $this->setMethod( $method );
+    public const ALLOWED_METHODS = [
+        'OPTIONS',
+        'HEAD',
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE'
+    ];
 
-        $this->url = $url;
-        $this->headers = new Headers( $headers );
-        $this->query = new Parameters( $get );
-        $this->post = new Parameters( $post );
-        $this->body = $body;
+    /**
+     * Request HTTP headers
+     *
+     * @var Headers $headers HTTP headers
+     */
+    public $headers;
+
+    /**
+     * HTTP query string parameters
+     *
+     * @var Parameters $query Query parameters
+     */
+    public $query;
+
+    /**
+     * HTTP POST parameters
+     *
+     * @var Parameters $post POST parameters
+     */
+    public $post;
+
+    /**
+     * HTTP method used
+     *
+     * @var string $method HTTP verb
+     */
+    protected $method;
+
+    /**
+     * URL used to generate this request
+     *
+     * @var Url $url Requested URL
+     */
+    protected $url;
+
+    /**
+     * Request payload
+     *
+     * @var mixed $content Request body
+     */
+    protected $content;
+
+    /**
+     * Creates a new Request object from the provided values
+     *
+     * We do not recommend creating this object directly, instead please use the
+     * RequestFactory class to instantiate new instances of this class.
+     *
+     * @internal
+     * @param string $method    HTTP verb
+     * @param Url $url          Request URL
+     * @param Headers $headers  HTTP headers
+     * @param Parameters $query Query parameters
+     * @param Parameters $post  Post parameters
+     */
+    public function __construct( string $method, Url $url, Headers $headers, Parameters $query, Parameters $post )
+    {
+        $this->method  = \in_array( $method, static::ALLOWED_METHODS ) ? $method : 'GET';
+        $this->url     = $url;
+        $this->headers = $headers;
+        $this->query   = $query;
+        $this->post    = $post;
     }
 
     /**
-     * Set the HTTP method of this request
+     * Returns the HTTP method used for this request
      *
-     * @param string $method HTTP method
-     */
-    protected function setMethod( string $method ) : void
-    {
-        if ( \in_array(( $method = \mb_strtoupper( $method ) ), self::HTTP_METHODS ) ) {
-            $this->method = $method;
-        } else {
-            $this->method = 'GET';
-        }
-
-        return;
-    }
-
-    /**
-     * Gets the HTTP method of this request
-     *
-     * @return string HTTP method
+     * @return string HTTP verb
      */
     public function getMethod() : string
     {
@@ -100,127 +108,30 @@ Class Request
     }
 
     /**
-     * Set the URL of this request
+     * Returns the protocol of this request
      *
-     * @param string $url URL
+     * @return string Request protocol
      */
-    protected function setUrl( string $url ) : void
+    public function getProtocol() : string
     {
-        $this->url = $url;
+        return $this->url->scheme;
     }
 
     /**
-     * Get the url for this request
+     * Returns the URL path of this request
      *
-     * @return string Requested url
+     * @return string Request path
      */
-    public function getUrl() : string
+    public function getPath() : string
     {
-        return $this->url;
+        return $this->url->path;
     }
 
     /**
-     * Set the HTTP headers of this request
-     *
-     * @param array $headers HTTP headers
+     * Checks if this request was made via a secure protocol
      */
-    protected function setHeaders( array $headers ) : void
+    public function isSecure() : bool
     {
-        foreach ( $headers as $header_name => $header_value ) {
-            $this->headers->addHeader( $header_name, $header_value );
-        }
-
-        return;
-    }
-
-    /**
-     * Gets the value of a HTTP header
-     *
-     * @param string $name  Header name
-     * @return string       Header value [Or empty]
-     */
-    public function getHeader( string $name ) : string
-    {
-        return ( $this->headers->getHeader( $name ) ?? '' );
-    }
-
-    /**
-     * Set the GET parameters of this request
-     *
-     * @deprecated
-     *
-     * @param array $query GET params
-     */
-    protected function setQuery( array $query ) : void
-    {
-        return;
-    }
-
-    /**
-     * Set the POST parameters of this request
-     *
-     * @deprecated
-     *
-     * @param array $post POST params
-     */
-    protected function setPost( array $post ) : void
-    {
-        return;
-    }
-
-    /**
-     * Set the body/payload of this request
-     *
-     * @deprecated
-     *
-     * @param string $body Body
-     */
-    protected function setBody( string $body ) : void
-    {
-        return;
-    }
-
-    /**
-     * Gets the body/payload of this request
-     *
-     * Delays fetching of the payload until it is required
-     *
-     * @return string Body
-     */
-    public function getBody() : string
-    {
-        if ( $this->read && $this->method === 'POST' && empty( $this->body ) ) {
-            $this->body = \file_get_contents( 'php://input' );
-            $this->read = true;
-        }
-
-        return $this->body;
-    }
-
-    /**
-     * Create a new request object from PHP/Server globals
-     *
-     * @static
-     *
-     * @return Request Http request
-     */
-    public static function fromGlobals() : Request
-    {
-        $request = new Request(
-            $_SERVER['REQUEST_METHOD'] ?? 'GET',
-            $_SERVER['REQUEST_URI'] ?? '/',
-            [],
-            $_GET,
-            $_POST,
-            ''
-        );
-
-        foreach ( $_SERVER as $name => $value ) {
-            if ( \mb_strpos($name, 'HTTP_') === 0 ) {
-                $request->headers->addHeader( \mb_substr( $name, 5 ), $value );
-            }
-        }
-
-        return $request;
+        return $this->url->scheme === 'https';
     }
 }
