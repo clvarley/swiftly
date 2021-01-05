@@ -22,11 +22,27 @@ return [
         'singleton' => true
     ],
 
+    // Database
+    // TODO: Bind correct adapter
+    Swiftly\Database\Database::class => [
+        'singleton' => true,
+        'handler'   => function ( Swiftly\Dependencies\Container $app ) {
+            $database = new Swiftly\Database\Database( $app->resolve( Swiftly\Database\AdapterInterface::class ) );
+            $database->open();
+            
+            return $database;
+        }
+    ],
+
     // Template engine
-    // TEMP: Allow config in future
     Swiftly\Template\TemplateInterface::class => Swiftly\Template\Php::class,
 
     // Route parser
-    // TEMP: Allow config in future
-    Swiftly\Routing\ParserInterface::class => Swiftly\Routing\Parser\JsonParser::class
+    Swiftly\Routing\ParserInterface::class => Swiftly\Routing\Parser\JsonParser::class,
+    Swiftly\Routing\Dispatcher::class => [
+        'singleton' => true,
+        'handler'   => function ( Swiftly\Dependencies\Container $app ) {
+            return new Swiftly\Routing\Dispatcher( $app->resolve( Swiftly\Routing\ParserInterface::class ) );
+        }
+    ]
 ];

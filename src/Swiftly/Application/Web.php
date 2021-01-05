@@ -3,13 +3,23 @@
 namespace Swiftly\Application;
 
 use \Swiftly\Config\Config;
-use \Swiftly\Dependencies\Container;
-use \Swiftly\Dependencies\Loaders\PhpLoader;
-use \Swiftly\Http\Server\{ Request, Response };
 use \Swiftly\Template\TemplateInterface;
-use \Swiftly\Routing\{ Dispatcher, ParserInterface };
-use \Swiftly\Database\{ Database, AdapterInterface };
-use \Swiftly\Database\Adapters\{ Mysql, Postgres, Sqlite };
+use \Swiftly\Routing\Dispatcher;
+use \Swiftly\Dependencies\{
+    Container,
+    Loaders\PhpLoader
+};
+use \Swiftly\Http\Server\{
+    Request,
+    Response
+};
+use \Swiftly\Database\{
+    Database,
+    AdapterInterface,
+    Adapters\Mysql,
+    Adapters\Postgres,
+    Adapters\Sqlite
+};
 
 /**
  * The front controller for our web app
@@ -63,13 +73,10 @@ Class Web Implements ApplicationInterface
     {
 
         // Create a new router
-        $parser = $this->dependencies->resolve( ParserInterface::class );
-        $router = new Dispatcher( $parser );
-
+        $router = $this->dependencies->resolve( Dispatcher::class );
 
         // Get the global request object
         $request = $this->dependencies->resolve( Request::class );
-
 
         // Load route.json and dispatch
         if ( \is_file( APP_CONFIG . 'routes.json' ) ) {
@@ -132,13 +139,6 @@ Class Web Implements ApplicationInterface
         $services->bind( AdapterInterface::class, function () use (&$config, $adapter) {
             return new $adapter( $config );
         });
-
-        // Bind the database as a singleton
-        $services->bind( Database::class, function ( $service ) {
-            $database = new Database( $service->resolve( AdapterInterface::class ) );
-            $database->open();
-            return $database;
-        })->singleton( true );
 
         return;
     }
