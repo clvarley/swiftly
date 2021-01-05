@@ -32,12 +32,12 @@ Class Web
     /**
      * @var Config $config Configuration values
      */
-    private $config = null;
+    private $config;
 
     /**
      * @var Container $services Dependency manager
      */
-    private $dependencies = null;
+    private $dependencies;
 
     /**
      * Create our application
@@ -121,18 +121,17 @@ Class Web
         switch( \mb_strtolower( $config['adapter'] ) ) {
             case 'sqlite':
                 $adapter = Sqlite::class;
-            break;
-
+                break;
             case 'postgres':
             case 'postgresql':
                 $adapter = Postgres::class;
-            break;
+                break;
 
             case 'mysql':
             case 'mysqli':
             default:
                 $adapter = Mysql::class;
-            break;
+                break;
         }
 
         // Bind the adapter
