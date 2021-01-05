@@ -17,7 +17,7 @@ Class Database
      *
      * @var AdapterInterface $adapter Database adapter
      */
-    private $adapter = null;
+    private $adapter;
 
     /**
      * Database connection status

@@ -42,7 +42,7 @@ Interface AdapterInterface
     /**
      * Get the results from the last query
      *
-     * @return array Query results
+     * @return array[] Query results
      */
     public function getResults() : array;
 

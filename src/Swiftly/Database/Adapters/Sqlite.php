@@ -17,7 +17,7 @@ Class Sqlite Implements AdapterInterface
      *
      * @var \SQLite3 $handle Sqlite handle
      */
-    private $handle = null;
+    private $handle;
 
     /**
      * Result of last query
@@ -31,7 +31,7 @@ Class Sqlite Implements AdapterInterface
      *
      * @var string $file DB file
      */
-    private $file = '';
+    private $file;
 
     /**
      * Get the path from the options array
@@ -51,8 +51,8 @@ Class Sqlite Implements AdapterInterface
     public function open() : bool
     {
         $this->handle = new \SQLite3(
-          $this->file,
-          \SQLITE3_OPEN_READWRITE | \SQLITE3_OPEN_CREATE
+            $this->file,
+            \SQLITE3_OPEN_READWRITE | \SQLITE3_OPEN_CREATE
         );
 
         // Naive check to see if successfull
@@ -103,10 +103,12 @@ Class Sqlite Implements AdapterInterface
         $return = [];
 
         // Are there results to read?
-        if ( !\is_null( $this->result ) && $this->result->numColumns() ) {
-            while (( $result = $this->result->fetchArray( \SQLITE3_ASSOC ) )) {
-                $return[] = $result;
-            }
+        if ( \is_null( $this->result ) || $this->result->numColumns() === 0 ) {
+            return $return;
+        }
+
+        while (( $result = $this->result->fetchArray( \SQLITE3_ASSOC ) )) {
+            $return[] = $result;
         }
 
         return $return;

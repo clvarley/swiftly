@@ -31,21 +31,21 @@ Class Mysql Implements AdapterInterface
      *
      * @var string $username DB username
      */
-    private $username = '';
+    private $username;
 
     /**
      * Database password
      *
      * @var string $password DB password
      */
-    private $password = '';
+    private $password;
 
     /**
      * Database name
      *
      * @var string $name DB name
      */
-    private $name = '';
+    private $name;
 
     /**
      * Database host
@@ -132,7 +132,10 @@ Class Mysql Implements AdapterInterface
      */
     public function getResult() : array
     {
-        return ( \is_null( $this->results ) ? [] : $this->results->fetch_array( \MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results )
+            ? []
+            : $this->results->fetch_array( \MYSQLI_ASSOC )
+        );
     }
 
     /**
@@ -142,7 +145,10 @@ Class Mysql Implements AdapterInterface
      */
     public function getResults() : array
     {
-        return ( \is_null( $this->results ) ? [] : $this->results->fetch_all( \MYSQLI_ASSOC ) );
+        return ( \is_null( $this->results )
+            ? []
+            : $this->results->fetch_all( \MYSQLI_ASSOC )
+        );
     }
 
     /**
