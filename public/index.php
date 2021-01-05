@@ -42,14 +42,14 @@ $config = Swiftly\Config\Config::fromJson( APP_CONFIG . 'app.json' );
 
 
 // Set the encoding
-if ( $config->hasValue( 'encoding' ) ) {
-    mb_internal_encoding( $config->getValue( 'encoding' ) );
-    mb_http_output( $config->getValue( 'encoding' ) );
+if ( $config->has( 'encoding' ) ) {
+    mb_internal_encoding( $config->get( 'encoding' ) );
+    mb_http_output( $config->get( 'encoding' ) );
 }
 
 
 // Are we in development mode?
-switch ( (string)$config->getValue( 'environment' ) )
+switch ( (string)$config->get( 'environment' ) )
 {
     case 'development':
     case 'dev':
@@ -63,13 +63,13 @@ switch ( (string)$config->getValue( 'environment' ) )
 
 
 // Does the developer want to see E_STRICT errors?
-if ( $config->hasValue( 'strict' ) && (bool)$config->getValue( 'strict' ) ) {
+if ( (bool)$config->get( 'strict', false ) ) {
     $error_level = $error_level | E_STRICT;
 }
 
 
 // Display developer defined errors & warnings?
-if ( $config->hasValue( 'warnings' ) && (bool)$config->getValue( 'warnings' ) ) {
+if ( (bool)$config->get( 'warnings', false ) ) {
     $error_level = $error_level | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE | E_USER_DEPRECATED;
 }
 

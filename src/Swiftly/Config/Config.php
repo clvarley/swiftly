@@ -11,14 +11,16 @@ Class Config
 {
 
     /**
+     * Array of config settings
+     *
      * @var array $settings Config settings
      */
-    private $settings = [];
+    private $settings;
 
     /**
      * Construct config object
      *
-     * @param array $settings Settings
+     * @param array $settings Config settings
      */
     public function __construct( array $settings = [] )
     {
@@ -26,32 +28,57 @@ Class Config
     }
 
     /**
-     * Check to see if a config value exists
+     * Sets the value for the given setting
      *
-     * @param string $setting Setting name
-     * @return bool           Setting exists?
+     * @param string $name Setting name
+     * @param mixed $value Setting value
+     * @return void        N/a
      */
-    public function hasValue( string $setting ) : bool
+    public function set( string $name, /* mixed */ $value ) : void
     {
-        return \array_key_exists( \mb_strtolower( $setting ), $this->settings) ;
+        $name = \strtolower( $name );
+
+        $this->settings[$name] = $value;
+
+        return;
     }
 
     /**
-     * Get a config value
+     * Gets the value for the given setting
      *
-     * @param string $setting Setting name
-     * @return mixed          Setting value
+     * If no value is found, the provided `$default` will be returned instead
+     *
+     * @param string $name   Setting name
+     * @param mixed $default (Optional) Default value
+     * @return mixed         Setting value
      */
-    public function getValue( string $setting ) // : mixed
+    public function get( string $name, /* mixed */ $default = null ) // : mixed
     {
-        return ( isset($this->settings[\mb_strtolower( $setting )]) ? $this->settings[\mb_strtolower( $setting )] : null );
+        $name = \strtolower( $name );
+
+        return ( \array_key_exists( $name, $this->settings )
+            ? $this->settings[$name]
+            : $default
+        );
+    }
+
+    /**
+     * Checks to see if the given setting has a value
+     *
+     * @param string $name Setting name
+     * @return bool        Has value?
+     */
+    public function has( string $name ) : bool
+    {
+        $name = \strtolower( $name );
+
+        return \array_key_exists( $name, $this->settings );
     }
 
     /**
      * Create a config object from a JSON file
      *
      * @static
-     *
      * @param string $filepath  Path to JSON file
      * @return Config           Config object
      */

@@ -59,8 +59,8 @@ Class Web
 
 
         // Register the appropriate database adapter
-        if ( $config->hasValue( 'database' ) ) {
-            $this->bindDatabase( $this->dependencies, $config->getValue( 'database' ) );
+        if ( $config->has( 'database' ) ) {
+            $this->bindDatabase( $this->dependencies, $config->get( 'database' ) );
         }
 
         // TODO:
