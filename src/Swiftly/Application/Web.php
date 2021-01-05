@@ -26,7 +26,7 @@ use \Swiftly\Database\{
  *
  * @author C Varley <clvarley>
  */
-Class Web Implements ApplicationInterface
+Class Application
 {
 
     /**
